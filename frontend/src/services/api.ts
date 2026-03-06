@@ -1,5 +1,49 @@
 // src/services/api.ts
 
+// ── Types ────────────────────────────────
+
+export interface User {
+  id: number;
+  full_name: string;
+  email: string;
+  role: 'patient' | 'doctor';
+  created_at: string;
+}
+
+export interface Scan {
+  id: number;
+  user_id: number;
+  scan_type: string;
+  filename: string;
+  report: string;
+  severity: string;
+  confidence: number;
+  time_seconds: number;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+}
+
+export interface LoginData {
+  email: string;
+  password: string;
+}
+
+export interface RegisterData {
+  full_name: string;
+  email: string;
+  password: string;
+  role: 'patient' | 'doctor';
+  pmdc?: string;
+}
+
+export interface ScanResult {
+  report: string;
+  urdu_report?: string;
+  severity: string;
+  confidence: number;
+  time: number;
+}
+
 // Auth/users  → local FastAPI backend
 const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
 
@@ -59,43 +103,44 @@ export const logout = () => {
 
 // ── Auth API ──────────────────────────────
 
-export const registerUser = async (data: {
-  full_name: string;
-  email: string;
-  password: string;
-  role: string;
-  pmdc?: string;
-}) => {
-  const res = await fetchWithTimeout(`${BASE_URL}/users/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || 'Registration failed');
+export const registerUser = async (data: RegisterData) => {
+  try {
+    const res = await fetchWithTimeout(`${BASE_URL}/users/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.status === 400)
+      throw new Error('Email pehle se registered hai!');
+    if (!res.ok)
+      throw new Error('Registration failed!');
+    return res.json();
+  } catch (err: any) {
+    if (err.name === 'AbortError')
+      throw new Error('Server respond nahi kar raha!');
+    throw err;
   }
-
-  return res.json();
 };
 
-export const loginUser = async (data: {
-  email: string;
-  password: string;
-}) => {
-  const res = await fetchWithTimeout(`${BASE_URL}/users/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.detail || 'Login failed');
+export const loginUser = async (data: LoginData) => {
+  try {
+    const res = await fetchWithTimeout(`${BASE_URL}/users/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (res.status === 401)
+      throw new Error('Galat email ya password!');
+    if (res.status === 404)
+      throw new Error('Account nahi mila!');
+    if (!res.ok)
+      throw new Error('Login failed. Dobara try karo!');
+    return res.json();
+  } catch (err: any) {
+    if (err.name === 'AbortError')
+      throw new Error('Server respond nahi kar raha!');
+    throw err;
   }
-
-  return res.json();
 };
 
 export const getProfile = async () => {

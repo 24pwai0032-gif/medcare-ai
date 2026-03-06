@@ -1,6 +1,7 @@
 // src/pages/PatientDashboard.tsx
 import React, { useState, useEffect } from 'react';
 import { getMyScans } from '../services/api';
+import { SkeletonList } from '../components/Skeleton';
 import XrayAnalyzer from './XrayAnalyzer';
 import ECGAnalyzer from './ECGAnalyzer';
 import BloodTestAnalyzer from './BloodTestAnalyzer';
@@ -284,9 +285,9 @@ const PatientDashboard = ({
           </div>
           <div className="p-6 space-y-4">
             {loadingScans ? (
-              <p className="text-gray-500 text-sm text-center py-4">
-                Loading scans...
-              </p>
+              <div className="p-6">
+                <SkeletonList count={3} />
+              </div>
             ) : recentScans.length === 0 ? (
               <div className="text-center py-8">
                 <p className="text-4xl mb-3">🫁</p>

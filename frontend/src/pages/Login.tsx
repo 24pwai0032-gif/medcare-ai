@@ -4,7 +4,7 @@ import { loginUser, registerUser, saveToken, saveUser } from '../services/api';
 
 const Login = ({ onLogin }: { onLogin: (user: any) => void }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [role, setRole] = useState('patient');
+  const [role, setRole] = useState<'patient' | 'doctor'>('patient');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -15,7 +15,26 @@ const Login = ({ onLogin }: { onLogin: (user: any) => void }) => {
     pmdc: '',
   });
 
+  const validateForm = (): string | null => {
+    if (!form.email.trim())
+      return 'Email required!';
+    if (!/\S+@\S+\.\S+/.test(form.email))
+      return 'Valid email daalo!';
+    if (!form.password || form.password.length < 6)
+      return 'Password 6+ characters hona chahiye!';
+    if (!isLogin && !form.full_name.trim())
+      return 'Name required!';
+    if (!isLogin && role === 'doctor' && !form.pmdc.trim())
+      return 'PMDC number required!';
+    return null;
+  };
+
   const handleSubmit = async () => {
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     setLoading(true);
     setError('');
 
