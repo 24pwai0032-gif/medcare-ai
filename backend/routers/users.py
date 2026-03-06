@@ -5,6 +5,9 @@ from database import get_db
 import db_models as models
 import schemas
 import auth
+import logging
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(
     prefix="/api/v1/users",
@@ -17,6 +20,7 @@ def register(
     user_data: schemas.UserRegister,
     db: Session = Depends(get_db)
 ):
+    """Register a new user"""
     existing = db.query(models.User).filter(
         models.User.email == user_data.email
     ).first()
@@ -24,7 +28,13 @@ def register(
     if existing:
         raise HTTPException(
             status_code=400,
-            detail="Email already registered"
+            detail="Yeh email pehle se registered hai! Login karo."
+        )
+
+    if user_data.role == "doctor" and not user_data.pmdc:
+        raise HTTPException(
+            status_code=400,
+            detail="Doctor ke liye PMDC number zaroori hai!"
         )
 
     new_user = models.User(
@@ -39,6 +49,7 @@ def register(
     db.refresh(new_user)
 
     token = auth.create_token({"sub": new_user.email})
+    logger.info(f"New user registered: {new_user.email}")
 
     return {
         "access_token": token,
@@ -53,24 +64,30 @@ def login(
     user_data: schemas.UserLogin,
     db: Session = Depends(get_db)
 ):
-    user = db.query(models.User).filter(
+    """Login existing user"""
+    db_user = db.query(models.User).filter(
         models.User.email == user_data.email
     ).first()
 
-    if not user or not auth.verify_password(
-        user_data.password, user.password
-    ):
+    if not db_user:
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password"
+            detail="Email registered nahi hai!"
         )
 
-    token = auth.create_token({"sub": user.email})
+    if not auth.verify_password(user_data.password, db_user.password):
+        raise HTTPException(
+            status_code=401,
+            detail="Galat password! Dobara try karo."
+        )
+
+    token = auth.create_token({"sub": db_user.email})
+    logger.info(f"User logged in: {db_user.email}")
 
     return {
         "access_token": token,
         "token_type"  : "bearer",
-        "user"        : user
+        "user"        : db_user
     }
 
 
