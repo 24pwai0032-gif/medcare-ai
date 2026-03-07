@@ -1,6 +1,11 @@
 venv/
 __pycache__/
 *.pyc
+*.pyo
 .env
 *.db
 *.zip
+.git/
+models/__pycache__/
+routers/__pycache__/
+utils/__pycache__/

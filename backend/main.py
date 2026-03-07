@@ -15,7 +15,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # DB tables create
-models.Base.metadata.create_all(bind=engine)
+try:
+    models.Base.metadata.create_all(bind=engine)
+    logger.info("✅ Database connected!")
+except Exception as e:
+    logger.error(f"DB Error: {e}")
+    logger.info("⚠️ Starting without DB...")
 
 app = FastAPI(
     title="MedCare AI API",
@@ -27,8 +32,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "*"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
