@@ -5,11 +5,9 @@
 # ═══════════════════════════════════════
 
 import logging
-import time
 import cv2
 import numpy as np
 from PIL import Image, ImageEnhance
-from collections import Counter
 
 logger = logging.getLogger(__name__)
 
@@ -172,67 +170,3 @@ def translate_to_urdu(report: str) -> str:
         urdu_report = urdu_report.replace(eng, f"{eng} ({urdu})")
 
     return urdu_report
-
-# ── Analysis ───────────────────────────
-def analyze_image(
-    image: Image.Image,
-    prompt: str,
-    processor,
-    model,
-    runs: int = 3,
-) -> dict:
-    reports    = []
-    severities = []
-    scores     = []
-    start      = time.time()
-
-    for i in range(runs):
-        logger.info(f"Run {i+1}/{runs}...")
-
-        inputs = processor(
-            text=prompt,
-            images=image,
-            return_tensors="pt"
-        ).to(next(
-            model.parameters()
-        ).device)
-
-        with torch.no_grad():
-            output = model.generate(
-                **inputs,
-                max_new_tokens=200,
-                do_sample=False,
-                use_cache=True,
-                num_beams=1,
-            )
-
-        report = processor.decode(
-            output[0],
-            skip_special_tokens=True
-        ).split("[/INST]")[-1].strip()
-
-        severity, score = \
-            extract_severity(report)
-        reports.append(report)
-        severities.append(severity)
-        scores.append(score)
-
-    sev_counter  = Counter(severities)
-    final_sev    = sev_counter\
-        .most_common(1)[0][0]
-    confidence   = round(
-        sev_counter.most_common(1)[0][1]
-        / runs * 100
-    )
-    best_report  = max(reports, key=len)
-    time_taken   = round(
-        time.time() - start, 1
-    )
-
-    return {
-        "report":       best_report,
-        "severity":     final_sev,
-        "confidence":   confidence,
-        "time_seconds": time_taken,
-        "runs":         runs,
-    }
