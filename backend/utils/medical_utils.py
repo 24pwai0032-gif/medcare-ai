@@ -4,7 +4,6 @@
 # Syed Hassan Tayyab — Atomcamp 2026
 # ═══════════════════════════════════════
 
-import torch
 import logging
 import time
 import cv2

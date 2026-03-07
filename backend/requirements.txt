@@ -12,3 +12,4 @@ opencv-python-headless==4.9.0.80
 numpy==1.26.4
 alembic==1.13.1
 pydantic[email]==2.7.0
+httpx==0.27.0

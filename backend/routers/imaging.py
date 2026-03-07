@@ -3,23 +3,12 @@ from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from sqlalchemy.orm import Session
 import logging
 import time
-import cv2
-import numpy as np
-from PIL import Image
-import io
+import httpx
+import os
 
 from database import get_db
 import db_models as models
 import auth
-from utils.medical_utils import (
-    analyze_image as analyze_medical_image,
-    translate_to_urdu,
-    XRAY_PROMPT,
-    ECG_PROMPT,
-    BLOOD_TEST_PROMPT,
-    BONE_PROMPT,
-    SKIN_PROMPT,
-)
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -28,13 +17,8 @@ router = APIRouter(
 )
 
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/bmp", "image/avif", "image/tiff"}
-SCAN_PROMPTS = {
-    "xray":       XRAY_PROMPT,
-    "ecg":        ECG_PROMPT,
-    "blood-test": BLOOD_TEST_PROMPT,
-    "bone":       BONE_PROMPT,
-    "skin":       SKIN_PROMPT,
-}
+
+COLAB_URL = os.getenv("COLAB_URL", "")
 
 async def analyze_scan(
     scan_type: str,
@@ -43,10 +27,7 @@ async def analyze_scan(
     current_user = None
 ):
     if file.content_type not in ALLOWED_TYPES:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid file type. Allowed: JPEG, PNG, WEBP, BMP"
-        )
+        raise HTTPException(status_code=400, detail="Invalid file type. Allowed: JPEG, PNG, WEBP, BMP")
 
     contents = await file.read()
     if not contents:
@@ -55,48 +36,45 @@ async def analyze_scan(
     start_time = time.time()
 
     try:
-        prompt = SCAN_PROMPTS[scan_type]
-        report, severity, confidence = analyze_medical_image(
-            contents, prompt
-        )
+        async with httpx.AsyncClient(timeout=120) as client:
+            response = await client.post(
+                f"{COLAB_URL}/analyze",
+                files={"file": (file.filename, contents, file.content_type)},
+                data={"scan_type": scan_type}
+            )
+            result = response.json()
     except Exception as e:
-        logger.error(f"Analysis error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error(f"Colab error: {e}")
+        raise HTTPException(status_code=503, detail="AI model unavailable")
 
     time_taken = round(time.time() - start_time, 1)
 
-    urdu_report = translate_to_urdu(report)
-
-    # Database mein save karo
     if current_user:
         try:
             scan = models.Scan(
                 user_id      = current_user.id,
                 scan_type    = scan_type,
                 filename     = file.filename,
-                report       = report,
-                severity     = severity,
-                confidence   = confidence,
+                report       = result.get("report", ""),
+                severity     = result.get("severity", ""),
+                confidence   = result.get("confidence", 0),
                 time_seconds = time_taken,
                 status       = "pending"
             )
             db.add(scan)
             db.commit()
-            db.refresh(scan)
-            logger.info(f"Scan saved: ID {scan.id}")
         except Exception as e:
-            logger.error(f"DB save error: {e}")
+            logger.error(f"DB error: {e}")
 
     return {
         "success"     : True,
         "scan_type"   : scan_type,
         "filename"    : file.filename,
-        "report"      : report,
-        "report_urdu" : urdu_report,
-        "severity"    : severity,
-        "confidence"  : confidence,
+        "report"      : result.get("report", ""),
+        "report_urdu" : result.get("report_urdu", ""),
+        "severity"    : result.get("severity", ""),
+        "confidence"  : result.get("confidence", 0),
         "time_seconds": time_taken,
-        "runs"        : 3,
     }
 
 
