@@ -9,8 +9,7 @@ const DoctorDashboard = ({
   user: any;
   onLogout: () => void;
 }) => {
-  const [activeTab, setActiveTab] =
-    useState('pending');
+  // const [activeTab, setActiveTab] = useState('pending');
 
   const [pendingScans, setPendingScans] = useState<any[]>([]);
 
