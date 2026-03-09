@@ -205,7 +205,7 @@ export const getPendingScans = async () => {
 
 export const approveScan = async (scanId: number, notes: string = '') => {
   const res = await fetch(
-    `${BASE_URL}/users/doctor/approve/${scanId}?notes=${encodeURIComponent(notes)}`,
+    `${BASE_URL}/users/doctor/approve-scan/${scanId}?notes=${encodeURIComponent(notes)}`,
     {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${getToken()}` },
@@ -217,7 +217,7 @@ export const approveScan = async (scanId: number, notes: string = '') => {
 
 export const rejectScan = async (scanId: number, notes: string = '') => {
   const res = await fetch(
-    `${BASE_URL}/users/doctor/reject/${scanId}?notes=${encodeURIComponent(notes)}`,
+    `${BASE_URL}/users/doctor/reject-scan/${scanId}?notes=${encodeURIComponent(notes)}`,
     {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${getToken()}` },
