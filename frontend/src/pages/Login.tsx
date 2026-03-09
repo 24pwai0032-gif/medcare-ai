@@ -31,16 +31,17 @@ export default function Login({ onLogin }: LoginProps) {
     if (!validate()) return;
     setLoading(true);
     try {
-      let user;
       if (mode === 'register') {
-        user = await registerUser({ full_name: name, email, password, role });
-        user = await loginUser({ email, password });
+        const res = await registerUser({ full_name: name, email, password, role, pmdc: pmdc || undefined });
+        saveToken(res.access_token);
+        saveUser(res.user);
+        onLogin(res.user);
       } else {
-        user = await loginUser({ email, password });
+        const res = await loginUser({ email, password });
+        saveToken(res.access_token);
+        saveUser(res.user || res);
+        onLogin(res.user || res);
       }
-      saveToken(user.access_token);
-      saveUser(user.user || user);
-      onLogin(user.user || user);
     } catch (err: any) {
       setError(err?.message || 'Something went wrong. Please try again.');
     } finally {
