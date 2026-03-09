@@ -1,11 +1,16 @@
 # backend/routers/users.py
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
+from typing import Optional
 from database import get_db
 import db_models as models
 import schemas
 import auth
 import logging
+
+class DoctorNotes(BaseModel):
+    doctor_notes: Optional[str] = ""
 
 logger = logging.getLogger(__name__)
 
@@ -130,26 +135,20 @@ def get_pending_scans(
 @router.put("/doctor/approve-scan/{scan_id}")
 def approve_scan(
     scan_id: int,
+    body: DoctorNotes = DoctorNotes(),
     current_user = Depends(auth.get_current_user),
     db: Session = Depends(get_db)
 ):
     if current_user.role != "doctor":
-        raise HTTPException(
-            status_code=403,
-            detail="Doctors only"
-        )
+        raise HTTPException(status_code=403, detail="Doctors only")
 
-    scan = db.query(models.Scan).filter(
-        models.Scan.id == scan_id
-    ).first()
-
+    scan = db.query(models.Scan).filter(models.Scan.id == scan_id).first()
     if not scan:
-        raise HTTPException(
-            status_code=404,
-            detail="Scan not found"
-        )
+        raise HTTPException(status_code=404, detail="Scan not found")
 
     scan.status = "approved"
+    if body.doctor_notes:
+        scan.doctor_notes = body.doctor_notes
     db.commit()
 
     return {"message": "Scan approved ✅", "scan_id": scan_id}
@@ -159,26 +158,20 @@ def approve_scan(
 @router.put("/doctor/reject-scan/{scan_id}")
 def reject_scan(
     scan_id: int,
+    body: DoctorNotes = DoctorNotes(),
     current_user = Depends(auth.get_current_user),
     db: Session = Depends(get_db)
 ):
     if current_user.role != "doctor":
-        raise HTTPException(
-            status_code=403,
-            detail="Doctors only"
-        )
+        raise HTTPException(status_code=403, detail="Doctors only")
 
-    scan = db.query(models.Scan).filter(
-        models.Scan.id == scan_id
-    ).first()
-
+    scan = db.query(models.Scan).filter(models.Scan.id == scan_id).first()
     if not scan:
-        raise HTTPException(
-            status_code=404,
-            detail="Scan not found"
-        )
+        raise HTTPException(status_code=404, detail="Scan not found")
 
     scan.status = "rejected"
+    if body.doctor_notes:
+        scan.doctor_notes = body.doctor_notes
     db.commit()
 
     return {"message": "Scan rejected ❌", "scan_id": scan_id}
