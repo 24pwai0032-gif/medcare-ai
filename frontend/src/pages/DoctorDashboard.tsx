@@ -265,7 +265,12 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                           <div style={{ width: 42, height: 42, borderRadius: 12, background: mod?.bg || 'rgba(255,255,255,.08)', border: `1px solid ${mod?.border || 'rgba(255,255,255,.1)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 21, flexShrink: 0 }}>{mod?.e || '📄'}</div>
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ fontWeight: 700, fontSize: 13.5, color: '#fff', marginBottom: 2 }}>{scan.scan_type?.replace(/-/g,' ').replace(/\b\w/g,(l:string)=>l.toUpperCase()) || 'Medical Scan'}</div>
-                            <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.35)' }}>Patient: {scan.patient_name || scan.user_email || 'Unknown'} · {new Date(scan.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'short' })}</div>
+                            <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.35)' }}>Patient: <span style={{ color: 'rgba(255,255,255,.65)', fontWeight: 600 }}>{scan.patient_name || scan.user_email || 'Unknown'}</span> · {new Date(scan.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'short' })}</div>
+                            {scan.report && (
+                              <div style={{ fontSize: 11, color: 'rgba(255,255,255,.25)', marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 280 }}>
+                                🤖 {scan.report}
+                              </div>
+                            )}
                           </div>
                           {scan.severity && (
                             <div style={{ fontSize: 11.5, color: sv.color, background: sv.bg, border: `1px solid ${sv.border}`, borderRadius: 8, padding: '4px 10px', flexShrink: 0, fontWeight: 700 }}>{scan.severity}</div>
@@ -358,9 +363,14 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontWeight: 700, fontSize: 14, color: '#fff', marginBottom: 3 }}>{scan.scan_type?.replace(/-/g,' ').replace(/\b\w/g,(l:string)=>l.toUpperCase()) || 'Medical Scan'}</div>
                           <div style={{ fontSize: 12, color: 'rgba(255,255,255,.35)' }}>
-                            Patient: <span style={{ color: 'rgba(255,255,255,.55)' }}>{scan.patient_name || scan.user_email || 'Unknown'}</span>
+                            Patient: <span style={{ color: 'rgba(255,255,255,.7)', fontWeight: 600 }}>{scan.patient_name || scan.user_email || 'Unknown'}</span>
                             {' · '}{new Date(scan.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}
                           </div>
+                          {scan.report && (
+                            <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.28)', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 320 }}>
+                              🤖 {scan.report}
+                            </div>
+                          )}
                         </div>
                         {scan.severity && <div style={{ fontSize: 12, color: sv.color, background: sv.bg, border: `1px solid ${sv.border}`, borderRadius: 8, padding: '4px 10px', flexShrink: 0, fontWeight: 700 }}>{scan.severity}</div>}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: activeTab === 'queue' ? 'rgba(251,191,36,.1)' : isApproved ? 'rgba(52,211,153,.1)' : 'rgba(248,113,113,.1)', border: `1px solid ${activeTab === 'queue' ? 'rgba(251,191,36,.25)' : isApproved ? 'rgba(52,211,153,.25)' : 'rgba(248,113,113,.25)'}`, borderRadius: 100, padding: '5px 12px', flexShrink: 0 }}>
@@ -417,16 +427,16 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                 <span style={{ fontSize: 12, color: 'rgba(255,255,255,.3)' }}>{new Date(selectedScan.created_at).toLocaleString('en-PK')}</span>
               </div>
 
-              {/* AI Result */}
-              {selectedScan.ai_result && (
+              {/* AI Report */}
+              {(selectedScan.report || selectedScan.ai_result) && (
                 <div style={{ marginBottom: 20 }}>
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,.3)', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 7 }}>
                     <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#A78BFA', display: 'inline-block' }} />
-                    AI Analysis Result
+                    AI Analysis Report
                   </div>
                   <div style={{ background: 'rgba(167,139,250,.08)', border: '1px solid rgba(167,139,250,.15)', borderRadius: 14, padding: '16px' }}>
-                    <p style={{ color: 'rgba(255,255,255,.72)', fontSize: 13.5, lineHeight: 1.82, whiteSpace: 'pre-wrap' }}>
-                      {typeof selectedScan.ai_result === 'string' ? selectedScan.ai_result : JSON.stringify(selectedScan.ai_result, null, 2)}
+                    <p style={{ color: 'rgba(255,255,255,.82)', fontSize: 13.5, lineHeight: 1.82, whiteSpace: 'pre-wrap' }}>
+                      {selectedScan.report || (typeof selectedScan.ai_result === 'string' ? selectedScan.ai_result : JSON.stringify(selectedScan.ai_result, null, 2))}
                     </p>
                   </div>
                 </div>

@@ -115,6 +115,33 @@ def get_my_scans(
     ).all()
 
 
+def _enrich_scans(scans, db):
+    """Attach patient_name and patient_email to each scan."""
+    result = []
+    user_cache: dict = {}
+    for scan in scans:
+        if scan.user_id not in user_cache:
+            u = db.query(models.User).filter(models.User.id == scan.user_id).first()
+            user_cache[scan.user_id] = u
+        u = user_cache.get(scan.user_id)
+        result.append({
+            "id"           : scan.id,
+            "user_id"      : scan.user_id,
+            "patient_name" : u.full_name if u else "Unknown",
+            "patient_email": u.email     if u else "",
+            "scan_type"    : scan.scan_type,
+            "filename"     : scan.filename,
+            "report"       : scan.report,
+            "severity"     : scan.severity,
+            "confidence"   : scan.confidence,
+            "time_seconds" : scan.time_seconds,
+            "status"       : scan.status,
+            "doctor_notes" : scan.doctor_notes,
+            "created_at"   : str(scan.created_at),
+        })
+    return result
+
+
 # ── Doctor: Pending Scans ─────────────────
 @router.get("/doctor/pending-scans")
 def get_pending_scans(
@@ -123,9 +150,10 @@ def get_pending_scans(
 ):
     if current_user.role != "doctor":
         raise HTTPException(status_code=403, detail="Doctors only")
-    return db.query(models.Scan).filter(
+    scans = db.query(models.Scan).filter(
         models.Scan.status == "pending"
     ).order_by(models.Scan.created_at.desc()).all()
+    return _enrich_scans(scans, db)
 
 
 # ── Doctor: All Scans ─────────────────────
@@ -136,7 +164,8 @@ def get_all_scans(
 ):
     if current_user.role != "doctor":
         raise HTTPException(status_code=403, detail="Doctors only")
-    return db.query(models.Scan).order_by(models.Scan.created_at.desc()).all()
+    scans = db.query(models.Scan).order_by(models.Scan.created_at.desc()).all()
+    return _enrich_scans(scans, db)
 
 
 # ── Doctor: Approve Scan ──────────────────
