@@ -163,8 +163,8 @@ export default function Login({ onLogin }: LoginProps) {
               {mode === 'login' ? 'Sign in to access your medical dashboard' : 'Free forever. No credit card needed.'}
             </p>
 
-            {/* Role selector (register only) */}
-            {mode === 'register' && (
+            {/* Role selector — login aur register dono mein */}
+            {(
               <div style={{ marginBottom: 20 }}>
                 <div style={{ fontSize: 12, color: 'rgba(255,255,255,.45)', fontWeight: 700,
                   letterSpacing: '.07em', textTransform: 'uppercase', marginBottom: 10 }}>
