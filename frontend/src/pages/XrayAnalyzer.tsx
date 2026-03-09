@@ -1,6 +1,6 @@
 // src/pages/XRayAnalyzer.tsx
 import React, { useState, useRef } from 'react';
-import { analyzeScan, getToken } from '../services/api';
+import { getToken } from '../services/api';
 
 const BASE_URL = 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
 
