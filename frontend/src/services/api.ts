@@ -107,14 +107,16 @@ export const registerUser = async (data: RegisterData) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (res.status === 400)
-      throw new Error('Email pehle se registered hai!');
+    if (res.status === 400) {
+      const errData = await res.json();
+      throw new Error(errData.detail || 'Registration failed!');
+    }
     if (!res.ok)
       throw new Error('Registration failed!');
     return res.json();
   } catch (err: any) {
     if (err.name === 'AbortError')
-      throw new Error('Server respond nahi kar raha!');
+      throw new Error('Request timed out. Is the server running?');
     throw err;
   }
 };
