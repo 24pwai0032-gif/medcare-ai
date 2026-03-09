@@ -10,9 +10,10 @@ from database import get_db
 import db_models as models 
 
 # Config
-SECRET_KEY   = "medcare-ai-secret-key-hassan-2026"
-ALGORITHM    = "HS256"
-EXPIRE_HOURS = 24 * 7  # 7 days
+import os
+SECRET_KEY   = os.getenv("SECRET_KEY", "medcare-ai-secret-key-hassan-2026")
+ALGORITHM    = os.getenv("ALGORITHM", "HS256")
+EXPIRE_HOURS = int(os.getenv("ACCESS_TOKEN_EXPIRE_HOURS", "168"))
 
 pwd_context   = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/users/login")

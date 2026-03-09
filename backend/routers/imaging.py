@@ -4,12 +4,11 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 import logging
 import time
-import httpx
-import os
 
 from database import get_db
 import db_models as models
 import auth
+from models.llava_model import analyze_medical_image
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +18,6 @@ router = APIRouter(
 )
 
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/bmp", "image/avif", "image/tiff"}
-COLAB_URL = os.getenv("COLAB_URL", "")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login", auto_error=False)
 
@@ -52,28 +50,22 @@ async def analyze_scan(
 
     start_time = time.time()
 
-    # ── Call Colab AI model ──────────────────────────────────────
+    # ── Call Gemini Vision API ──────────────────────────────────
     try:
-        async with httpx.AsyncClient(timeout=120) as client:
-            response = await client.post(
-                f"{COLAB_URL}/analyze",
-                files={"file": (file.filename, contents, file.content_type)},
-                data={"scan_type": scan_type},
-            )
-            result = response.json()
+        result = await analyze_medical_image(contents, scan_type)
+    except ValueError as e:
+        logger.error(f"Config error: {e}")
+        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
-        logger.error(f"Colab error: {e}")
-        # Mock result when Colab is offline (for demo)
-        result = {
-            "report": f"{scan_type.upper()} Analysis Complete.\n\nFindings: No acute abnormality identified. Recommend clinical correlation.",
-            "report_urdu": f"تجزیہ مکمل ہوا۔\n\nنتائج: کوئی شدید مسئلہ نہیں پایا گیا۔",
-            "severity": "Normal",
-            "confidence": 87.0,
-        }
+        logger.error(f"AI analysis error: {e}")
+        raise HTTPException(
+            status_code=502,
+            detail="AI model temporarily unavailable. Please try again in a few seconds."
+        )
 
     time_taken = round(time.time() - start_time, 1)
 
-    # ✅ FIXED: Save scan to DB if user is logged in
+    # Save scan to DB if user is logged in
     if current_user:
         try:
             scan = models.Scan(
@@ -109,12 +101,11 @@ async def analyze_scan(
     }
 
 
-# ✅ FIXED: current_user ab properly inject ho raha hai
 @router.post("/xray")
 async def analyze_xray(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),   # ← YEH FIX HAI
+    current_user=Depends(get_optional_user),
 ):
     return await analyze_scan("xray", file, db, current_user)
 

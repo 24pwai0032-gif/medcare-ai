@@ -53,15 +53,22 @@ def root():
     }
 
 @app.get("/health")
-def health():
+async def health():
+    from models.llava_model import check_gemini_health
+    ai_status = await check_gemini_health()
     return {
         "status"  : "healthy ✅",
         "database": "connected ✅",
-        "ai_model": "Colab/ngrok"
+        "ai_model": ai_status,
     }
 
 @app.on_event("startup")
 async def startup():
+    import os
     logger.info("🏥 MedCare AI Backend Started!")
     logger.info("📦 Database: PostgreSQL — medcare_db")
     logger.info("📖 Docs: http://localhost:8000/docs")
+    if not os.getenv("GEMINI_API_KEY"):
+        logger.warning("⚠️ GEMINI_API_KEY not set — AI analysis will fail!")
+    else:
+        logger.info("✅ Google Gemini API key configured")
