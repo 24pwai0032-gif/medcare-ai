@@ -149,14 +149,23 @@ export const getMyScans = async () => {
 
 // ── Doctor API ────────────────────────────
 
-// ✅ FIXED: returns array properly
 export const getPendingScans = async () => {
   const res = await fetch(`${BASE_URL}/users/doctor/pending-scans`, {
     headers: { 'Authorization': `Bearer ${getToken()}` },
   });
   if (!res.ok) throw new Error('Failed to fetch pending scans');
   const data = await res.json();
-  return Array.isArray(data) ? data : data.scans || [];
+  return Array.isArray(data) ? data : [];
+};
+
+// Returns ALL scans (pending + approved + rejected) for doctor view
+export const getAllScansDoctor = async () => {
+  const res = await fetch(`${BASE_URL}/users/doctor/all-scans`, {
+    headers: { 'Authorization': `Bearer ${getToken()}` },
+  });
+  if (!res.ok) throw new Error('Failed to fetch scans');
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
 };
 
 // ✅ FIXED: notes JSON body mein — query param nahi

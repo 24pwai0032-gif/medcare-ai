@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getPendingScans, approveScan, rejectScan } from '../services/api';
+import { getAllScansDoctor, approveScan, rejectScan } from '../services/api';
 
 interface DoctorDashboardProps {
   user: any;
@@ -37,7 +37,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
 
   const load = async () => {
     setLoading(true);
-    try { const data = await getPendingScans(); setScans(Array.isArray(data) ? data : []); }
+    try { const data = await getAllScansDoctor(); setScans(Array.isArray(data) ? data : []); }
     catch { setScans([]); }
     finally { setLoading(false); }
   };

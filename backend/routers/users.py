@@ -122,13 +122,21 @@ def get_pending_scans(
     db: Session = Depends(get_db)
 ):
     if current_user.role != "doctor":
-        raise HTTPException(
-            status_code=403,
-            detail="Doctors only"
-        )
+        raise HTTPException(status_code=403, detail="Doctors only")
     return db.query(models.Scan).filter(
         models.Scan.status == "pending"
-    ).all()
+    ).order_by(models.Scan.created_at.desc()).all()
+
+
+# ── Doctor: All Scans ─────────────────────
+@router.get("/doctor/all-scans")
+def get_all_scans(
+    current_user = Depends(auth.get_current_user),
+    db: Session = Depends(get_db)
+):
+    if current_user.role != "doctor":
+        raise HTTPException(status_code=403, detail="Doctors only")
+    return db.query(models.Scan).order_by(models.Scan.created_at.desc()).all()
 
 
 # ── Doctor: Approve Scan ──────────────────
