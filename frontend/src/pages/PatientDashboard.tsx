@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getMyScans } from '../services/api';
+import XrayAnalyzer from './XrayAnalyzer';
 
 interface PatientDashboardProps {
   user: any;
@@ -30,6 +31,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
   const [scans, setScans]           = useState<any[]>([]);
   const [loading, setLoading]       = useState(true);
   const [selectedScan, setSelectedScan] = useState<any>(null);
+  const [activeModule, setActiveModule] = useState('');
 
   useEffect(() => {
     const load = async () => {
@@ -49,6 +51,9 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
 
   const firstName = user?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Patient';
   const initials  = (user?.full_name || 'P').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
+
+  if (activeModule === 'xray')
+    return <XrayAnalyzer onBack={() => setActiveModule('')} />;
 
   return (
     <div style={{ minHeight: '100vh', background: '#060A14', fontFamily: "'Sora','Plus Jakarta Sans',-apple-system,sans-serif", display: 'flex', overflow: 'hidden' }}>
@@ -110,7 +115,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
           {activeTab === 'modules' && (
             <div style={{ marginTop: 6, paddingLeft: 8, display: 'flex', flexDirection: 'column', gap: 2 }}>
               {modules.slice(0, 6).map(m => (
-                <button key={m.route} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '7px 10px', borderRadius: 8, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,.35)', background: 'transparent', textAlign: 'left', transition: 'all .18s' }}
+                <button key={m.route} onClick={() => setActiveModule(m.route)} style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '7px 10px', borderRadius: 8, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,.35)', background: 'transparent', textAlign: 'left', transition: 'all .18s' }}
                   onMouseEnter={e => { const el = e.currentTarget; el.style.color = '#fff'; el.style.background = 'rgba(255,255,255,.05)'; }}
                   onMouseLeave={e => { const el = e.currentTarget; el.style.color = 'rgba(255,255,255,.35)'; el.style.background = 'transparent'; }}
                 >
@@ -187,7 +192,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(160px,1fr))', gap: 10 }}>
                   {modules.slice(0, 6).map((m, i) => (
-                    <div key={i} className="mod-card" style={{ background: m.bg, border: `1px solid ${m.border}`, borderRadius: 14, padding: '16px 14px', cursor: 'pointer', transition: 'all .25s', textAlign: 'center' }}
+                    <div key={i} className="mod-card" onClick={() => setActiveModule(m.route)} style={{ background: m.bg, border: `1px solid ${m.border}`, borderRadius: 14, padding: '16px 14px', cursor: 'pointer', transition: 'all .25s', textAlign: 'center' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 28px ${m.c}22`; }}
                       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = ''; }}
                     >
@@ -252,7 +257,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
               <p style={{ color: 'rgba(255,255,255,.4)', fontSize: 14, marginBottom: 24 }}>Choose an AI module to analyze your medical data</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))', gap: 13 }}>
                 {modules.map((m, i) => (
-                  <div key={i} className="mod-card" style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${m.border}`, borderRadius: 18, padding: '24px', cursor: 'pointer', transition: 'all .28s', display: 'flex', alignItems: 'flex-start', gap: 16 }}
+                  <div key={i} className="mod-card" onClick={() => setActiveModule(m.route)} style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${m.border}`, borderRadius: 18, padding: '24px', cursor: 'pointer', transition: 'all .28s', display: 'flex', alignItems: 'flex-start', gap: 16 }}
                     onMouseEnter={e => { const el = e.currentTarget; el.style.background = m.bg; el.style.boxShadow = `0 16px 40px ${m.c}18`; el.style.borderColor = m.c+'66'; }}
                     onMouseLeave={e => { const el = e.currentTarget; el.style.background = 'rgba(255,255,255,.04)'; el.style.boxShadow = ''; el.style.borderColor = m.border; }}
                   >
