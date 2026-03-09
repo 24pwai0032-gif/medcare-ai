@@ -352,7 +352,6 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                     const mod = modules.find(m => m.route === scan.scan_type);
                     const sv  = getSeverity(scan);
                     const isApproved = scan.status === 'approved';
-                    const isRejected = scan.status === 'rejected';
                     return (
                       <div key={i} className="scan-card" onClick={() => { setSelectedScan(scan); setNotes(scan.doctor_notes || ''); }} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 16, padding: '18px 20px', cursor: 'pointer', transition: 'all .25s', display: 'flex', alignItems: 'center', gap: 16 }}>
                         <div style={{ width: 46, height: 46, borderRadius: 13, background: mod?.bg || 'rgba(255,255,255,.08)', border: `1px solid ${mod?.border || 'rgba(255,255,255,.1)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 23, flexShrink: 0 }}>{mod?.e || '📄'}</div>
