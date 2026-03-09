@@ -44,10 +44,10 @@ export interface ScanResult {
   time: number;
 }
 
-// Auth/users + Image analysis → GCP Backend
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/v1';
+// ✅ FIXED: GCP Backend URL — localhost hata diya
+const BASE_URL = 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
 
-// Fetch with 10s timeout so UI never hangs forever
+// Fetch with timeout
 const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 10000) => {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
@@ -64,39 +64,21 @@ const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 1
 
 // ── Token Management ──────────────────────
 
-export const saveToken = (token: string) => {
-  localStorage.setItem('medcare_token', token);
-};
+export const saveToken  = (token: string) => localStorage.setItem('medcare_token', token);
+export const getToken   = ()              => localStorage.getItem('medcare_token') || '';
+export const removeToken= ()              => localStorage.removeItem('medcare_token');
+export const saveUser   = (user: any)     => localStorage.setItem('medcare_user', JSON.stringify(user));
+export const getUser    = ()              => { try { const u = localStorage.getItem('medcare_user'); return u ? JSON.parse(u) : null; } catch { return null; } };
+export const removeUser = ()              => localStorage.removeItem('medcare_user');
+export const isLoggedIn = ()              => !!getToken();
+export const logout     = ()              => { removeToken(); removeUser(); };
 
-export const getToken = () => {
-  return localStorage.getItem('medcare_token');
-};
+// ── Auth helper ───────────────────────────
 
-export const removeToken = () => {
-  localStorage.removeItem('medcare_token');
-};
-
-export const saveUser = (user: any) => {
-  localStorage.setItem('medcare_user', JSON.stringify(user));
-};
-
-export const getUser = () => {
-  const user = localStorage.getItem('medcare_user');
-  return user ? JSON.parse(user) : null;
-};
-
-export const removeUser = () => {
-  localStorage.removeItem('medcare_user');
-};
-
-export const isLoggedIn = () => {
-  return !!getToken();
-};
-
-export const logout = () => {
-  removeToken();
-  removeUser();
-};
+const authHeaders = () => ({
+  'Authorization': `Bearer ${getToken()}`,
+  'Content-Type': 'application/json',
+});
 
 // ── Auth API ──────────────────────────────
 
@@ -107,16 +89,11 @@ export const registerUser = async (data: RegisterData) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (res.status === 400) {
-      const errData = await res.json();
-      throw new Error(errData.detail || 'Registration failed!');
-    }
-    if (!res.ok)
-      throw new Error('Registration failed!');
+    if (res.status === 400) { const e = await res.json(); throw new Error(e.detail || 'Registration failed!'); }
+    if (!res.ok) throw new Error('Registration failed!');
     return res.json();
   } catch (err: any) {
-    if (err.name === 'AbortError')
-      throw new Error('Request timed out. Is the server running?');
+    if (err.name === 'AbortError') throw new Error('Request timed out.');
     throw err;
   }
 };
@@ -128,101 +105,78 @@ export const loginUser = async (data: LoginData) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (res.status === 401)
-      throw new Error('Galat email ya password!');
-    if (res.status === 404)
-      throw new Error('Account nahi mila!');
-    if (!res.ok)
-      throw new Error('Login failed. Dobara try karo!');
+    if (res.status === 401) throw new Error('Galat email ya password!');
+    if (res.status === 404) throw new Error('Account nahi mila!');
+    if (!res.ok) throw new Error('Login failed. Dobara try karo!');
     return res.json();
   } catch (err: any) {
-    if (err.name === 'AbortError')
-      throw new Error('Server respond nahi kar raha!');
+    if (err.name === 'AbortError') throw new Error('Server respond nahi kar raha!');
     throw err;
   }
 };
 
 export const getProfile = async () => {
   const res = await fetch(`${BASE_URL}/users/me`, {
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-    },
+    headers: { 'Authorization': `Bearer ${getToken()}` },
   });
-
   if (!res.ok) throw new Error('Failed to get profile');
   return res.json();
 };
 
-// ── Scan API (GCP Backend → Colab) ───────
+// ── Scan API ──────────────────────────────
 
-export const analyzeScan = async (
-  scanType: string,
-  file: File
-) => {
+export const analyzeScan = async (scanType: string, file: File) => {
   const formData = new FormData();
   formData.append('file', file);
-
   const res = await fetchWithTimeout(
-    `${BASE_URL}/analyze/${scanType}`,  // GCP backend → forwards to Colab
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${getToken()}`,
-      },
-      body: formData,
-    },
-    120000  // 120s timeout — model inference takes time
+    `${BASE_URL}/analyze/${scanType}`,
+    { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData },
+    120000
   );
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || 'Analysis failed');
-  }
-
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Analysis failed'); }
   return res.json();
 };
 
+// ✅ Patient scan history
 export const getMyScans = async () => {
   const res = await fetch(`${BASE_URL}/users/scans`, {
-    headers: {
-      'Authorization': `Bearer ${getToken()}`,
-    },
+    headers: { 'Authorization': `Bearer ${getToken()}` },
   });
-
   if (!res.ok) throw new Error('Failed to get scans');
-  return res.json();
+  const data = await res.json();
+  return Array.isArray(data) ? data : data.scans || [];
 };
 
 // ── Doctor API ────────────────────────────
 
+// ✅ FIXED: returns array properly
 export const getPendingScans = async () => {
   const res = await fetch(`${BASE_URL}/users/doctor/pending-scans`, {
-    headers: { 'Authorization': `Bearer ${getToken()}` }
+    headers: { 'Authorization': `Bearer ${getToken()}` },
   });
-  if (!res.ok) throw new Error('Failed');
-  return res.json();
+  if (!res.ok) throw new Error('Failed to fetch pending scans');
+  const data = await res.json();
+  return Array.isArray(data) ? data : data.scans || [];
 };
 
+// ✅ FIXED: notes JSON body mein — query param nahi
 export const approveScan = async (scanId: number, notes: string = '') => {
-  const res = await fetch(
-    `${BASE_URL}/users/doctor/approve-scan/${scanId}?notes=${encodeURIComponent(notes)}`,
-    {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${getToken()}` },
-    }
-  );
-  if (!res.ok) throw new Error('Approve nahi ho saka!');
+  const res = await fetch(`${BASE_URL}/users/doctor/approve-scan/${scanId}`, {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify({ doctor_notes: notes }),
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Approve nahi ho saka!'); }
   return res.json();
 };
 
+// ✅ FIXED: notes JSON body mein
 export const rejectScan = async (scanId: number, notes: string = '') => {
-  const res = await fetch(
-    `${BASE_URL}/users/doctor/reject-scan/${scanId}?notes=${encodeURIComponent(notes)}`,
-    {
-      method: 'PUT',
-      headers: { 'Authorization': `Bearer ${getToken()}` },
-    }
-  );
-  if (!res.ok) throw new Error('Reject nahi ho saka!');
+  const res = await fetch(`${BASE_URL}/users/doctor/reject-scan/${scanId}`, {
+    method: 'PUT',
+    headers: authHeaders(),
+    body: JSON.stringify({ doctor_notes: notes }),
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Flag nahi ho saka!'); }
   return res.json();
 };
