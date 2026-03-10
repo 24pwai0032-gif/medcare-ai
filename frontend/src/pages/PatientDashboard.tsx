@@ -32,7 +32,6 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
   const [loading, setLoading]           = useState(true);
   const [selectedScan, setSelectedScan] = useState<any>(null);
   const [activeModule, setActiveModule] = useState('');
-  const [sidebarOpen, setSidebarOpen]   = useState(false);
 
   useEffect(() => {
     const load = async () => {
