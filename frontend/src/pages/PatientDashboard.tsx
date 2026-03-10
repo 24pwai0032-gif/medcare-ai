@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getMyScans } from '../services/api';
 import XrayAnalyzer from './XrayAnalyzer';
+import BoneScan from './BoneScan';
+import ECGAnalyzer from './ECGAnalyzer';
+import BloodTestAnalyzer from './BloodTestAnalyzer';
+import PrescriptionReader from './PrescriptionReader';
+import DiagnosisAI from './DiagnosisAI';
+import MentalHealth from './MentalHealth';
+import VitalSigns from './VitalSigns';
+import EmergencyAid from './EmergencyAid';
 
 interface PatientDashboardProps {
   user: any;
@@ -53,6 +61,14 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
   const initials  = (user?.full_name || 'P').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
 
   if (activeModule === 'xray') return <XrayAnalyzer onBack={() => setActiveModule('')} />;
+  if (activeModule === 'bone') return <BoneScan onBack={() => setActiveModule('')} />;
+  if (activeModule === 'ecg') return <ECGAnalyzer onBack={() => setActiveModule('')} />;
+  if (activeModule === 'blood') return <BloodTestAnalyzer onBack={() => setActiveModule('')} />;
+  if (activeModule === 'prescription') return <PrescriptionReader onBack={() => setActiveModule('')} />;
+  if (activeModule === 'diagnosis') return <DiagnosisAI onBack={() => setActiveModule('')} />;
+  if (activeModule === 'mental') return <MentalHealth onBack={() => setActiveModule('')} />;
+  if (activeModule === 'vitals') return <VitalSigns onBack={() => setActiveModule('')} />;
+  if (activeModule === 'emergency') return <EmergencyAid onBack={() => setActiveModule('')} />;
 
   const navItems = [
     { id: 'home',    e: '🏠', label: 'Home' },

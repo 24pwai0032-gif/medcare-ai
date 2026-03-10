@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { getToken } from '../services/api';
 
-const BASE_URL = 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-2csy3tndla-uc.a.run.app/api/v1';
 
 const SCAN_TYPES = [
   { id: 'chest', label: 'Chest X-Ray', icon: '🫁', endpoint: 'xray' },

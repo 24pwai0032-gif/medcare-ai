@@ -1,313 +1,161 @@
-// src/pages/MentalHealth.tsx
 import React, { useState } from 'react';
 
-const questions = [
-  { id: 1, text: "Little interest or pleasure in doing things?" },
-  { id: 2, text: "Feeling down, depressed, or hopeless?" },
-  { id: 3, text: "Trouble falling or staying asleep?" },
-  { id: 4, text: "Feeling tired or having little energy?" },
-  { id: 5, text: "Poor appetite or overeating?" },
-  { id: 6, text: "Feeling bad about yourself?" },
-  { id: 7, text: "Trouble concentrating on things?" },
-  { id: 8, text: "Moving or speaking slowly or being restless?" },
-  { id: 9, text: "Thoughts of being better off dead?" },
+const PHQ9_QUESTIONS = [
+  'Little interest or pleasure in doing things',
+  'Feeling down, depressed, or hopeless',
+  'Trouble falling or staying asleep, or sleeping too much',
+  'Feeling tired or having little energy',
+  'Poor appetite or overeating',
+  'Feeling bad about yourself — or that you are a failure',
+  'Trouble concentrating on things',
+  'Moving or speaking slowly, or being fidgety/restless',
+  'Thoughts that you would be better off dead, or of hurting yourself',
 ];
 
-const options = [
-  { label: 'Not at all',        score: 0, color: 'green'  },
-  { label: 'Several days',      score: 1, color: 'yellow' },
-  { label: 'More than half',    score: 2, color: 'orange' },
-  { label: 'Nearly every day',  score: 3, color: 'red'    },
+const PHQ9_OPTIONS = [
+  { label: 'Not at all', value: 0 },
+  { label: 'Several days', value: 1 },
+  { label: 'More than half', value: 2 },
+  { label: 'Nearly every day', value: 3 },
 ];
 
-const MentalHealth = () => {
-  const [step, setStep] = useState<'intro' | 'questions' | 'result'>('intro');
-  const [current, setCurrent] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
-  const [result, setResult] = useState<any>(null);
+const MentalHealth = ({ onBack }: { onBack: () => void }) => {
+  const [answers, setAnswers] = useState<number[]>(Array(9).fill(-1));
+  const [showResult, setShowResult] = useState(false);
+  const [currentQ, setCurrentQ] = useState(0);
 
-  const handleAnswer = (score: number) => {
-    const newAnswers = [...answers, score];
-    setAnswers(newAnswers);
+  const score = answers.reduce((sum, a) => sum + (a >= 0 ? a : 0), 0);
+  const allAnswered = answers.every(a => a >= 0);
 
-    if (current < questions.length - 1) {
-      setCurrent(current + 1);
-    } else {
-      // Calculate result
-      const total = newAnswers.reduce(
-        (a, b) => a + b, 0
-      );
-      let severity, label, color, advice;
-
-      if (total <= 4) {
-        severity = '🟢 Minimal';
-        label    = 'Minimal Depression';
-        color    = 'green';
-        advice   = 'No treatment likely needed. Monitor symptoms.';
-      } else if (total <= 9) {
-        severity = '🟡 Mild';
-        label    = 'Mild Depression';
-        color    = 'yellow';
-        advice   = 'Watchful waiting. Consider counseling.';
-      } else if (total <= 14) {
-        severity = '🟠 Moderate';
-        label    = 'Moderate Depression';
-        color    = 'orange';
-        advice   = 'Treatment plan recommended. See a doctor.';
-      } else if (total <= 19) {
-        severity = '🔴 Severe';
-        label    = 'Moderately Severe';
-        color    = 'red';
-        advice   = 'Active treatment required. See doctor soon.';
-      } else {
-        severity = '🚨 URGENT';
-        label    = 'Severe Depression';
-        color    = 'red';
-        advice   = 'Immediate treatment required. See doctor today.';
-      }
-
-      setResult({ total, severity, label, color, advice, answers: newAnswers });
-      setStep('result');
-    }
+  const getResult = () => {
+    if (score <= 4) return { level: 'Minimal', color: '#10B981', bg: 'rgba(16,185,129,.12)', border: 'rgba(16,185,129,.3)', emoji: '🟢', advice: 'Your mental health appears to be in a good state. Keep maintaining healthy habits.', urdu: 'آپ کی ذہنی صحت اچھی ہے۔ صحت مند عادات جاری رکھیں۔', pct: 15 };
+    if (score <= 9) return { level: 'Mild', color: '#F59E0B', bg: 'rgba(245,158,11,.12)', border: 'rgba(245,158,11,.3)', emoji: '🟡', advice: 'Mild symptoms detected. Consider self-care activities: exercise, meditation, talking to friends.', urdu: 'ہلکی علامات پائی گئیں۔ ورزش، مراقبہ اور دوستوں سے بات کریں۔', pct: 35 };
+    if (score <= 14) return { level: 'Moderate', color: '#F97316', bg: 'rgba(249,115,22,.12)', border: 'rgba(249,115,22,.3)', emoji: '🟠', advice: 'Moderate depression symptoms. We recommend consulting a mental health professional.', urdu: 'اعتدال پسند ڈپریشن کی علامات۔ ماہر نفسیات سے مشورہ کریں۔', pct: 55 };
+    if (score <= 19) return { level: 'Moderately Severe', color: '#EF4444', bg: 'rgba(239,68,68,.12)', border: 'rgba(239,68,68,.3)', emoji: '🔴', advice: 'Significant depression symptoms. Please seek professional help as soon as possible.', urdu: 'شدید ڈپریشن کی علامات۔ براہ کرم جلد از جلد پیشہ ورانہ مدد حاصل کریں۔', pct: 75 };
+    return { level: 'Severe', color: '#DC2626', bg: 'rgba(220,38,38,.12)', border: 'rgba(220,38,38,.3)', emoji: '🔴', advice: '⚠️ Severe depression detected. Please contact a mental health professional or crisis helpline immediately.', urdu: 'شدید ڈپریشن — فوری طور پر ماہر نفسیات سے رابطہ کریں یا ہیلپ لائن پر کال کریں۔', pct: 95 };
   };
 
-  const severityBg: Record<string, string> = {
-    green:  'bg-green-50 border-green-200',
-    yellow: 'bg-yellow-50 border-yellow-200',
-    orange: 'bg-orange-50 border-orange-200',
-    red:    'bg-red-50 border-red-200',
-  };
+  const res = getResult();
+  const R = 40, circ = 2 * Math.PI * R, dashOffset = circ - (res.pct / 100) * circ;
 
-  const severityText: Record<string, string> = {
-    green:  'text-green-700',
-    yellow: 'text-yellow-700',
-    orange: 'text-orange-700',
-    red:    'text-red-700',
-  };
+  const css = `
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
+    @keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(30px,-20px) scale(1.05)}66%{transform:translate(-20px,15px) scale(.97)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse2{0%,100%{opacity:1}50%{opacity:.6}}
+    .xw{animation:fadeUp .4s ease}
+    .ab{transition:all .2s;cursor:pointer;border:none}.ab:hover:not(:disabled){opacity:.87;transform:translateY(-1px)}.ab:disabled{cursor:not-allowed;opacity:.4}
+    .bk{transition:all .2s;cursor:pointer}.bk:hover{background:rgba(255,255,255,.08)!important}
+    .rb{transition:all .2s;cursor:pointer}.rb:hover{opacity:.85;transform:translateY(-1px)}
+    .rs{animation:fadeUp .4s ease both}
+    .oq{transition:all .2s;cursor:pointer}.oq:hover{border-color:rgba(59,130,246,.4)!important}
+  `;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <style>{css}</style>
+      <div className="xw" style={{ minHeight: '100vh', background: '#060A14', fontFamily: "'Sora',sans-serif", color: '#fff', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'fixed', top: '-250px', right: '-200px', width: '700px', height: '700px', background: 'radial-gradient(circle,rgba(236,72,153,.1) 0%,transparent 70%)', borderRadius: '50%', animation: 'blobFloat 12s ease infinite', pointerEvents: 'none' }} />
+        <div style={{ position: 'fixed', bottom: '-200px', left: '-200px', width: '600px', height: '600px', background: 'radial-gradient(circle,rgba(124,58,237,.09) 0%,transparent 70%)', borderRadius: '50%', animation: 'blobFloat 16s ease infinite reverse', pointerEvents: 'none' }} />
+        <div style={{ position: 'fixed', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
 
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-3xl">🧠</span>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">
-              Mental Health Screening
-            </h1>
-            <p className="text-gray-500 text-sm">
-              PHQ-9 Depression Assessment
-            </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,.06)', background: 'rgba(6,10,20,.85)', backdropFilter: 'blur(24px)', position: 'sticky', top: 0, zIndex: 50 }}>
+          <button className="bk" onClick={onBack} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', color: '#64748B', padding: '8px 18px', borderRadius: '10px', fontSize: '13px', fontFamily: 'Sora,sans-serif' }}>← Back</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+            <div style={{ width: '44px', height: '44px', background: 'linear-gradient(135deg,#EC4899,#F472B6)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', boxShadow: '0 4px 20px rgba(236,72,153,.3)' }}>🧘</div>
+            <div>
+              <div style={{ fontSize: '17px', fontWeight: 800, color: '#F1F5F9' }}>Mental Health</div>
+              <div style={{ fontSize: '11px', color: '#475569', marginTop: '1px' }}>PHQ-9 Depression Screening</div>
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(16,185,129,.08)', border: '1px solid rgba(16,185,129,.2)', padding: '7px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 600, color: '#10B981' }}>
+            <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#10B981', animation: 'pulse2 2s infinite' }} />AI Online
           </div>
         </div>
-        <div className="bg-purple-50 px-4 py-2 rounded-xl">
-          <span className="text-purple-700 text-sm font-medium">
-            🔒 100% Confidential
-          </span>
-        </div>
-      </div>
 
-      <div className="max-w-2xl mx-auto px-8 py-12">
-
-        {/* Intro */}
-        {step === 'intro' && (
-          <div className="text-center">
-            <div className="text-8xl mb-6">🧠</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              PHQ-9 Depression Screening
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              Over the last 2 weeks, how often have
-              you been bothered by the following problems?
-              This takes about 2 minutes.
-            </p>
-
-            <div className="grid grid-cols-3 gap-4 mb-8">
-              {[
-                { icon: '⏱️', text: '2 minutes' },
-                { icon: '🔒', text: 'Confidential' },
-                { icon: '✅', text: '9 Questions' },
-              ].map((item, i) => (
-                <div key={i}
-                  className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm">
-                  <div className="text-2xl mb-2">{item.icon}</div>
-                  <div className="text-sm font-medium text-gray-700">
-                    {item.text}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100 mb-8 text-left">
-              <p className="text-blue-800 text-sm font-medium mb-1">
-                ℹ️ About PHQ-9
-              </p>
-              <p className="text-blue-600 text-xs leading-relaxed">
-                The Patient Health Questionnaire-9 is a
-                validated screening tool used worldwide
-                by healthcare professionals to assess
-                depression severity.
-              </p>
-            </div>
-
-            <button
-              onClick={() => setStep('questions')}
-              className="bg-blue-900 text-white px-12 py-4 rounded-xl font-bold text-lg hover:bg-blue-800 transition">
-              Start Screening →
-            </button>
-          </div>
-        )}
-
-        {/* Questions */}
-        {step === 'questions' && (
-          <div>
-            {/* Progress */}
-            <div className="mb-8">
-              <div className="flex justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">
-                  Question {current + 1} of {questions.length}
-                </span>
-                <span className="text-sm text-gray-500">
-                  {Math.round(((current) / questions.length) * 100)}% complete
-                </span>
+        <div style={{ maxWidth: '700px', margin: '0 auto', padding: '32px 24px' }}>
+          {!showResult ? (
+            <div>
+              <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+                <div style={{ fontSize: '42px', marginBottom: '12px' }}>🧘</div>
+                <h2 style={{ fontSize: '24px', fontWeight: 800, background: 'linear-gradient(135deg,#F472B6,#A78BFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '8px' }}>PHQ-9 Depression Screening</h2>
+                <p style={{ color: '#475569', fontSize: '13px' }}>Pichle 2 hafton mein kya aapko ye mehsoos hua?</p>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className="bg-blue-900 h-2 rounded-full transition-all"
-                  style={{ width: `${(current / questions.length) * 100}%` }}
-                />
+
+              <div style={{ marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '12px', color: '#475569' }}>Question {currentQ + 1} of 9</span>
+                <span style={{ fontSize: '12px', color: '#EC4899', fontWeight: 600 }}>{answers.filter(a => a >= 0).length}/9 answered</span>
               </div>
-            </div>
+              <div style={{ height: '4px', background: 'rgba(255,255,255,.05)', borderRadius: '2px', marginBottom: '24px', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${((currentQ + 1) / 9) * 100}%`, background: 'linear-gradient(90deg,#EC4899,#F472B6)', borderRadius: '2px', transition: 'width .3s ease' }} />
+              </div>
 
-            {/* Question Card */}
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-6">
-              <p className="text-gray-500 text-sm mb-4">
-                Over the last 2 weeks...
-              </p>
-              <h2 className="text-xl font-bold text-gray-900 mb-8">
-                {questions[current].text}
-              </h2>
-
-              <div className="space-y-3">
-                {options.map((opt) => (
-                  <button
-                    key={opt.score}
-                    onClick={() => handleAnswer(opt.score)}
-                    className="w-full flex items-center justify-between p-4 rounded-xl border-2 border-gray-100 hover:border-blue-900 hover:bg-blue-50 transition text-left group">
-                    <span className="font-medium text-gray-700 group-hover:text-blue-900">
+              <div style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
+                <div style={{ fontSize: '15px', fontWeight: 700, color: '#E2E8F0', marginBottom: '20px', lineHeight: 1.6 }}>{currentQ + 1}. {PHQ9_QUESTIONS[currentQ]}</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {PHQ9_OPTIONS.map(opt => (
+                    <button key={opt.value} className="oq" onClick={() => { const n = [...answers]; n[currentQ] = opt.value; setAnswers(n); }}
+                      style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 18px', background: answers[currentQ] === opt.value ? 'rgba(236,72,153,.1)' : 'rgba(255,255,255,.02)', border: `1px solid ${answers[currentQ] === opt.value ? 'rgba(236,72,153,.4)' : 'rgba(255,255,255,.06)'}`, borderRadius: '12px', color: answers[currentQ] === opt.value ? '#F472B6' : '#94A3B8', fontSize: '13px', fontWeight: answers[currentQ] === opt.value ? 700 : 400, fontFamily: 'Sora,sans-serif', textAlign: 'left' }}>
+                      <div style={{ width: '22px', height: '22px', borderRadius: '50%', border: `2px solid ${answers[currentQ] === opt.value ? '#EC4899' : 'rgba(255,255,255,.12)'}`, background: answers[currentQ] === opt.value ? '#EC4899' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', flexShrink: 0 }}>{answers[currentQ] === opt.value ? '✓' : ''}</div>
                       {opt.label}
-                    </span>
-                    <span className="text-gray-400 group-hover:text-blue-900 text-sm">
-                      {opt.score} pts
-                    </span>
-                  </button>
-                ))}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '20px' }}>
+                <button className="rb" disabled={currentQ === 0} onClick={() => setCurrentQ(c => c - 1)} style={{ flex: 1, padding: '12px', background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: '12px', color: '#94A3B8', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', cursor: currentQ === 0 ? 'not-allowed' : 'pointer', opacity: currentQ === 0 ? 0.4 : 1 }}>← Previous</button>
+                {currentQ < 8 ? (
+                  <button className="rb" disabled={answers[currentQ] < 0} onClick={() => setCurrentQ(c => c + 1)} style={{ flex: 1, padding: '12px', background: answers[currentQ] >= 0 ? 'linear-gradient(135deg,#EC4899,#F472B6)' : 'rgba(255,255,255,.04)', border: 'none', borderRadius: '12px', color: answers[currentQ] >= 0 ? '#fff' : '#334155', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif', cursor: answers[currentQ] < 0 ? 'not-allowed' : 'pointer' }}>Next →</button>
+                ) : (
+                  <button className="ab" disabled={!allAnswered} onClick={() => setShowResult(true)} style={{ flex: 1, padding: '12px', background: allAnswered ? 'linear-gradient(135deg,#EC4899,#F472B6)' : 'rgba(255,255,255,.04)', color: allAnswered ? '#fff' : '#334155', borderRadius: '12px', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif' }}>View Results</button>
+                )}
               </div>
             </div>
-
-            {/* Back */}
-            {current > 0 && (
-              <button
-                onClick={() => {
-                  setCurrent(current - 1);
-                  setAnswers(answers.slice(0, -1));
-                }}
-                className="text-gray-500 text-sm hover:text-blue-900">
-                ← Previous question
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Result */}
-        {step === 'result' && result && (
-          <div>
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">
-                {result.color === 'green' ? '😊' :
-                 result.color === 'yellow' ? '😐' :
-                 result.color === 'orange' ? '😟' : '😢'}
+          ) : (
+            <div>
+              <div className="rs" style={{ display: 'flex', gap: '24px', background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '20px', padding: '24px', marginBottom: '20px' }}>
+                <svg width="100" height="100" viewBox="0 0 90 90"><circle cx="45" cy="45" r={R} fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="8" /><circle cx="45" cy="45" r={R} fill="none" stroke={res.color} strokeWidth="8" strokeDasharray={circ} strokeDashoffset={dashOffset} strokeLinecap="round" transform="rotate(-90 45 45)" style={{ transition: 'stroke-dashoffset 1.2s ease', filter: `drop-shadow(0 0 6px ${res.color})` }} /><text x="45" y="45" textAnchor="middle" fill={res.color} fontSize="14" fontWeight="800" fontFamily="Sora,sans-serif">{score}</text><text x="45" y="58" textAnchor="middle" fill="#475569" fontSize="8" fontFamily="Sora,sans-serif">/27</text></svg>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '11px', color: '#475569', marginBottom: '6px', fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase' }}>PHQ-9 Score</div>
+                  <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#F1F5F9', marginBottom: '10px' }}>{res.level} Depression</h2>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: res.bg, border: `1px solid ${res.border}`, color: res.color, padding: '8px 20px', borderRadius: '20px', fontSize: '14px', fontWeight: 700 }}>{res.emoji} {res.level}</div>
+                </div>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                Screening Complete
-              </h2>
-            </div>
 
-            {/* Score Card */}
-            <div className={`rounded-2xl p-8 border-2 text-center mb-6 ${severityBg[result.color]}`}>
-              <p className={`text-4xl font-bold mb-2 ${severityText[result.color]}`}>
-                {result.total}/27
-              </p>
-              <p className={`text-xl font-bold mb-2 ${severityText[result.color]}`}>
-                {result.label}
-              </p>
-              <p className={`text-sm ${severityText[result.color]}`}>
-                {result.severity}
-              </p>
-            </div>
+              <div className="rs" style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '22px', marginBottom: '20px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8', marginBottom: '14px' }}>📋 Recommendation</div>
+                <div style={{ fontSize: '14px', color: '#CBD5E1', lineHeight: 1.9 }}>{res.advice}</div>
+              </div>
 
-            {/* Advice */}
-            <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm mb-6">
-              <h3 className="font-bold text-gray-900 mb-3">
-                💡 Recommendation
-              </h3>
-              <p className="text-gray-600">
-                {result.advice}
-              </p>
-            </div>
+              <div className="rs" style={{ background: 'rgba(236,72,153,.04)', border: '1px solid rgba(236,72,153,.12)', borderRadius: '16px', padding: '22px', marginBottom: '20px', direction: 'rtl' }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#F472B6', marginBottom: '14px' }}>🇵🇰 اردو مشورہ</div>
+                <div style={{ fontSize: '14px', color: '#CBD5E1', lineHeight: 2 }}>{res.urdu}</div>
+              </div>
 
-            {/* Answers Summary */}
-            <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm mb-6">
-              <h3 className="font-bold text-gray-900 mb-4">
-                📊 Your Responses
-              </h3>
-              <div className="space-y-3">
-                {questions.map((q, i) => (
-                  <div key={i} className="flex justify-between items-center">
-                    <p className="text-sm text-gray-600 flex-1 mr-4">
-                      {q.text}
-                    </p>
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                      result.answers[i] === 0 ? 'bg-green-100 text-green-700' :
-                      result.answers[i] === 1 ? 'bg-yellow-100 text-yellow-700' :
-                      result.answers[i] === 2 ? 'bg-orange-100 text-orange-700' :
-                      'bg-red-100 text-red-700'
-                    }`}>
-                      {options[result.answers[i]]?.label}
-                    </span>
+              <div className="rs" style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '22px', marginBottom: '20px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8', marginBottom: '14px' }}>📊 Your Answers</div>
+                {PHQ9_QUESTIONS.map((q, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: i < 8 ? '1px solid rgba(255,255,255,.04)' : 'none' }}>
+                    <span style={{ fontSize: '12px', color: '#94A3B8', flex: 1 }}>{i + 1}. {q}</span>
+                    <span style={{ fontSize: '12px', color: '#E2E8F0', fontWeight: 600, flexShrink: 0, marginLeft: '12px' }}>{PHQ9_OPTIONS[answers[i]]?.label || '—'}</span>
                   </div>
                 ))}
               </div>
-            </div>
 
-            <div className="bg-red-50 rounded-xl p-4 border border-red-100 mb-6">
-              <p className="text-red-700 text-xs">
-                ⚠️ This is a screening tool only.
-                Not a clinical diagnosis.
-                Please consult a mental health professional.
-              </p>
-            </div>
+              <div className="rs" style={{ background: 'rgba(245,158,11,.04)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '12px', padding: '14px 18px', fontSize: '12px', color: '#FCD34D', marginBottom: '20px', display: 'flex', gap: '8px' }}>
+                <span>⚠️</span>Yeh screening tool hai — final diagnosis ke liye mental health professional se zaroor milen.
+              </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <button className="bg-blue-900 text-white py-3 rounded-xl text-sm font-medium hover:bg-blue-800 transition">
-                📄 Download Report
-              </button>
-              <button
-                onClick={() => {
-                  setStep('intro');
-                  setCurrent(0);
-                  setAnswers([]);
-                  setResult(null);
-                }}
-                className="bg-gray-100 text-gray-700 py-3 rounded-xl text-sm font-medium hover:bg-gray-200 transition">
-                🔄 Retake
-              </button>
+              <div className="rs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <button className="rb" onClick={() => { setShowResult(false); setAnswers(Array(9).fill(-1)); setCurrentQ(0); }} style={{ background: 'linear-gradient(135deg,#EC4899,#F472B6)', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', border: 'none' }}>🔄 Retake</button>
+                <button className="rb" onClick={onBack} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>← Dashboard</button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

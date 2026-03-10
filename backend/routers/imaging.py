@@ -144,3 +144,12 @@ async def analyze_skin(
     current_user=Depends(get_optional_user),
 ):
     return await analyze_scan("skin", file, db, current_user)
+
+
+@router.post("/prescription")
+async def analyze_prescription(
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user=Depends(get_optional_user),
+):
+    return await analyze_scan("prescription", file, db, current_user)
