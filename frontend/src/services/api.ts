@@ -44,8 +44,8 @@ export interface ScanResult {
   time: number;
 }
 
-// ✅ FIXED: GCP Backend URL — localhost hata diya
-const BASE_URL = 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
+// GCP Backend URL
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-2csy3tndla-uc.a.run.app/api/v1';
 
 // Fetch with timeout
 const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 10000) => {
