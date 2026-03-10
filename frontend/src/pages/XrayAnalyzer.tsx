@@ -91,17 +91,10 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
       const data = await res.json();
       setResult(data);
       setTimeout(() => setStep('result'), 600);
-    } catch {
-      clearInterval(interval); setProgress(100);
-      setResult({
-        report: `${activeScanType.label} Analysis Complete.\n\nFindings: The scan shows bilateral lung fields are adequately expanded. No significant consolidation, pleural effusion, or pneumothorax identified. Cardiac silhouette appears within normal limits. Mediastinal contours are unremarkable. Bony thorax is intact.\n\nImpression: No acute cardiopulmonary process identified. Recommend clinical correlation.`,
-        urdu_report: `تجزیہ مکمل ہوا۔\n\nنتائج: پھیپھڑوں کے دونوں حصے مناسب طور پر پھیلے ہوئے ہیں۔ کوئی اہم بیماری نظر نہیں آئی۔ دل کا سائز نارمل حدود میں ہے۔\n\nنتیجہ: کوئی شدید مسئلہ نہیں پایا گیا۔`,
-        severity: 'Normal',
-        confidence: 87.4,
-        time: 4.2,
-        findings: ['Lungs clear bilaterally', 'No pleural effusion detected', 'Heart size within normal limits', 'No rib fractures observed', 'Mediastinum unremarkable'],
-      });
-      setTimeout(() => setStep('result'), 600);
+    } catch (err: any) {
+      clearInterval(interval); setProgress(0);
+      setStep('upload');
+      setError(err?.message || 'Analysis failed! Server se connect nahi ho saka. Dobara try karo.');
     }
   };
 

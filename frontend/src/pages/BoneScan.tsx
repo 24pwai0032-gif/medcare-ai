@@ -48,10 +48,10 @@ const BoneScan = ({ onBack }: { onBack: () => void }) => {
       if (!res.ok) throw new Error('fail');
       setResult(await res.json());
       setTimeout(() => setStep('result'), 600);
-    } catch {
-      clearInterval(iv); setProgress(100);
-      setResult({ report: 'Bone Scan Analysis Complete.\n\nFindings:\n- Bone density appears within normal limits\n- No acute fracture or dislocation identified\n- Joint spaces are preserved\n- Alignment is normal\n- Soft tissues unremarkable\n\nImpression: Normal bone scan. No acute osseous pathology.\n\nRecommendation: No further imaging required.', urdu_report: 'ہڈی کا اسکین مکمل ہوا۔\n\nنتائج: ہڈیوں کی کثافت نارمل ہے۔ کوئی فریکچر نہیں پایا گیا۔\n\nنتیجہ: نارمل ہڈی اسکین۔', severity: 'Normal', confidence: 89, time: 3.8, time_seconds: 3.8 });
-      setTimeout(() => setStep('result'), 600);
+    } catch (err: any) {
+      clearInterval(iv); setProgress(0);
+      setStep('upload');
+      setError(err?.message || 'Analysis failed! Server se connect nahi ho saka. Dobara try karo.');
     }
   };
 

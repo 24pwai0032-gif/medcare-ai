@@ -48,10 +48,10 @@ const PrescriptionReader = ({ onBack }: { onBack: () => void }) => {
       if (!res.ok) throw new Error('fail');
       setResult(await res.json());
       setTimeout(() => setStep('result'), 600);
-    } catch {
-      clearInterval(iv); setProgress(100);
-      setResult({ report: 'Prescription Analysis Complete.\n\nMedications Identified:\n\n1. Amoxicillin 500mg\n   - Dosage: 1 capsule 3 times daily\n   - Duration: 7 days\n   - Purpose: Antibiotic for bacterial infection\n\n2. Paracetamol 500mg\n   - Dosage: 1-2 tablets as needed\n   - Maximum: 4 times in 24 hours\n   - Purpose: Pain relief and fever reduction\n\n3. Omeprazole 20mg\n   - Dosage: 1 capsule before breakfast\n   - Duration: 14 days\n   - Purpose: Stomach acid protection\n\nGeneral Instructions:\n- Complete the full antibiotic course\n- Take medications after meals\n- Drink plenty of water\n- Follow up after 1 week', urdu_report: 'نسخہ تجزیہ مکمل ہوا۔\n\nدوائیں:\n1. اموکسیسلین 500mg - دن میں 3 بار، 7 دن\n2. پیراسیٹامول 500mg - ضرورت کے مطابق\n3. اومیپرازول 20mg - ناشتے سے پہلے\n\nہدایات: مکمل کورس لیں۔ کھانے کے بعد دوائی لیں۔', severity: 'Normal', confidence: 85, time: 3.5, time_seconds: 3.5 });
-      setTimeout(() => setStep('result'), 600);
+    } catch (err: any) {
+      clearInterval(iv); setProgress(0);
+      setStep('upload');
+      setError(err?.message || 'Analysis failed! Server se connect nahi ho saka. Dobara try karo.');
     }
   };
 

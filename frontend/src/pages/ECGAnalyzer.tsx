@@ -48,10 +48,10 @@ const ECGAnalyzer = ({ onBack }: { onBack: () => void }) => {
       if (!res.ok) throw new Error('fail');
       setResult(await res.json());
       setTimeout(() => setStep('result'), 600);
-    } catch {
-      clearInterval(iv); setProgress(100);
-      setResult({ report: 'ECG Analysis Complete.\n\nFindings:\n- Normal sinus rhythm at ~75 bpm\n- Normal P-wave morphology and axis\n- Normal PR interval (~160ms)\n- Narrow QRS complexes (~80ms)\n- No ST-segment elevation or depression\n- Normal T-wave morphology\n- Normal QTc interval\n\nImpression: Normal 12-lead ECG. No acute ischemic changes.\n\nRecommendation: Routine follow-up.', urdu_report: 'ای سی جی تجزیہ مکمل ہوا۔\n\nنتائج: نارمل دل کی دھڑکن 75 فی منٹ۔ کوئی غیر معمولی تبدیلی نہیں پائی گئی۔\n\nنتیجہ: نارمل ای سی جی۔', severity: 'Normal', confidence: 91, time: 3.2, time_seconds: 3.2 });
-      setTimeout(() => setStep('result'), 600);
+    } catch (err: any) {
+      clearInterval(iv); setProgress(0);
+      setStep('upload');
+      setError(err?.message || 'Analysis failed! Server se connect nahi ho saka. Dobara try karo.');
     }
   };
 

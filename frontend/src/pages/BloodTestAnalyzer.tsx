@@ -48,10 +48,10 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
       if (!res.ok) throw new Error('fail');
       setResult(await res.json());
       setTimeout(() => setStep('result'), 600);
-    } catch {
-      clearInterval(iv); setProgress(100);
-      setResult({ report: 'Blood Test Analysis Complete.\n\nFindings:\n- Hemoglobin: 14.2 g/dL (Normal: 12-17.5)\n- WBC Count: 7,200/μL (Normal: 4,500-11,000)\n- Platelet Count: 245,000/μL (Normal: 150,000-400,000)\n- RBC Count: 4.8 million/μL (Normal: 4.5-5.5)\n- Hematocrit: 42% (Normal: 36-54%)\n- MCV: 87 fL (Normal: 80-100)\n\nImpression: All parameters within normal limits. Complete blood count values are satisfactory.\n\nRecommendation: Routine follow-up in 6 months.', urdu_report: 'خون کا ٹیسٹ مکمل ہوا۔\n\nنتائج: ہیموگلوبن 14.2 نارمل۔ سفید خلیات 7200 نارمل۔ پلیٹلیٹس 245000 نارمل۔\n\nنتیجہ: تمام قدریں نارمل حد میں ہیں۔', severity: 'Normal', confidence: 88, time: 4.1, time_seconds: 4.1 });
-      setTimeout(() => setStep('result'), 600);
+    } catch (err: any) {
+      clearInterval(iv); setProgress(0);
+      setStep('upload');
+      setError(err?.message || 'Analysis failed! Server se connect nahi ho saka. Dobara try karo.');
     }
   };
 

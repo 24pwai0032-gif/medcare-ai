@@ -39,10 +39,12 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
   const [actionMsg, setActionMsg]     = useState('');
   const [filter, setFilter]           = useState('all');
 
+  const [scanError, setScanError] = useState('');
+
   const load = async () => {
-    setLoading(true);
+    setLoading(true); setScanError('');
     try { const data = await getAllScansDoctor(); setScans(Array.isArray(data) ? data : []); }
-    catch { setScans([]); }
+    catch (err: any) { console.error('Doctor scans fetch error:', err); setScans([]); setScanError(err?.message || 'Scans load nahi ho sake. Server check karo.'); }
     finally { setLoading(false); }
   };
 
@@ -332,6 +334,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                 </div>
               ) : filtered.length === 0 ? (
                 <div style={{ textAlign: 'center', padding: '64px 20px', background: 'rgba(255,255,255,.03)', border: '1px dashed rgba(255,255,255,.08)', borderRadius: 20 }}>
+                  {scanError && <div style={{ background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.25)', borderRadius: 12, padding: '12px 16px', color: '#FCA5A5', fontSize: 13, marginBottom: 16, textAlign: 'left' }}>Error: {scanError}</div>}
                   <div style={{ color: 'rgba(255,255,255,.15)', marginBottom: 14, display: 'flex', justifyContent: 'center' }}>
                     {activeTab === 'queue' ? <ClockIcon size={52} /> : activeTab === 'approved' ? <CheckCircleIcon size={52} /> : <AlertTriangleIcon size={52} />}
                   </div>

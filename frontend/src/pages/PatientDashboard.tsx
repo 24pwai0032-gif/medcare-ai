@@ -44,15 +44,16 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
   const [loading, setLoading]           = useState(true);
   const [selectedScan, setSelectedScan] = useState<any>(null);
   const [activeModule, setActiveModule] = useState('');
+  const [scanError, setScanError]       = useState('');
 
-  useEffect(() => {
-    const load = async () => {
-      try { const data = await getMyScans(); setScans(Array.isArray(data) ? data : []); }
-      catch { setScans([]); }
-      finally { setLoading(false); }
-    };
-    load();
-  }, []);
+  const loadScans = async () => {
+    setLoading(true); setScanError('');
+    try { const data = await getMyScans(); setScans(Array.isArray(data) ? data : []); }
+    catch (err: any) { console.error('My Scans fetch error:', err); setScans([]); setScanError(err?.message || 'Scans load nahi ho sake. Server check karo.'); }
+    finally { setLoading(false); }
+  };
+
+  useEffect(() => { loadScans(); }, []);
 
   const stats = [
     { label: 'Total Scans',    value: scans.length,                                          Icon: ClipboardIcon, c: '#60A5FA' },
@@ -214,7 +215,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
                   <h2 style={{ fontSize: 14, fontWeight: 700, color: '#fff', letterSpacing: '-.2px' }}>Recent Scans</h2>
                   <button onClick={() => setActiveTab('scans')} style={{ background: 'none', border: 'none', color: '#60A5FA', cursor: 'pointer', fontSize: 12.5, fontWeight: 600, fontFamily: 'inherit' }}>View all &rarr;</button>
                 </div>
-                <ScanList scans={scans} loading={loading} limit={5} onSelect={setSelectedScan} onAction={() => setActiveTab('modules')} />
+                <ScanList scans={scans} loading={loading} limit={5} onSelect={setSelectedScan} onAction={() => setActiveTab('modules')} scanError={scanError} />
               </div>
             </>
           )}
@@ -247,7 +248,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
           {activeTab === 'scans' && (
             <>
               <p style={{ color: 'rgba(255,255,255,.35)', fontSize: 13.5, marginBottom: 20 }}>Complete history of your AI medical analyses</p>
-              <ScanList scans={scans} loading={loading} onSelect={setSelectedScan} onAction={() => setActiveTab('modules')} emptyMsg="Your completed analyses will appear here" emptyBtn="Start First Analysis &rarr;" />
+              <ScanList scans={scans} loading={loading} onSelect={setSelectedScan} onAction={() => setActiveTab('modules')} emptyMsg="Your completed analyses will appear here" emptyBtn="Start First Analysis &rarr;" scanError={scanError} />
             </>
           )}
         </div>
@@ -343,8 +344,8 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
   );
 }
 
-function ScanList({ scans, loading, limit, onSelect, onAction, emptyMsg = "Upload your first medical scan to get started", emptyBtn = "Choose a Module" }: {
-  scans: any[]; loading: boolean; limit?: number; onSelect: (s: any) => void; onAction: () => void; emptyMsg?: string; emptyBtn?: string;
+function ScanList({ scans, loading, limit, onSelect, onAction, emptyMsg = "Upload your first medical scan to get started", emptyBtn = "Choose a Module", scanError = '' }: {
+  scans: any[]; loading: boolean; limit?: number; onSelect: (s: any) => void; onAction: () => void; emptyMsg?: string; emptyBtn?: string; scanError?: string;
 }) {
   const items = limit ? scans.slice(0, limit) : scans;
 
@@ -357,6 +358,7 @@ function ScanList({ scans, loading, limit, onSelect, onAction, emptyMsg = "Uploa
 
   if (scans.length === 0) return (
     <div style={{ textAlign: 'center', padding: '52px 20px', background: 'rgba(255,255,255,.03)', border: '1px dashed rgba(255,255,255,.07)', borderRadius: 16 }}>
+      {scanError && <div style={{ background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.25)', borderRadius: 12, padding: '12px 16px', color: '#FCA5A5', fontSize: 13, marginBottom: 16, textAlign: 'left' }}>Error: {scanError}</div>}
       <div style={{ color: 'rgba(255,255,255,.15)', marginBottom: 12, display: 'flex', justifyContent: 'center' }}><ClipboardIcon size={44} /></div>
       <div style={{ fontWeight: 700, fontSize: 14.5, color: 'rgba(255,255,255,.5)', marginBottom: 7 }}>No scans yet</div>
       <div style={{ fontSize: 13, color: 'rgba(255,255,255,.28)', marginBottom: 20 }}>{emptyMsg}</div>
