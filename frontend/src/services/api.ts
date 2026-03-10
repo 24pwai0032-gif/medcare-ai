@@ -20,6 +20,9 @@ export interface Scan {
   confidence: number;
   time_seconds: number;
   status: 'pending' | 'approved' | 'rejected';
+  doctor_notes?: string;
+  patient_name?: string;
+  patient_email?: string;
   created_at: string;
 }
 
@@ -45,7 +48,7 @@ export interface ScanResult {
 }
 
 // GCP Backend URL
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-2csy3tndla-uc.a.run.app/api/v1';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
 
 // Fetch with timeout
 const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 10000) => {

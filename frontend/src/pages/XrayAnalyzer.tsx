@@ -1,14 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { getToken } from '../services/api';
+import { generateMedicalPDF } from '../utils/generatePDF';
 import {
   LungsIcon, BoneIcon, BrainIcon, MicroscopeIcon,
   CheckCircleIcon, AlertTriangleIcon, ClockIcon, ShieldCheckIcon,
   SparklesIcon, SearchIcon, ClipboardIcon, RefreshIcon,
-  PrinterIcon, ArrowLeftIcon,
+  PrinterIcon, ArrowLeftIcon, DownloadIcon,
   HeartPulseIcon, SignalIcon, DoctorIcon, LogoIcon,
 } from '../components/Icons';
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-2csy3tndla-uc.a.run.app/api/v1';
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
 
 const SCAN_TYPES = [
   { id: 'chest', label: 'Chest X-Ray', Icon: LungsIcon,      endpoint: 'xray' },
@@ -420,10 +421,69 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                 </div>
               )}
 
-              {/* English Report */}
+              {/* English Report — Rich Sections */}
               <div className="rs" style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'22px', marginBottom:'20px', animationDelay:'.26s' }}>
                 <div style={{ fontSize:'13px', fontWeight:700, color:'#94A3B8', marginBottom:'14px', display:'flex', alignItems:'center', gap:'8px' }}><ClipboardIcon size={14} /> AI Radiology Report</div>
-                <div style={{ fontSize:'14px', color:'#CBD5E1', lineHeight:1.9, whiteSpace:'pre-line' }}>{result.report || result.analysis || '—'}</div>
+                {(() => {
+                  const raw = result.report || result.analysis || '';
+                  // Parse sections by **HEADING** pattern
+                  const parts: { title: string; body: string }[] = [];
+                  let cur: { title: string; body: string } | null = null;
+                  for (const line of raw.split('\n')) {
+                    const m = line.trim().match(/^\*\*(.+?)\*\*\s*:?\s*(.*)/);
+                    if (m) {
+                      if (cur) parts.push(cur);
+                      cur = { title: m[1].trim(), body: m[2]?.trim() || '' };
+                    } else if (cur) {
+                      cur.body += (cur.body ? '\n' : '') + line;
+                    } else if (line.trim()) {
+                      cur = { title: '', body: line };
+                    }
+                  }
+                  if (cur) parts.push(cur);
+                  // Filter out Urdu section (rendered separately)
+                  const enSections = parts.filter(p => !p.title.includes('\u0627\u0631\u062f\u0648') && !p.title.toLowerCase().includes('urdu'));
+                  if (enSections.length > 1) {
+                    return enSections.map((sec, si) => (
+                      <div key={si} style={{ marginBottom: si < enSections.length - 1 ? '16px' : 0 }}>
+                        {sec.title && (
+                          <div style={{ display:'flex', alignItems:'center', gap:'8px', marginBottom:'8px' }}>
+                            <div style={{ width:'3px', height:'16px', borderRadius:'2px', background:'linear-gradient(180deg,#2563EB,#7C3AED)' }} />
+                            <span style={{ fontSize:'12px', fontWeight:800, color:'#A5B4FC', letterSpacing:'.04em', textTransform:'uppercase' }}>{sec.title.replace(/\*/g,'')}</span>
+                          </div>
+                        )}
+                        <div style={{ paddingLeft: sec.title ? '11px' : 0, borderLeft: sec.title ? '1px solid rgba(255,255,255,.04)' : 'none' }}>
+                          {sec.body.split('\n').map((line, li) => {
+                            const trimmed = line.trim();
+                            if (!trimmed) return <div key={li} style={{ height:'6px' }} />;
+                            const isBullet = trimmed.startsWith('-') || trimmed.startsWith('•');
+                            const boldMatch = trimmed.match(/^\*\*(.+?)\*\*\s*:?\s*(.*)/);
+                            if (isBullet) {
+                              const bulletText = trimmed.replace(/^[-•]\s*/, '').replace(/\*\*/g, '');
+                              return (
+                                <div key={li} style={{ display:'flex', alignItems:'flex-start', gap:'8px', padding:'3px 0' }}>
+                                  <div style={{ width:'5px', height:'5px', borderRadius:'50%', background:'#3B82F6', marginTop:'6px', flexShrink:0 }} />
+                                  <span style={{ fontSize:'13px', color:'#CBD5E1', lineHeight:1.7 }}>{bulletText}</span>
+                                </div>
+                              );
+                            }
+                            if (boldMatch) {
+                              return (
+                                <div key={li} style={{ padding:'3px 0' }}>
+                                  <span style={{ fontSize:'12px', fontWeight:700, color:'#94A3B8' }}>{boldMatch[1]}: </span>
+                                  <span style={{ fontSize:'13px', color:'#CBD5E1', lineHeight:1.7 }}>{boldMatch[2]}</span>
+                                </div>
+                              );
+                            }
+                            return <div key={li} style={{ fontSize:'13px', color:'#CBD5E1', lineHeight:1.8, padding:'2px 0' }}>{trimmed.replace(/\*\*/g, '')}</div>;
+                          })}
+                        </div>
+                      </div>
+                    ));
+                  }
+                  // Fallback: plain text
+                  return <div style={{ fontSize:'14px', color:'#CBD5E1', lineHeight:1.9, whiteSpace:'pre-line' }}>{raw}</div>;
+                })()}
               </div>
 
               {/* Urdu Report */}
@@ -441,14 +501,27 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
               </div>
 
               {/* Buttons */}
-              <div className="rs" style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'12px', animationDelay:'.4s' }}>
+              <div className="rs" style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:'12px', animationDelay:'.4s' }}>
                 <button className="rbtn" onClick={()=>{ setStep('upload'); setResult(null); setPreview(null); setSelectedFile(null); setError(''); }}
                   style={{ background:'linear-gradient(135deg,#2563EB,#7C3AED)', color:'#fff', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:700, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', border:'none', cursor:'pointer' }}>
                   <RefreshIcon size={14} /> New Scan
                 </button>
+                <button className="rbtn" onClick={()=>generateMedicalPDF({
+                  scanType: activeScanType.label,
+                  report: result.report || result.analysis || '',
+                  urduReport: result.urdu_report || '',
+                  severity: result.severity || 'Normal',
+                  confidence: result.confidence ?? 0,
+                  time: result.time ?? result.time_seconds ?? 0,
+                  filename: selectedFile?.name || 'scan.jpg',
+                  status: 'pending',
+                })}
+                  style={{ background:'linear-gradient(135deg,#10B981,#059669)', border:'none', color:'#fff', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:700, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', cursor:'pointer' }}>
+                  <DownloadIcon size={14} /> Download PDF
+                </button>
                 <button className="rbtn" onClick={()=>window.print()}
                   style={{ background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#94A3B8', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:600, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', cursor:'pointer' }}>
-                  <PrinterIcon size={14} /> Print Report
+                  <PrinterIcon size={14} /> Print
                 </button>
                 <button className="rbtn" onClick={onBack}
                   style={{ background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#94A3B8', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:600, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', cursor:'pointer' }}>

@@ -55,13 +55,15 @@ class Token(BaseModel):
 
 class ScanResponse(BaseModel):
     id           : int
+    user_id      : Optional[int] = None
     scan_type    : str
     filename     : Optional[str] = None
     report       : Optional[str] = None
     severity     : Optional[str] = None
-    confidence   : Optional[int] = None
+    confidence   : Optional[float] = None
     time_seconds : Optional[float] = None
     status       : str
+    doctor_notes : Optional[str] = None
     created_at   : datetime
 
     class Config:
