@@ -1,5 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { getToken } from '../services/api';
+import {
+  TestTubeIcon, CheckCircleIcon, AlertTriangleIcon, ClockIcon,
+  ShieldCheckIcon, SparklesIcon, SearchIcon, ClipboardIcon,
+  RefreshIcon, PrinterIcon, ArrowLeftIcon, MicroscopeIcon,
+  DoctorIcon, LogoIcon, ActivityIcon, SignalIcon,
+} from '../components/Icons';
 
 const BASE = process.env.REACT_APP_API_URL || 'https://medcare-backend-2csy3tndla-uc.a.run.app/api/v1';
 
@@ -49,11 +55,11 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
   };
 
   const getSev = (s: string) => {
-    const v = (s || '').toLowerCase();
-    if (v.includes('normal'))   return { color: '#10B981', bg: 'rgba(16,185,129,.12)',  border: 'rgba(16,185,129,.3)',  label: '🟢 Normal' };
-    if (v.includes('mild'))     return { color: '#F59E0B', bg: 'rgba(245,158,11,.12)',  border: 'rgba(245,158,11,.3)',  label: '🟡 Mild' };
-    if (v.includes('moderate')) return { color: '#F97316', bg: 'rgba(249,115,22,.12)',  border: 'rgba(249,115,22,.3)',  label: '🟠 Moderate' };
-    if (v.includes('severe'))   return { color: '#EF4444', bg: 'rgba(239,68,68,.12)',   border: 'rgba(239,68,68,.3)',   label: '🔴 Severe' };
+    const v = (s || '').toLowerCase().replace(/[^a-z]/g, '');
+    if (v.includes('normal'))   return { color: '#10B981', bg: 'rgba(16,185,129,.12)',  border: 'rgba(16,185,129,.3)',  label: 'Normal' };
+    if (v.includes('mild'))     return { color: '#F59E0B', bg: 'rgba(245,158,11,.12)',  border: 'rgba(245,158,11,.3)',  label: 'Mild' };
+    if (v.includes('moderate')) return { color: '#F97316', bg: 'rgba(249,115,22,.12)',  border: 'rgba(249,115,22,.3)',  label: 'Moderate' };
+    if (v.includes('severe'))   return { color: '#EF4444', bg: 'rgba(239,68,68,.12)',   border: 'rgba(239,68,68,.3)',   label: 'Severe' };
     return                             { color: '#60A5FA', bg: 'rgba(96,165,250,.12)',  border: 'rgba(96,165,250,.3)',  label: s || '—' };
   };
 
@@ -89,9 +95,13 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
 
         {/* TOPBAR */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,.06)', background: 'rgba(6,10,20,.85)', backdropFilter: 'blur(24px)', position: 'sticky', top: 0, zIndex: 50 }}>
-          <button className="bk" onClick={onBack} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', color: '#64748B', padding: '8px 18px', borderRadius: '10px', fontSize: '13px', fontFamily: 'Sora,sans-serif' }}>← Back</button>
+          <button className="bk" onClick={onBack} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', color: '#64748B', padding: '8px 18px', borderRadius: '10px', fontSize: '13px', fontFamily: 'Sora,sans-serif', cursor: 'pointer' }}>
+            <ArrowLeftIcon size={14} /> Back
+          </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ width: '44px', height: '44px', background: 'linear-gradient(135deg,#10B981,#34D399)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', boxShadow: '0 4px 20px rgba(16,185,129,.3)' }}>🩸</div>
+            <div style={{ width: '44px', height: '44px', background: 'linear-gradient(135deg,#10B981,#34D399)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 20px rgba(16,185,129,.3)', color: '#fff' }}>
+              <TestTubeIcon size={22} />
+            </div>
             <div>
               <div style={{ fontSize: '17px', fontWeight: 800, color: '#F1F5F9' }}>Blood Test Analyzer</div>
               <div style={{ fontSize: '11px', color: '#475569', marginTop: '1px' }}>Powered by LLaVA-Med AI</div>
@@ -103,22 +113,23 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
         </div>
 
         <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '32px 24px' }}>
+          {/* UPLOAD */}
           {step === 'upload' && (
             <div style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: '20px' }}>
               <div>
-                {error && <div style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.2)', borderRadius: '12px', padding: '12px 16px', color: '#FCA5A5', fontSize: '13px', marginBottom: '14px' }}>⚠️ {error}</div>}
+                {error && <div style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.2)', borderRadius: '12px', padding: '12px 16px', color: '#FCA5A5', fontSize: '13px', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}><AlertTriangleIcon size={14} /> {error}</div>}
                 <div className="dz" onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) handleFile(f); }} onDragOver={e => e.preventDefault()} onDragLeave={() => {}} onClick={() => fileRef.current?.click()}
                   style={{ border: `2px dashed ${preview ? 'rgba(16,185,129,.35)' : 'rgba(255,255,255,.1)'}`, borderRadius: '20px', minHeight: '280px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,.02)', padding: '24px', textAlign: 'center', marginBottom: '16px' }}>
                   <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); }} />
                   {preview ? (
                     <>
                       <img src={preview} alt="blood" style={{ width: '100%', maxWidth: '260px', maxHeight: '200px', objectFit: 'contain', borderRadius: '12px' }} />
-                      <div style={{ marginTop: '14px', fontSize: '13px', color: '#10B981', fontWeight: 600 }}>✅ {selectedFile?.name}</div>
+                      <div style={{ marginTop: '14px', fontSize: '13px', color: '#10B981', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}><CheckCircleIcon size={14} /> {selectedFile?.name}</div>
                       <div style={{ fontSize: '11px', color: '#334155', marginTop: '4px' }}>Click to change</div>
                     </>
                   ) : (
                     <>
-                      <div style={{ width: '72px', height: '72px', background: 'rgba(16,185,129,.08)', border: '1px solid rgba(16,185,129,.15)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', marginBottom: '16px' }}>🩸</div>
+                      <div style={{ width: '72px', height: '72px', background: 'rgba(16,185,129,.08)', border: '1px solid rgba(16,185,129,.15)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#34D399' }}><TestTubeIcon size={32} /></div>
                       <div style={{ fontSize: '15px', fontWeight: 700, color: '#CBD5E1', marginBottom: '8px' }}>Blood Report Drop Karo</div>
                       <div style={{ fontSize: '13px', color: '#334155', marginBottom: '16px' }}>Ya click karke select karo</div>
                       <div style={{ display: 'flex', gap: '8px' }}>{['JPG', 'PNG', 'WEBP'].map(f => <span key={f} style={{ fontSize: '11px', padding: '3px 10px', background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: '6px', color: '#475569' }}>{f}</span>)}</div>
@@ -126,23 +137,30 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
                   )}
                 </div>
                 <button className="ab" disabled={!selectedFile} onClick={handleAnalyze}
-                  style={{ width: '100%', padding: '16px', background: selectedFile ? 'linear-gradient(135deg,#10B981,#34D399)' : 'rgba(255,255,255,.04)', color: selectedFile ? '#fff' : '#334155', borderRadius: '14px', fontSize: '15px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                  🩸 Analyze Blood Test
+                  style={{ width: '100%', padding: '16px', background: selectedFile ? 'linear-gradient(135deg,#10B981,#34D399)' : 'rgba(255,255,255,.04)', color: selectedFile ? '#fff' : '#334155', borderRadius: '14px', fontSize: '15px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', cursor: selectedFile ? 'pointer' : 'not-allowed' }}>
+                  <TestTubeIcon size={16} /> Analyze Blood Test
                 </button>
               </div>
               <div style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '20px', padding: '24px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#E2E8F0', marginBottom: '20px' }}>🤖 AI Kya Detect Karega?</div>
-                {[{ icon: '🩸', title: 'CBC Analysis', desc: 'Hemoglobin, WBC, RBC, Platelets' }, { icon: '📊', title: 'Liver Function', desc: 'ALT, AST, Bilirubin levels' }, { icon: '🔬', title: 'Kidney Function', desc: 'Creatinine, BUN, eGFR values' }, { icon: '💉', title: 'Sugar Levels', desc: 'Glucose, HbA1c diabetes markers' }, { icon: '🧪', title: 'Lipid Profile', desc: 'Cholesterol, HDL, LDL, Triglycerides' }].map((item, i) => (
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#E2E8F0', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}><SparklesIcon size={16} /> AI Kya Detect Karega?</div>
+                {[
+                  { Icon: TestTubeIcon,   title: 'CBC Analysis',     desc: 'Hemoglobin, WBC, RBC, Platelets' },
+                  { Icon: ActivityIcon,    title: 'Liver Function',   desc: 'ALT, AST, Bilirubin levels' },
+                  { Icon: MicroscopeIcon,  title: 'Kidney Function',  desc: 'Creatinine, BUN, eGFR values' },
+                  { Icon: SearchIcon,      title: 'Sugar Levels',     desc: 'Glucose, HbA1c diabetes markers' },
+                  { Icon: SignalIcon,      title: 'Lipid Profile',    desc: 'Cholesterol, HDL, LDL, Triglycerides' },
+                ].map((item, i) => (
                   <div key={i} style={{ display: 'flex', gap: '12px', padding: '11px 0', borderBottom: i < 4 ? '1px solid rgba(255,255,255,.04)' : 'none' }}>
-                    <div style={{ width: '34px', height: '34px', background: 'rgba(16,185,129,.1)', border: '1px solid rgba(16,185,129,.15)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>{item.icon}</div>
+                    <div style={{ width: '34px', height: '34px', background: 'rgba(16,185,129,.1)', border: '1px solid rgba(16,185,129,.15)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#34D399' }}><item.Icon size={16} /></div>
                     <div><div style={{ fontSize: '12px', fontWeight: 700, color: '#CBD5E1', marginBottom: '2px' }}>{item.title}</div><div style={{ fontSize: '11px', color: '#475569', lineHeight: 1.5 }}>{item.desc}</div></div>
                   </div>
                 ))}
-                <div style={{ marginTop: '18px', padding: '12px', background: 'rgba(245,158,11,.05)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '10px', fontSize: '11px', color: '#FCD34D', lineHeight: 1.6 }}>🔒 Report doctor ke paas automatically jayegi</div>
+                <div style={{ marginTop: '18px', padding: '12px', background: 'rgba(245,158,11,.05)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '10px', fontSize: '11px', color: '#FCD34D', lineHeight: 1.6, display: 'flex', alignItems: 'center', gap: '6px' }}><ShieldCheckIcon size={12} /> Report doctor ke paas automatically jayegi</div>
               </div>
             </div>
           )}
 
+          {/* ANALYZING */}
           {step === 'analyzing' && (
             <div style={{ textAlign: 'center', padding: '60px 24px' }}>
               <div style={{ position: 'relative', width: '220px', height: '220px', margin: '0 auto 40px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 0 60px rgba(16,185,129,.2)' }}>
@@ -158,7 +176,7 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
               <div style={{ maxWidth: '380px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {analysisSteps.map((s, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', background: i <= currentStep ? 'rgba(16,185,129,.06)' : 'rgba(255,255,255,.02)', border: `1px solid ${i <= currentStep ? 'rgba(16,185,129,.15)' : 'rgba(255,255,255,.04)'}`, borderRadius: '10px', transition: 'all .3s' }}>
-                    <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: i < currentStep ? '#10B981' : i === currentStep ? 'linear-gradient(135deg,#10B981,#34D399)' : 'rgba(255,255,255,.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', flexShrink: 0, animation: i === currentStep ? 'spin 1s linear infinite' : 'none' }}>{i < currentStep ? '✓' : i === currentStep ? '⟳' : ''}</div>
+                    <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: i < currentStep ? '#10B981' : i === currentStep ? 'linear-gradient(135deg,#10B981,#34D399)' : 'rgba(255,255,255,.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', flexShrink: 0, animation: i === currentStep ? 'spin 1s linear infinite' : 'none', color: '#fff' }}>{i < currentStep ? '✓' : i === currentStep ? '⟳' : ''}</div>
                     <span style={{ fontSize: '13px', color: i <= currentStep ? '#94A3B8' : '#334155', fontWeight: i === currentStep ? 600 : 400 }}>{s}</span>
                   </div>
                 ))}
@@ -166,16 +184,24 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
             </div>
           )}
 
+          {/* RESULT */}
           {step === 'result' && result && sev && (
             <div>
               <div className="rs" style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '20px 28px', marginBottom: '24px' }}>
                 <div style={{ fontSize: '11px', color: '#475569', fontWeight: 600, letterSpacing: '.06em', textTransform: 'uppercase', marginBottom: '16px' }}>Report Status</div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  {[{ label: 'Submitted', icon: '✅', done: true }, { label: 'AI Analyzed', icon: '🤖', done: true }, { label: 'Dr. Review', icon: '👨‍⚕️', done: false, active: true }, { label: 'Approved', icon: '🏥', done: false }].map((s, i) => (
+                  {[
+                    { label: 'Submitted',  Icon: CheckCircleIcon, done: true,  active: false },
+                    { label: 'AI Analyzed', Icon: SparklesIcon,    done: true,  active: false },
+                    { label: 'Dr. Review',  Icon: DoctorIcon,      done: false, active: true },
+                    { label: 'Approved',    Icon: LogoIcon,        done: false, active: false },
+                  ].map((s, i) => (
                     <React.Fragment key={i}>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', flex: 1 }}>
-                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: s.done ? 'rgba(16,185,129,.15)' : (s as any).active ? 'rgba(245,158,11,.12)' : 'rgba(255,255,255,.04)', border: `2px solid ${s.done ? 'rgba(16,185,129,.4)' : (s as any).active ? 'rgba(245,158,11,.4)' : 'rgba(255,255,255,.08)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', animation: (s as any).active ? 'pulseAmber 2s infinite' : 'none' }}>{s.icon}</div>
-                        <div style={{ fontSize: '11px', fontWeight: 600, color: s.done ? '#10B981' : (s as any).active ? '#F59E0B' : '#334155', textAlign: 'center' }}>{s.label}</div>
+                        <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: s.done ? 'rgba(16,185,129,.15)' : s.active ? 'rgba(245,158,11,.12)' : 'rgba(255,255,255,.04)', border: `2px solid ${s.done ? 'rgba(16,185,129,.4)' : s.active ? 'rgba(245,158,11,.4)' : 'rgba(255,255,255,.08)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: s.active ? 'pulseAmber 2s infinite' : 'none', color: s.done ? '#10B981' : s.active ? '#F59E0B' : '#475569' }}>
+                          <s.Icon size={18} />
+                        </div>
+                        <div style={{ fontSize: '11px', fontWeight: 600, color: s.done ? '#10B981' : s.active ? '#F59E0B' : '#334155', textAlign: 'center' }}>{s.label}</div>
                       </div>
                       {i < 3 && <div style={{ height: '2px', flex: 1, background: i < 2 ? '#10B981' : 'rgba(255,255,255,.06)', marginBottom: '20px', borderRadius: '1px' }} />}
                     </React.Fragment>
@@ -189,8 +215,11 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
                   <div style={{ fontSize: '11px', color: '#475569', marginBottom: '6px', fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase' }}>Blood Test — Analysis Complete</div>
                   <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#F1F5F9', marginBottom: '14px' }}>AI Pathology Report</h2>
                   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: sev.bg, border: `1px solid ${sev.border}`, color: sev.color, padding: '8px 20px', borderRadius: '20px', fontSize: '14px', fontWeight: 700 }}>{sev.label}</div>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(245,158,11,.08)', border: '1px solid rgba(245,158,11,.2)', color: '#F59E0B', padding: '8px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>⏳ Doctor Review Pending</div>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: sev.bg, border: `1px solid ${sev.border}`, color: sev.color, padding: '8px 20px', borderRadius: '20px', fontSize: '14px', fontWeight: 700 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: sev.color, display: 'inline-block' }} />
+                      {sev.label}
+                    </div>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(245,158,11,.08)', border: '1px solid rgba(245,158,11,.2)', color: '#F59E0B', padding: '8px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}><ClockIcon size={12} /> Doctor Review Pending</div>
                   </div>
                 </div>
               </div>
@@ -204,33 +233,33 @@ const BloodTestAnalyzer = ({ onBack }: { onBack: () => void }) => {
                   <div style={{ fontSize: '11px', color: '#475569', fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase', marginBottom: '8px' }}>Analysis Time</div>
                   <div style={{ fontSize: '30px', fontWeight: 800, color: '#E2E8F0' }}>{result.time ? `${result.time.toFixed(1)}s` : result.time_seconds ? `${result.time_seconds.toFixed(1)}s` : '—'}</div>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '20px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                   <div style={{ fontSize: '11px', color: '#475569', fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase', marginBottom: '8px' }}>Scan Type</div>
-                  <div style={{ fontSize: '26px', marginBottom: '6px' }}>🩸</div>
+                  <div style={{ marginBottom: '6px', color: '#34D399' }}><TestTubeIcon size={26} /></div>
                   <div style={{ fontSize: '14px', fontWeight: 700, color: '#34D399' }}>Blood Test</div>
                 </div>
               </div>
 
               <div className="rs" style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '16px', padding: '22px', marginBottom: '20px' }}>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8', marginBottom: '14px' }}>📋 AI Pathology Report</div>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#94A3B8', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}><ClipboardIcon size={14} /> AI Pathology Report</div>
                 <div style={{ fontSize: '14px', color: '#CBD5E1', lineHeight: 1.9, whiteSpace: 'pre-line' }}>{result.report || '—'}</div>
               </div>
 
               {result.urdu_report && (
                 <div className="rs" style={{ background: 'rgba(16,185,129,.04)', border: '1px solid rgba(16,185,129,.12)', borderRadius: '16px', padding: '22px', marginBottom: '20px', direction: 'rtl' }}>
-                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#34D399', marginBottom: '14px' }}>🇵🇰 اردو رپورٹ</div>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: '#34D399', marginBottom: '14px' }}>&#127477;&#127472; اردو رپورٹ</div>
                   <div style={{ fontSize: '14px', color: '#CBD5E1', lineHeight: 2, whiteSpace: 'pre-line' }}>{result.urdu_report}</div>
                 </div>
               )}
 
-              <div className="rs" style={{ background: 'rgba(245,158,11,.04)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '12px', padding: '14px 18px', fontSize: '12px', color: '#FCD34D', marginBottom: '20px', display: 'flex', gap: '8px' }}>
-                <span>⚠️</span>Yeh AI analysis hai — final diagnosis ke liye licensed doctor se zaroor milen.
+              <div className="rs" style={{ background: 'rgba(245,158,11,.04)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '12px', padding: '14px 18px', fontSize: '12px', color: '#FCD34D', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ flexShrink: 0, display: 'flex' }}><AlertTriangleIcon size={14} /></span>Yeh AI analysis hai — final diagnosis ke liye licensed doctor se zaroor milen.
               </div>
 
               <div className="rs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
-                <button className="rb" onClick={() => { setStep('upload'); setResult(null); setPreview(null); setSelectedFile(null); setError(''); }} style={{ background: 'linear-gradient(135deg,#10B981,#34D399)', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', border: 'none' }}>🔄 New Test</button>
-                <button className="rb" onClick={() => window.print()} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>📄 Print</button>
-                <button className="rb" onClick={onBack} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>← Dashboard</button>
+                <button className="rb" onClick={() => { setStep('upload'); setResult(null); setPreview(null); setSelectedFile(null); setError(''); }} style={{ background: 'linear-gradient(135deg,#10B981,#34D399)', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', border: 'none', cursor: 'pointer' }}><RefreshIcon size={14} /> New Test</button>
+                <button className="rb" onClick={() => window.print()} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer' }}><PrinterIcon size={14} /> Print</button>
+                <button className="rb" onClick={onBack} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer' }}><ArrowLeftIcon size={14} /> Dashboard</button>
               </div>
             </div>
           )}

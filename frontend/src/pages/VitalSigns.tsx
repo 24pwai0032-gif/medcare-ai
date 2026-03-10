@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import {
+  StethoscopeIcon, HeartPulseIcon, LungsIcon, ActivityIcon,
+  ArrowLeftIcon, AlertTriangleIcon, RefreshIcon,
+} from '../components/Icons';
 
-const RANGES: Record<string, { unit: string; normal: [number, number]; warning: [number, number]; label: string; emoji: string }> = {
-  heartRate:    { unit: 'bpm',   normal: [60, 100],  warning: [50, 120],  label: 'Heart Rate',    emoji: '💓' },
-  systolic:     { unit: 'mmHg',  normal: [90, 120],  warning: [80, 140],  label: 'Systolic BP',   emoji: '🩺' },
-  diastolic:    { unit: 'mmHg',  normal: [60, 80],   warning: [50, 90],   label: 'Diastolic BP',  emoji: '🩺' },
-  temperature:  { unit: '°F',    normal: [97, 99],   warning: [95, 103],  label: 'Temperature',   emoji: '🌡️' },
-  oxygen:       { unit: '%',     normal: [95, 100],  warning: [90, 100],  label: 'SpO2',          emoji: '💨' },
-  respiratory:  { unit: '/min',  normal: [12, 20],   warning: [8, 30],    label: 'Respiratory',   emoji: '🫁' },
+type RangeEntry = { unit: string; normal: [number, number]; warning: [number, number]; label: string; Icon: React.FC<{ size?: number }> };
+
+const RANGES: Record<string, RangeEntry> = {
+  heartRate:   { unit: 'bpm',  normal: [60, 100],  warning: [50, 120],  label: 'Heart Rate',   Icon: HeartPulseIcon },
+  systolic:    { unit: 'mmHg', normal: [90, 120],  warning: [80, 140],  label: 'Systolic BP',  Icon: StethoscopeIcon },
+  diastolic:   { unit: 'mmHg', normal: [60, 80],   warning: [50, 90],   label: 'Diastolic BP', Icon: StethoscopeIcon },
+  temperature: { unit: '°F',   normal: [97, 99],   warning: [95, 103],  label: 'Temperature',  Icon: ActivityIcon },
+  oxygen:      { unit: '%',    normal: [95, 100],  warning: [90, 100],  label: 'SpO2',         Icon: LungsIcon },
+  respiratory: { unit: '/min', normal: [12, 20],   warning: [8, 30],    label: 'Respiratory',  Icon: LungsIcon },
 };
 
 const VitalSigns = ({ onBack }: { onBack: () => void }) => {
@@ -25,11 +31,14 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
   const results = Object.entries(vitals).filter(([, v]) => v.trim() !== '' && !isNaN(Number(v))).map(([key, v]) => {
     const val = Number(v);
     const range = RANGES[key];
-    const status = getStatus(key, val);
-    return { key, val, range, ...status };
+    const st = getStatus(key, val);
+    return { key, val, range, ...st };
   });
 
-  const overall = results.some(r => r.status === 'Critical') ? { label: 'Critical', color: '#EF4444', emoji: '🔴' } : results.some(r => r.status === 'Warning') ? { label: 'Warning', color: '#F59E0B', emoji: '🟡' } : { label: 'Normal', color: '#10B981', emoji: '🟢' };
+  const overallLabel = results.some(r => r.status === 'Critical') ? 'Critical' : results.some(r => r.status === 'Warning') ? 'Warning' : 'Normal';
+  const overallColor = overallLabel === 'Critical' ? '#EF4444' : overallLabel === 'Warning' ? '#F59E0B' : '#10B981';
+  const overallBg = overallLabel === 'Critical' ? 'rgba(239,68,68,.12)' : overallLabel === 'Warning' ? 'rgba(245,158,11,.12)' : 'rgba(16,185,129,.12)';
+  const overallBorder = overallLabel === 'Critical' ? 'rgba(239,68,68,.3)' : overallLabel === 'Warning' ? 'rgba(245,158,11,.3)' : 'rgba(16,185,129,.3)';
 
   const css = `
     @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
@@ -53,9 +62,11 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
         <div style={{ position: 'fixed', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,.06)', background: 'rgba(6,10,20,.85)', backdropFilter: 'blur(24px)', position: 'sticky', top: 0, zIndex: 50 }}>
-          <button className="bk" onClick={onBack} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', color: '#64748B', padding: '8px 18px', borderRadius: '10px', fontSize: '13px', fontFamily: 'Sora,sans-serif' }}>← Back</button>
+          <button className="bk" onClick={onBack} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,.05)', border: '1px solid rgba(255,255,255,.08)', color: '#64748B', padding: '8px 18px', borderRadius: '10px', fontSize: '13px', fontFamily: 'Sora,sans-serif', cursor: 'pointer' }}>
+            <ArrowLeftIcon size={14} /> Back
+          </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ width: '44px', height: '44px', background: 'linear-gradient(135deg,#0EA5E9,#38BDF8)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', boxShadow: '0 4px 20px rgba(14,165,233,.3)' }}>🩺</div>
+            <div style={{ width: '44px', height: '44px', background: 'linear-gradient(135deg,#0EA5E9,#38BDF8)', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 20px rgba(14,165,233,.3)', color: '#fff' }}><StethoscopeIcon size={22} /></div>
             <div>
               <div style={{ fontSize: '17px', fontWeight: 800, color: '#F1F5F9' }}>Vital Signs</div>
               <div style={{ fontSize: '11px', color: '#475569', marginTop: '1px' }}>Health Monitoring</div>
@@ -70,7 +81,7 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
           {!showResult ? (
             <div>
               <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                <div style={{ fontSize: '48px', marginBottom: '16px' }}>🩺</div>
+                <div style={{ marginBottom: '16px', color: '#38BDF8' }}><StethoscopeIcon size={48} /></div>
                 <h2 style={{ fontSize: '28px', fontWeight: 800, background: 'linear-gradient(135deg,#38BDF8,#A78BFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '10px' }}>Vital Signs Monitor</h2>
                 <p style={{ color: '#475569', fontSize: '14px' }}>Apne vital signs enter karein — AI analyze karega</p>
               </div>
@@ -79,7 +90,7 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
                 {Object.entries(RANGES).map(([key, r]) => (
                   <div key={key} style={{ background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '14px', padding: '18px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                      <span style={{ fontSize: '20px' }}>{r.emoji}</span>
+                      <div style={{ color: '#38BDF8' }}><r.Icon size={20} /></div>
                       <div>
                         <div style={{ fontSize: '13px', fontWeight: 700, color: '#CBD5E1' }}>{r.label}</div>
                         <div style={{ fontSize: '10px', color: '#334155' }}>Normal: {r.normal[0]}–{r.normal[1]} {r.unit}</div>
@@ -96,17 +107,20 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
 
               <button className="ab" disabled={!canAnalyze} onClick={() => setShowResult(true)}
                 style={{ width: '100%', padding: '16px', background: canAnalyze ? 'linear-gradient(135deg,#0EA5E9,#38BDF8)' : 'rgba(255,255,255,.04)', color: canAnalyze ? '#fff' : '#334155', borderRadius: '14px', fontSize: '15px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-                🩺 Analyze Vitals
+                <StethoscopeIcon size={18} /> Analyze Vitals
               </button>
             </div>
           ) : (
             <div>
               <div className="rs" style={{ display: 'flex', gap: '24px', background: 'rgba(255,255,255,.02)', border: '1px solid rgba(255,255,255,.06)', borderRadius: '20px', padding: '24px', marginBottom: '20px' }}>
-                <div style={{ width: '80px', height: '80px', background: 'rgba(14,165,233,.1)', border: '1px solid rgba(14,165,233,.2)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', flexShrink: 0 }}>🩺</div>
+                <div style={{ width: '80px', height: '80px', background: 'rgba(14,165,233,.1)', border: '1px solid rgba(14,165,233,.2)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#38BDF8' }}><StethoscopeIcon size={36} /></div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: '11px', color: '#475569', marginBottom: '6px', fontWeight: 600, letterSpacing: '.05em', textTransform: 'uppercase' }}>Vital Signs Analysis</div>
                   <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#F1F5F9', marginBottom: '14px' }}>Health Status Report</h2>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: overall.label === 'Critical' ? 'rgba(239,68,68,.12)' : overall.label === 'Warning' ? 'rgba(245,158,11,.12)' : 'rgba(16,185,129,.12)', border: `1px solid ${overall.label === 'Critical' ? 'rgba(239,68,68,.3)' : overall.label === 'Warning' ? 'rgba(245,158,11,.3)' : 'rgba(16,185,129,.3)'}`, color: overall.color, padding: '8px 20px', borderRadius: '20px', fontSize: '14px', fontWeight: 700 }}>{overall.emoji} {overall.label}</div>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: overallBg, border: `1px solid ${overallBorder}`, color: overallColor, padding: '8px 20px', borderRadius: '20px', fontSize: '14px', fontWeight: 700 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: overallColor, display: 'inline-block' }} />
+                    {overallLabel}
+                  </div>
                 </div>
               </div>
 
@@ -115,7 +129,7 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
                   <div key={r.key} style={{ background: 'rgba(255,255,255,.02)', border: `1px solid ${r.border}`, borderRadius: '16px', padding: '20px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '20px' }}>{r.range.emoji}</span>
+                        <div style={{ color: r.color }}><r.range.Icon size={20} /></div>
                         <span style={{ fontSize: '13px', fontWeight: 700, color: '#CBD5E1' }}>{r.range.label}</span>
                       </div>
                       <div style={{ background: r.bg, padding: '4px 12px', borderRadius: '8px', fontSize: '11px', fontWeight: 700, color: r.color }}>{r.status}</div>
@@ -127,19 +141,19 @@ const VitalSigns = ({ onBack }: { onBack: () => void }) => {
               </div>
 
               <div className="rs" style={{ background: 'rgba(14,165,233,.04)', border: '1px solid rgba(14,165,233,.12)', borderRadius: '16px', padding: '22px', marginBottom: '20px', direction: 'rtl' }}>
-                <div style={{ fontSize: '13px', fontWeight: 700, color: '#38BDF8', marginBottom: '14px' }}>🇵🇰 اردو خلاصہ</div>
+                <div style={{ fontSize: '13px', fontWeight: 700, color: '#38BDF8', marginBottom: '14px' }}>&#127477;&#127472; اردو خلاصہ</div>
                 <div style={{ fontSize: '14px', color: '#CBD5E1', lineHeight: 2 }}>
-                  {overall.label === 'Normal' ? 'آپ کے تمام وائٹل سائنز نارمل ہیں۔ صحت مند عادات جاری رکھیں۔' : overall.label === 'Warning' ? 'کچھ وائٹل سائنز نارمل حد سے باہر ہیں۔ ڈاکٹر سے مشورہ کریں۔' : 'فوری طبی مدد حاصل کریں! کچھ وائٹل سائنز خطرناک حد میں ہیں۔'}
+                  {overallLabel === 'Normal' ? 'آپ کے تمام وائٹل سائنز نارمل ہیں۔ صحت مند عادات جاری رکھیں۔' : overallLabel === 'Warning' ? 'کچھ وائٹل سائنز نارمل حد سے باہر ہیں۔ ڈاکٹر سے مشورہ کریں۔' : 'فوری طبی مدد حاصل کریں! کچھ وائٹل سائنز خطرناک حد میں ہیں۔'}
                 </div>
               </div>
 
-              <div className="rs" style={{ background: 'rgba(245,158,11,.04)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '12px', padding: '14px 18px', fontSize: '12px', color: '#FCD34D', marginBottom: '20px', display: 'flex', gap: '8px' }}>
-                <span>⚠️</span>Yeh tool sirf monitoring ke liye hai — professional medical checkup ki jagah nahi le sakta.
+              <div className="rs" style={{ background: 'rgba(245,158,11,.04)', border: '1px solid rgba(245,158,11,.12)', borderRadius: '12px', padding: '14px 18px', fontSize: '12px', color: '#FCD34D', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ flexShrink: 0, display: 'flex' }}><AlertTriangleIcon size={14} /></span>Yeh tool sirf monitoring ke liye hai — professional medical checkup ki jagah nahi le sakta.
               </div>
 
               <div className="rs" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                <button className="rb" onClick={() => { setShowResult(false); setVitals({ heartRate: '', systolic: '', diastolic: '', temperature: '', oxygen: '', respiratory: '' }); }} style={{ background: 'linear-gradient(135deg,#0EA5E9,#38BDF8)', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', border: 'none' }}>🔄 New Check</button>
-                <button className="rb" onClick={onBack} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>← Dashboard</button>
+                <button className="rb" onClick={() => { setShowResult(false); setVitals({ heartRate: '', systolic: '', diastolic: '', temperature: '', oxygen: '', respiratory: '' }); }} style={{ background: 'linear-gradient(135deg,#0EA5E9,#38BDF8)', color: '#fff', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 700, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', border: 'none', cursor: 'pointer' }}><RefreshIcon size={14} /> New Check</button>
+                <button className="rb" onClick={onBack} style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#94A3B8', padding: '14px', borderRadius: '12px', fontSize: '13px', fontWeight: 600, fontFamily: 'Sora,sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer' }}><ArrowLeftIcon size={14} /> Dashboard</button>
               </div>
             </div>
           )}

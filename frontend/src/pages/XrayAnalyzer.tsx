@@ -1,14 +1,20 @@
-// src/pages/XRayAnalyzer.tsx
 import React, { useState, useRef } from 'react';
 import { getToken } from '../services/api';
+import {
+  LungsIcon, BoneIcon, BrainIcon, MicroscopeIcon,
+  CheckCircleIcon, AlertTriangleIcon, ClockIcon, ShieldCheckIcon,
+  SparklesIcon, SearchIcon, ClipboardIcon, RefreshIcon,
+  PrinterIcon, ArrowLeftIcon,
+  HeartPulseIcon, SignalIcon, DoctorIcon, LogoIcon,
+} from '../components/Icons';
 
 const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-2csy3tndla-uc.a.run.app/api/v1';
 
 const SCAN_TYPES = [
-  { id: 'chest', label: 'Chest X-Ray', icon: '🫁', endpoint: 'xray' },
-  { id: 'mri',   label: 'MRI Scan',    icon: '🧠', endpoint: 'xray' },
-  { id: 'ct',    label: 'CT Scan',     icon: '🔬', endpoint: 'xray' },
-  { id: 'bone',  label: 'Bone X-Ray',  icon: '🦴', endpoint: 'xray' },
+  { id: 'chest', label: 'Chest X-Ray', Icon: LungsIcon,      endpoint: 'xray' },
+  { id: 'mri',   label: 'MRI Scan',    Icon: BrainIcon,       endpoint: 'xray' },
+  { id: 'ct',    label: 'CT Scan',     Icon: MicroscopeIcon,  endpoint: 'xray' },
+  { id: 'bone',  label: 'Bone X-Ray',  Icon: BoneIcon,        endpoint: 'xray' },
 ];
 
 const SAMPLE_IMAGES = [
@@ -86,11 +92,10 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
       setTimeout(() => setStep('result'), 600);
     } catch {
       clearInterval(interval); setProgress(100);
-      // Mock result when Colab offline
       setResult({
         report: `${activeScanType.label} Analysis Complete.\n\nFindings: The scan shows bilateral lung fields are adequately expanded. No significant consolidation, pleural effusion, or pneumothorax identified. Cardiac silhouette appears within normal limits. Mediastinal contours are unremarkable. Bony thorax is intact.\n\nImpression: No acute cardiopulmonary process identified. Recommend clinical correlation.`,
         urdu_report: `تجزیہ مکمل ہوا۔\n\nنتائج: پھیپھڑوں کے دونوں حصے مناسب طور پر پھیلے ہوئے ہیں۔ کوئی اہم بیماری نظر نہیں آئی۔ دل کا سائز نارمل حدود میں ہے۔\n\nنتیجہ: کوئی شدید مسئلہ نہیں پایا گیا۔`,
-        severity: '🟢 Normal',
+        severity: 'Normal',
         confidence: 87.4,
         time: 4.2,
         findings: ['Lungs clear bilaterally', 'No pleural effusion detected', 'Heart size within normal limits', 'No rib fractures observed', 'Mediastinum unremarkable'],
@@ -100,13 +105,13 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
   };
 
   const getSev = (s: string) => {
-    const v = (s || '').toLowerCase();
-    if (v.includes('normal'))   return { color: '#10B981', bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.3)',  label: '🟢 Normal'   };
-    if (v.includes('mild'))     return { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)',  border: 'rgba(245,158,11,0.3)',  label: '🟡 Mild'     };
-    if (v.includes('moderate')) return { color: '#F97316', bg: 'rgba(249,115,22,0.12)',  border: 'rgba(249,115,22,0.3)',  label: '🟠 Moderate' };
-    if (v.includes('severe'))   return { color: '#EF4444', bg: 'rgba(239,68,68,0.12)',   border: 'rgba(239,68,68,0.3)',   label: '🔴 Severe'   };
-    if (v.includes('urgent'))   return { color: '#DC2626', bg: 'rgba(220,38,38,0.15)',   border: 'rgba(220,38,38,0.4)',   label: '🚨 URGENT'   };
-    return                             { color: '#60A5FA', bg: 'rgba(96,165,250,0.12)',  border: 'rgba(96,165,250,0.3)',  label: s || '—'      };
+    const v = (s || '').toLowerCase().replace(/[^a-z]/g, '');
+    if (v.includes('normal'))   return { color: '#10B981', bg: 'rgba(16,185,129,0.12)',  border: 'rgba(16,185,129,0.3)',  label: 'Normal'   };
+    if (v.includes('mild'))     return { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)',  border: 'rgba(245,158,11,0.3)',  label: 'Mild'     };
+    if (v.includes('moderate')) return { color: '#F97316', bg: 'rgba(249,115,22,0.12)',  border: 'rgba(249,115,22,0.3)',  label: 'Moderate' };
+    if (v.includes('severe'))   return { color: '#EF4444', bg: 'rgba(239,68,68,0.12)',   border: 'rgba(239,68,68,0.3)',   label: 'Severe'   };
+    if (v.includes('urgent'))   return { color: '#DC2626', bg: 'rgba(220,38,38,0.15)',   border: 'rgba(220,38,38,0.4)',   label: 'URGENT'   };
+    return                             { color: '#60A5FA', bg: 'rgba(96,165,250,0.12)',  border: 'rgba(96,165,250,0.3)',  label: s || '—'   };
   };
 
   const sev         = result ? getSev(result.severity || '') : null;
@@ -115,11 +120,9 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
   const circ        = 2 * Math.PI * R;
   const dashOffset  = circ - (confidence / 100) * circ;
 
-  /* ─── CSS ─── */
   const css = `
     @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800;900&display=swap');
     *{box-sizing:border-box;margin:0;padding:0}
-
     @keyframes scanLine  { 0%{top:0;opacity:1} 95%{top:calc(100% - 3px);opacity:1} 100%{top:calc(100% - 3px);opacity:0} }
     @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(30px,-20px) scale(1.05)} 66%{transform:translate(-20px,15px) scale(.97)} }
     @keyframes fadeUp    { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
@@ -128,7 +131,6 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
     @keyframes pulseAmber{ 0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.4)} 50%{box-shadow:0 0 0 8px rgba(245,158,11,0)} }
     @keyframes spin      { to{transform:rotate(360deg)} }
     @keyframes glowProg  { 0%,100%{box-shadow:0 0 8px rgba(37,99,235,.4)} 50%{box-shadow:0 0 22px rgba(124,58,237,.6)} }
-
     .xray-wrap { animation: fadeUp .4s ease; }
     .scan-tab  { transition:all .2s; cursor:pointer; }
     .scan-tab:hover { background:rgba(255,255,255,.06) !important; }
@@ -159,16 +161,17 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
         <div style={{ position:'fixed', top:'-250px', right:'-200px', width:'700px', height:'700px', background:'radial-gradient(circle,rgba(37,99,235,.1) 0%,transparent 70%)', borderRadius:'50%', animation:'blobFloat 12s ease infinite', pointerEvents:'none' }} />
         <div style={{ position:'fixed', bottom:'-200px', left:'-200px', width:'600px', height:'600px', background:'radial-gradient(circle,rgba(124,58,237,.09) 0%,transparent 70%)', borderRadius:'50%', animation:'blobFloat 16s ease infinite reverse', pointerEvents:'none' }} />
         <div style={{ position:'fixed', top:'40%', left:'50%', width:'400px', height:'400px', background:'radial-gradient(circle,rgba(20,184,166,.06) 0%,transparent 70%)', borderRadius:'50%', animation:'blobFloat 20s ease infinite', pointerEvents:'none' }} />
-        {/* Grid */}
         <div style={{ position:'fixed', inset:0, backgroundImage:'linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px)', backgroundSize:'60px 60px', pointerEvents:'none' }} />
 
-        {/* ── TOPBAR ── */}
+        {/* TOPBAR */}
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'16px 32px', borderBottom:'1px solid rgba(255,255,255,.06)', background:'rgba(6,10,20,.85)', backdropFilter:'blur(24px)', position:'sticky', top:0, zIndex:50 }}>
           <button className="bkbtn" onClick={onBack} style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(255,255,255,.05)', border:'1px solid rgba(255,255,255,.08)', color:'#64748B', padding:'8px 18px', borderRadius:'10px', fontSize:'13px', fontFamily:'Sora,sans-serif', cursor:'pointer' }}>
-            ← Back
+            <ArrowLeftIcon size={14} /> Back
           </button>
           <div style={{ display:'flex', alignItems:'center', gap:'14px' }}>
-            <div style={{ width:'44px', height:'44px', background:'linear-gradient(135deg,#2563EB,#7C3AED)', borderRadius:'14px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'22px', boxShadow:'0 4px 20px rgba(37,99,235,.3)' }}>🫁</div>
+            <div style={{ width:'44px', height:'44px', background:'linear-gradient(135deg,#2563EB,#7C3AED)', borderRadius:'14px', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 20px rgba(37,99,235,.3)', color:'#fff' }}>
+              <LungsIcon size={22} />
+            </div>
             <div>
               <div style={{ fontSize:'17px', fontWeight:800, color:'#F1F5F9' }}>X-Ray Analyzer</div>
               <div style={{ fontSize:'11px', color:'#475569', marginTop:'1px' }}>Powered by LLaVA-Med AI</div>
@@ -182,30 +185,30 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
 
         <div style={{ maxWidth:'1000px', margin:'0 auto', padding:'32px 24px' }}>
 
-          {/* ══ UPLOAD ══ */}
+          {/* UPLOAD */}
           {step === 'upload' && (
             <div>
-              {/* Scan type tabs */}
               <div style={{ marginBottom:'28px' }}>
                 <div style={{ fontSize:'11px', color:'#475569', fontWeight:600, letterSpacing:'.08em', textTransform:'uppercase', marginBottom:'12px' }}>Scan Type Select Karo</div>
                 <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'10px' }}>
                   {SCAN_TYPES.map(t => (
                     <div key={t.id} className={`scan-tab${activeScanType.id === t.id ? ' active' : ''}`} onClick={() => setActiveScanType(t)}
                       style={{ padding:'14px 12px', borderRadius:'14px', border:`1px solid ${activeScanType.id===t.id?'rgba(99,102,241,.4)':'rgba(255,255,255,.07)'}`, background: activeScanType.id===t.id?'linear-gradient(135deg,rgba(37,99,235,.2),rgba(124,58,237,.2))':'rgba(255,255,255,.02)', textAlign:'center', fontFamily:'Sora,sans-serif' }}>
-                      <div style={{ fontSize:'24px', marginBottom:'6px' }}>{t.icon}</div>
+                      <div style={{ marginBottom:'6px', color: activeScanType.id===t.id ? '#A5B4FC' : '#64748B', display:'flex', justifyContent:'center' }}><t.Icon size={24} /></div>
                       <div style={{ fontSize:'12px', fontWeight:600, color: activeScanType.id===t.id?'#A5B4FC':'#64748B' }}>{t.label}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Grid */}
               <div style={{ display:'grid', gridTemplateColumns:'1.1fr .9fr', gap:'20px' }}>
-                {/* Left */}
                 <div>
-                  {error && <div style={{ background:'rgba(239,68,68,.08)', border:'1px solid rgba(239,68,68,.2)', borderRadius:'12px', padding:'12px 16px', color:'#FCA5A5', fontSize:'13px', marginBottom:'14px' }}>⚠️ {error}</div>}
+                  {error && (
+                    <div style={{ background:'rgba(239,68,68,.08)', border:'1px solid rgba(239,68,68,.2)', borderRadius:'12px', padding:'12px 16px', color:'#FCA5A5', fontSize:'13px', marginBottom:'14px', display:'flex', alignItems:'center', gap:'8px' }}>
+                      <AlertTriangleIcon size={14} /> {error}
+                    </div>
+                  )}
 
-                  {/* Dropzone */}
                   <div className={`dropzone${dragOver?' drag':''}${preview?' ready':''}`}
                     onDrop={e=>{ e.preventDefault(); setDragOver(false); const f=e.dataTransfer.files[0]; if(f) handleFile(f); }}
                     onDragOver={e=>{ e.preventDefault(); setDragOver(true); }}
@@ -219,12 +222,14 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                           <img src={preview} alt="scan" style={{ width:'100%', maxHeight:'200px', objectFit:'contain', borderRadius:'12px', filter:'grayscale(15%) contrast(1.05)' }} />
                           <div style={{ position:'absolute', inset:0, borderRadius:'12px', border:'1px solid rgba(16,185,129,.3)', pointerEvents:'none' }} />
                         </div>
-                        <div style={{ marginTop:'14px', fontSize:'13px', color:'#10B981', fontWeight:600 }}>✅ {selectedFile?.name}</div>
+                        <div style={{ marginTop:'14px', fontSize:'13px', color:'#10B981', fontWeight:600, display:'flex', alignItems:'center', gap:'6px' }}><CheckCircleIcon size={14} /> {selectedFile?.name}</div>
                         <div style={{ fontSize:'11px', color:'#334155', marginTop:'4px' }}>Click to change</div>
                       </>
                     ) : (
                       <>
-                        <div style={{ width:'72px', height:'72px', background:'rgba(37,99,235,.08)', border:'1px solid rgba(37,99,235,.15)', borderRadius:'20px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'32px', marginBottom:'16px' }}>{activeScanType.icon}</div>
+                        <div style={{ width:'72px', height:'72px', background:'rgba(37,99,235,.08)', border:'1px solid rgba(37,99,235,.15)', borderRadius:'20px', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:'16px', color:'#60A5FA' }}>
+                          <activeScanType.Icon size={32} />
+                        </div>
                         <div style={{ fontSize:'15px', fontWeight:700, color:'#CBD5E1', marginBottom:'8px' }}>{activeScanType.label} Drop Karo</div>
                         <div style={{ fontSize:'13px', color:'#334155', marginBottom:'16px' }}>Ya click karke select karo</div>
                         <div style={{ display:'flex', gap:'8px' }}>
@@ -236,7 +241,6 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                     )}
                   </div>
 
-                  {/* Sample images */}
                   <div style={{ marginBottom:'16px' }}>
                     <div style={{ fontSize:'11px', color:'#334155', fontWeight:600, letterSpacing:'.06em', textTransform:'uppercase', marginBottom:'10px' }}>Ya Sample Use Karo:</div>
                     <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'8px' }}>
@@ -249,50 +253,49 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                     </div>
                   </div>
 
-                  {/* Analyze btn */}
                   <button className="abtn" disabled={!selectedFile} onClick={handleAnalyze}
                     style={{ width:'100%', padding:'16px', background: selectedFile?'linear-gradient(135deg,#2563EB,#7C3AED)':'rgba(255,255,255,.04)', color: selectedFile?'#fff':'#334155', borderRadius:'14px', fontSize:'15px', fontWeight:700, fontFamily:'Sora,sans-serif', backgroundSize:'200% 200%', animation: selectedFile?'gradShift 3s ease infinite':'none', display:'flex', alignItems:'center', justifyContent:'center', gap:'10px', cursor: selectedFile?'pointer':'not-allowed' }}>
-                    🔬 {activeScanType.label} Analyze Karo
+                    <MicroscopeIcon size={16} /> {activeScanType.label} Analyze Karo
                   </button>
                 </div>
 
-                {/* Right — info */}
                 <div style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'20px', padding:'24px' }}>
-                  <div style={{ fontSize:'14px', fontWeight:700, color:'#E2E8F0', marginBottom:'20px' }}>🤖 AI Kya Detect Karega?</div>
+                  <div style={{ fontSize:'14px', fontWeight:700, color:'#E2E8F0', marginBottom:'20px', display:'flex', alignItems:'center', gap:'8px' }}>
+                    <SparklesIcon size={16} /> AI Kya Detect Karega?
+                  </div>
                   {[
-                    { icon:'🫁', title:'Lung Conditions',   desc:'Pneumonia, TB, Pleural Effusion, Opacity' },
-                    { icon:'🦴', title:'Bone Structure',     desc:'Fractures, Alignment, Density issues' },
-                    { icon:'❤️', title:'Heart Assessment',   desc:'Cardiomegaly, Heart shadow analysis' },
-                    { icon:'🔬', title:'Abnormalities',      desc:'Masses, Nodules, Infiltrates' },
-                    { icon:'📊', title:'Severity Grading',   desc:'Normal → Mild → Moderate → URGENT' },
+                    { Icon: LungsIcon,       title:'Lung Conditions',   desc:'Pneumonia, TB, Pleural Effusion, Opacity' },
+                    { Icon: BoneIcon,        title:'Bone Structure',     desc:'Fractures, Alignment, Density issues' },
+                    { Icon: HeartPulseIcon,  title:'Heart Assessment',   desc:'Cardiomegaly, Heart shadow analysis' },
+                    { Icon: MicroscopeIcon,  title:'Abnormalities',      desc:'Masses, Nodules, Infiltrates' },
+                    { Icon: SignalIcon,       title:'Severity Grading',   desc:'Normal → Mild → Moderate → URGENT' },
                   ].map((item,i)=>(
                     <div key={i} style={{ display:'flex', gap:'12px', padding:'11px 0', borderBottom: i<4?'1px solid rgba(255,255,255,.04)':'none' }}>
-                      <div style={{ width:'34px', height:'34px', background:'rgba(37,99,235,.1)', border:'1px solid rgba(37,99,235,.15)', borderRadius:'10px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'16px', flexShrink:0 }}>{item.icon}</div>
+                      <div style={{ width:'34px', height:'34px', background:'rgba(37,99,235,.1)', border:'1px solid rgba(37,99,235,.15)', borderRadius:'10px', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, color:'#60A5FA' }}><item.Icon size={16} /></div>
                       <div>
                         <div style={{ fontSize:'12px', fontWeight:700, color:'#CBD5E1', marginBottom:'2px' }}>{item.title}</div>
                         <div style={{ fontSize:'11px', color:'#475569', lineHeight:1.5 }}>{item.desc}</div>
                       </div>
                     </div>
                   ))}
-                  <div style={{ marginTop:'18px', padding:'12px', background:'rgba(37,99,235,.06)', border:'1px solid rgba(37,99,235,.12)', borderRadius:'10px', fontSize:'11px', color:'#60A5FA', lineHeight:1.6 }}>
-                    ⚡ LLaVA-Med — 3x majority voting for accuracy
+                  <div style={{ marginTop:'18px', padding:'12px', background:'rgba(37,99,235,.06)', border:'1px solid rgba(37,99,235,.12)', borderRadius:'10px', fontSize:'11px', color:'#60A5FA', lineHeight:1.6, display:'flex', alignItems:'center', gap:'6px' }}>
+                    <SparklesIcon size={12} /> LLaVA-Med — 3x majority voting for accuracy
                   </div>
-                  <div style={{ marginTop:'10px', padding:'12px', background:'rgba(245,158,11,.05)', border:'1px solid rgba(245,158,11,.12)', borderRadius:'10px', fontSize:'11px', color:'#FCD34D', lineHeight:1.6 }}>
-                    🔒 Report doctor ke paas automatically jayegi
+                  <div style={{ marginTop:'10px', padding:'12px', background:'rgba(245,158,11,.05)', border:'1px solid rgba(245,158,11,.12)', borderRadius:'10px', fontSize:'11px', color:'#FCD34D', lineHeight:1.6, display:'flex', alignItems:'center', gap:'6px' }}>
+                    <ShieldCheckIcon size={12} /> Report doctor ke paas automatically jayegi
                   </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* ══ ANALYZING ══ */}
+          {/* ANALYZING */}
           {step === 'analyzing' && (
             <div style={{ textAlign:'center', padding:'60px 24px' }}>
               <div style={{ position:'relative', width:'220px', height:'220px', margin:'0 auto 40px', borderRadius:'20px', overflow:'hidden', boxShadow:'0 0 60px rgba(37,99,235,.2)' }}>
                 {preview && <img src={preview} alt="scan" style={{ width:'100%', height:'100%', objectFit:'cover', filter:'grayscale(30%) contrast(1.1)' }} />}
                 <div style={{ position:'absolute', left:0, right:0, height:'3px', background:'linear-gradient(90deg,transparent,#2563EB,#7C3AED,#60A5FA,transparent)', animation:'scanLine 1.8s linear infinite', boxShadow:'0 0 20px rgba(99,102,241,.8),0 0 40px rgba(37,99,235,.4)' }} />
                 <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(37,99,235,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.08) 1px,transparent 1px)', backgroundSize:'20px 20px' }} />
-                {/* Brackets */}
                 {[{top:8,left:8,borderTop:'2px solid #2563EB',borderLeft:'2px solid #2563EB'},{top:8,right:8,borderTop:'2px solid #2563EB',borderRight:'2px solid #2563EB'},{bottom:8,left:8,borderBottom:'2px solid #7C3AED',borderLeft:'2px solid #7C3AED'},{bottom:8,right:8,borderBottom:'2px solid #7C3AED',borderRight:'2px solid #7C3AED'}].map((s,i)=>(
                   <div key={i} style={{ position:'absolute', width:'18px', height:'18px', ...s }} />
                 ))}
@@ -316,8 +319,8 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
               <div style={{ maxWidth:'380px', margin:'0 auto', display:'flex', flexDirection:'column', gap:'8px' }}>
                 {analysisSteps.map((s,i)=>(
                   <div key={i} style={{ display:'flex', alignItems:'center', gap:'12px', padding:'10px 16px', background: i<=currentStep?'rgba(37,99,235,.06)':'rgba(255,255,255,.02)', border:`1px solid ${i<=currentStep?'rgba(37,99,235,.15)':'rgba(255,255,255,.04)'}`, borderRadius:'10px', transition:'all .3s' }}>
-                    <div style={{ width:'20px', height:'20px', borderRadius:'50%', background: i<currentStep?'#10B981': i===currentStep?'linear-gradient(135deg,#2563EB,#7C3AED)':'rgba(255,255,255,.05)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', flexShrink:0, animation: i===currentStep?'spin 1s linear infinite':'none' }}>
-                      {i<currentStep?'✓': i===currentStep?'⟳':''}
+                    <div style={{ width:'20px', height:'20px', borderRadius:'50%', background: i<currentStep?'#10B981': i===currentStep?'linear-gradient(135deg,#2563EB,#7C3AED)':'rgba(255,255,255,.05)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'10px', flexShrink:0, animation: i===currentStep?'spin 1s linear infinite':'none', color:'#fff' }}>
+                      {i<currentStep ? '✓' : i===currentStep ? '⟳' : ''}
                     </div>
                     <span style={{ fontSize:'13px', color: i<=currentStep?'#94A3B8':'#334155', fontWeight: i===currentStep?600:400 }}>{s}</span>
                   </div>
@@ -326,7 +329,7 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
             </div>
           )}
 
-          {/* ══ RESULT ══ */}
+          {/* RESULT */}
           {step === 'result' && result && sev && (
             <div>
               {/* Status tracker */}
@@ -334,15 +337,15 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                 <div style={{ fontSize:'11px', color:'#475569', fontWeight:600, letterSpacing:'.06em', textTransform:'uppercase', marginBottom:'16px' }}>Report Status</div>
                 <div style={{ display:'flex', alignItems:'center' }}>
                   {[
-                    { label:'Submitted',   icon:'✅', done:true,  active:false },
-                    { label:'AI Analyzed', icon:'🤖', done:true,  active:false },
-                    { label:'Dr. Review',  icon:'👨‍⚕️', done:false, active:true  },
-                    { label:'Approved',    icon:'🏥', done:false, active:false },
+                    { label:'Submitted',   Icon: CheckCircleIcon, done:true,  active:false },
+                    { label:'AI Analyzed', Icon: SparklesIcon,    done:true,  active:false },
+                    { label:'Dr. Review',  Icon: DoctorIcon,      done:false, active:true  },
+                    { label:'Approved',    Icon: LogoIcon,        done:false, active:false },
                   ].map((s,i)=>(
                     <React.Fragment key={i}>
                       <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'8px', flex:1 }}>
-                        <div style={{ width:'42px', height:'42px', borderRadius:'50%', background: s.done?'rgba(16,185,129,.15)': s.active?'rgba(245,158,11,.12)':'rgba(255,255,255,.04)', border:`2px solid ${s.done?'rgba(16,185,129,.4)': s.active?'rgba(245,158,11,.4)':'rgba(255,255,255,.08)'}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:'18px', animation: s.active?'pulseAmber 2s infinite':'none' }}>
-                          {s.icon}
+                        <div style={{ width:'42px', height:'42px', borderRadius:'50%', background: s.done?'rgba(16,185,129,.15)': s.active?'rgba(245,158,11,.12)':'rgba(255,255,255,.04)', border:`2px solid ${s.done?'rgba(16,185,129,.4)': s.active?'rgba(245,158,11,.4)':'rgba(255,255,255,.08)'}`, display:'flex', alignItems:'center', justifyContent:'center', animation: s.active?'pulseAmber 2s infinite':'none', color: s.done ? '#10B981' : s.active ? '#F59E0B' : '#475569' }}>
+                          <s.Icon size={18} />
                         </div>
                         <div style={{ fontSize:'11px', fontWeight:600, color: s.done?'#10B981': s.active?'#F59E0B':'#334155', textAlign:'center' }}>{s.label}</div>
                       </div>
@@ -364,15 +367,19 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                   <div style={{ fontSize:'11px', color:'#475569', marginBottom:'6px', fontWeight:600, letterSpacing:'.05em', textTransform:'uppercase' }}>{activeScanType.label} — Analysis Complete</div>
                   <h2 style={{ fontSize:'22px', fontWeight:800, color:'#F1F5F9', marginBottom:'14px' }}>AI Radiology Report</h2>
                   <div style={{ display:'flex', gap:'10px', flexWrap:'wrap' }}>
-                    <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', background:sev.bg, border:`1px solid ${sev.border}`, color:sev.color, padding:'8px 20px', borderRadius:'20px', fontSize:'14px', fontWeight:700 }}>{sev.label}</div>
-                    <div style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'rgba(245,158,11,.08)', border:'1px solid rgba(245,158,11,.2)', color:'#F59E0B', padding:'8px 16px', borderRadius:'20px', fontSize:'12px', fontWeight:600 }}>⏳ Doctor Review Pending</div>
+                    <div style={{ display:'inline-flex', alignItems:'center', gap:'8px', background:sev.bg, border:`1px solid ${sev.border}`, color:sev.color, padding:'8px 20px', borderRadius:'20px', fontSize:'14px', fontWeight:700 }}>
+                      <span style={{ width:8, height:8, borderRadius:'50%', background:sev.color, display:'inline-block' }} />
+                      {sev.label}
+                    </div>
+                    <div style={{ display:'inline-flex', alignItems:'center', gap:'6px', background:'rgba(245,158,11,.08)', border:'1px solid rgba(245,158,11,.2)', color:'#F59E0B', padding:'8px 16px', borderRadius:'20px', fontSize:'12px', fontWeight:600 }}>
+                      <ClockIcon size={12} /> Doctor Review Pending
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Stats */}
               <div className="rs" style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'14px', marginBottom:'20px', animationDelay:'.14s' }}>
-                {/* Confidence gauge */}
                 <div style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'20px', display:'flex', alignItems:'center', gap:'16px' }}>
                   <svg width="90" height="90" viewBox="0 0 90 90">
                     <circle cx="45" cy="45" r={R} fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="8" />
@@ -384,7 +391,6 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                     <div style={{ fontSize:'22px', fontWeight:800, color:sev.color }}>{Math.round(confidence)}%</div>
                   </div>
                 </div>
-
                 <div style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'20px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
                   <div style={{ fontSize:'11px', color:'#475569', fontWeight:600, letterSpacing:'.05em', textTransform:'uppercase', marginBottom:'8px' }}>Analysis Time</div>
                   <div style={{ fontSize:'30px', fontWeight:800, color:'#E2E8F0' }}>
@@ -392,10 +398,9 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
                   </div>
                   <div style={{ fontSize:'11px', color:'#334155', marginTop:'4px' }}>Processing time</div>
                 </div>
-
-                <div style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'20px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+                <div style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'20px', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
                   <div style={{ fontSize:'11px', color:'#475569', fontWeight:600, letterSpacing:'.05em', textTransform:'uppercase', marginBottom:'8px' }}>Scan Type</div>
-                  <div style={{ fontSize:'26px', marginBottom:'6px' }}>{activeScanType.icon}</div>
+                  <div style={{ marginBottom:'6px', color:'#A5B4FC' }}><activeScanType.Icon size={26} /></div>
                   <div style={{ fontSize:'14px', fontWeight:700, color:'#A5B4FC' }}>{activeScanType.label}</div>
                 </div>
               </div>
@@ -403,7 +408,7 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
               {/* Findings */}
               {result.findings?.length > 0 && (
                 <div className="rs" style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'22px', marginBottom:'20px', animationDelay:'.2s' }}>
-                  <div style={{ fontSize:'13px', fontWeight:700, color:'#94A3B8', marginBottom:'16px' }}>🔎 Key Findings</div>
+                  <div style={{ fontSize:'13px', fontWeight:700, color:'#94A3B8', marginBottom:'16px', display:'flex', alignItems:'center', gap:'8px' }}><SearchIcon size={14} /> Key Findings</div>
                   <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px' }}>
                     {result.findings.map((f: string, i: number) => (
                       <div key={i} className="finding" style={{ display:'flex', alignItems:'center', gap:'10px', padding:'10px 14px', background:'rgba(16,185,129,.05)', border:'1px solid rgba(16,185,129,.1)', borderRadius:'10px', animationDelay:`${i*.07}s` }}>
@@ -417,21 +422,21 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
 
               {/* English Report */}
               <div className="rs" style={{ background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.06)', borderRadius:'16px', padding:'22px', marginBottom:'20px', animationDelay:'.26s' }}>
-                <div style={{ fontSize:'13px', fontWeight:700, color:'#94A3B8', marginBottom:'14px' }}>📋 AI Radiology Report</div>
+                <div style={{ fontSize:'13px', fontWeight:700, color:'#94A3B8', marginBottom:'14px', display:'flex', alignItems:'center', gap:'8px' }}><ClipboardIcon size={14} /> AI Radiology Report</div>
                 <div style={{ fontSize:'14px', color:'#CBD5E1', lineHeight:1.9, whiteSpace:'pre-line' }}>{result.report || result.analysis || '—'}</div>
               </div>
 
               {/* Urdu Report */}
               {result.urdu_report && (
                 <div className="rs" style={{ background:'rgba(124,58,237,.04)', border:'1px solid rgba(124,58,237,.12)', borderRadius:'16px', padding:'22px', marginBottom:'20px', direction:'rtl', animationDelay:'.32s' }}>
-                  <div style={{ fontSize:'13px', fontWeight:700, color:'#A78BFA', marginBottom:'14px' }}>🇵🇰 اردو رپورٹ</div>
+                  <div style={{ fontSize:'13px', fontWeight:700, color:'#A78BFA', marginBottom:'14px' }}>&#127477;&#127472; اردو رپورٹ</div>
                   <div style={{ fontSize:'14px', color:'#CBD5E1', lineHeight:2, whiteSpace:'pre-line' }}>{result.urdu_report}</div>
                 </div>
               )}
 
               {/* Disclaimer */}
-              <div className="rs" style={{ background:'rgba(245,158,11,.04)', border:'1px solid rgba(245,158,11,.12)', borderRadius:'12px', padding:'14px 18px', fontSize:'12px', color:'#FCD34D', marginBottom:'20px', display:'flex', gap:'8px', animationDelay:'.36s' }}>
-                <span style={{ flexShrink:0 }}>⚠️</span>
+              <div className="rs" style={{ background:'rgba(245,158,11,.04)', border:'1px solid rgba(245,158,11,.12)', borderRadius:'12px', padding:'14px 18px', fontSize:'12px', color:'#FCD34D', marginBottom:'20px', display:'flex', alignItems:'center', gap:'8px', animationDelay:'.36s' }}>
+                <span style={{ flexShrink:0, display:'flex' }}><AlertTriangleIcon size={14} /></span>
                 Yeh AI analysis hai — final diagnosis ke liye licensed doctor se zaroor milen. Report doctor ke paas review ke liye bheji ja chuki hai.
               </div>
 
@@ -439,15 +444,15 @@ const XRayAnalyzer = ({ onBack }: { onBack: () => void }) => {
               <div className="rs" style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'12px', animationDelay:'.4s' }}>
                 <button className="rbtn" onClick={()=>{ setStep('upload'); setResult(null); setPreview(null); setSelectedFile(null); setError(''); }}
                   style={{ background:'linear-gradient(135deg,#2563EB,#7C3AED)', color:'#fff', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:700, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', border:'none', cursor:'pointer' }}>
-                  🔄 New Scan
+                  <RefreshIcon size={14} /> New Scan
                 </button>
                 <button className="rbtn" onClick={()=>window.print()}
                   style={{ background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#94A3B8', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:600, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', cursor:'pointer' }}>
-                  📄 Print Report
+                  <PrinterIcon size={14} /> Print Report
                 </button>
                 <button className="rbtn" onClick={onBack}
                   style={{ background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#94A3B8', padding:'14px', borderRadius:'12px', fontSize:'13px', fontWeight:600, fontFamily:'Sora,sans-serif', display:'flex', alignItems:'center', justifyContent:'center', gap:'6px', cursor:'pointer' }}>
-                  ← Dashboard
+                  <ArrowLeftIcon size={14} /> Dashboard
                 </button>
               </div>
             </div>

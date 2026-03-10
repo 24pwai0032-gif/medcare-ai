@@ -3,75 +3,12 @@ import Login from './pages/Login';
 import PatientDashboard from './pages/PatientDashboard';
 import DoctorDashboard from './pages/DoctorDashboard';
 import { isLoggedIn, getUser, logout } from './services/api';
-
-/* ─── SVG Icon Components ─── */
-const IconXRay = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <polygon points="12 2 2 7 2 17 12 22 22 17 22 7 12 2" />
-    <line x1="12" y1="12" x2="12" y2="12.01" />
-  </svg>
-);
-const IconBone = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <circle cx="6" cy="12" r="3" /><circle cx="18" cy="12" r="3" /><line x1="9" y1="12" x2="15" y2="12" />
-  </svg>
-);
-const IconHeart = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '100%', height: '100%' }}>
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
-const IconLab = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
-  </svg>
-);
-const IconBrain = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Z" /><circle cx="12" cy="12" r="2" />
-  </svg>
-);
-const IconSearch = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
-  </svg>
-);
-const IconPills = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <circle cx="7" cy="7" r="4" /><circle cx="17" cy="7" r="4" /><path d="M7 11v6a4 4 0 0 0 4 4h2a4 4 0 0 0 4-4v-6" />
-  </svg>
-);
-const IconChart = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
-);
-const IconAlert = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '100%', height: '100%' }}>
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-  </svg>
-);
-const IconClinic = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <path d="M12 2v20M2 12h20" /><rect x="5" y="5" width="14" height="14" rx="2" />
-  </svg>
-);
-
-const IconLogo = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor" style={{ width: '100%', height: '100%' }}>
-    <rect x="3" y="5" width="5" height="14" rx="1" fill="#60A5FA" />
-    <rect x="10" y="3" width="5" height="16" rx="1" fill="#A78BFA" />
-    <rect x="17" y="7" width="5" height="12" rx="1" fill="#60A5FA" />
-  </svg>
-);
-
-const IconDoctorApprove = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '100%', height: '100%' }}>
-    <path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2z" />
-    <polyline points="16 12 12 9 8 12" />
-    <line x1="12" y1="9" x2="12" y2="18" />
-  </svg>
-);
+import {
+  LungsIcon, BoneIcon, HeartPulseIcon, TestTubeIcon, BrainIcon,
+  SearchIcon, PillIcon, StethoscopeIcon, SirenIcon, LogoIcon,
+  MedicalCrossIcon, ActivityIcon, UploadIcon, DoctorIcon,
+  SparklesIcon, CheckCircleIcon, ShieldCheckIcon,
+} from './components/Icons';
 
 /* ─── AI-Generated Avatar Component ─── */
 const AIAvatar = ({ initials, gradient, size = 42 }: { initials: string; gradient: string; size?: number }) => (
@@ -161,15 +98,15 @@ export default function App() {
   if (page === 'doctor')    return <DoctorDashboard  user={user} onLogout={() => { logout(); setUser(null); setPage('home'); }} />;
 
   const modules = [
-    { icon: IconXRay,  t: 'X-Ray Analysis',  d: 'Chest X-ray, MRI & CT scan with radiologist-level accuracy', c: '#2563EB', bg: '#DBEAFE', light: '#EFF6FF' },
-    { icon: IconBone,  t: 'Bone Scan',        d: 'Fracture & bone disease detection with orthopedic precision', c: '#7C3AED', bg: '#EDE9FE', light: '#F5F3FF' },
-    { icon: IconHeart, t: 'ECG Analyzer',     d: 'Heart rhythm & cardiac condition detection in real-time',     c: '#DC2626', bg: '#FEE2E2', light: '#FEF2F2' },
-    { icon: IconLab,   t: 'Blood Tests',      d: 'Full blood report with abnormal value detection & flagging',  c: '#059669', bg: '#D1FAE5', light: '#F0FDF4' },
-    { icon: IconBrain, t: 'Mental Health',    d: 'PHQ-9 & GAD-7 validated depression & anxiety screening',     c: '#D97706', bg: '#FEF3C7', light: '#FFFBEB' },
-    { icon: IconSearch,t: 'Diagnosis AI',     d: 'Symptom-based differential diagnosis with confidence scores',c: '#0891B2', bg: '#CFFAFE', light: '#F0F9FF' },
-    { icon: IconPills, t: 'Prescription',     d: 'Handwritten prescription reader in Urdu & English',          c: '#DB2777', bg: '#FCE7F3', light: '#FDF2F8' },
-    { icon: IconChart, t: 'Vital Signs',      d: 'BP, blood sugar & oxygen level monitoring & tracking',       c: '#0D9488', bg: '#CCFBF1', light: '#F0FDFA' },
-    { icon: IconAlert, t: 'Emergency Aid',    d: 'Instant first aid guidance for critical situations',         c: '#EA580C', bg: '#FFEDD5', light: '#FFF7ED' },
+    { Icon: LungsIcon,       t: 'X-Ray Analysis',  d: 'Chest X-ray, MRI & CT scan with radiologist-level accuracy', c: '#2563EB', bg: '#DBEAFE', light: '#EFF6FF' },
+    { Icon: BoneIcon,        t: 'Bone Scan',        d: 'Fracture & bone disease detection with orthopedic precision', c: '#7C3AED', bg: '#EDE9FE', light: '#F5F3FF' },
+    { Icon: HeartPulseIcon,  t: 'ECG Analyzer',     d: 'Heart rhythm & cardiac condition detection in real-time',     c: '#DC2626', bg: '#FEE2E2', light: '#FEF2F2' },
+    { Icon: TestTubeIcon,    t: 'Blood Tests',      d: 'Full blood report with abnormal value detection & flagging',  c: '#059669', bg: '#D1FAE5', light: '#F0FDF4' },
+    { Icon: BrainIcon,       t: 'Mental Health',    d: 'PHQ-9 & GAD-7 validated depression & anxiety screening',     c: '#D97706', bg: '#FEF3C7', light: '#FFFBEB' },
+    { Icon: SearchIcon,      t: 'Diagnosis AI',     d: 'Symptom-based differential diagnosis with confidence scores',c: '#0891B2', bg: '#CFFAFE', light: '#F0F9FF' },
+    { Icon: PillIcon,        t: 'Prescription',     d: 'Handwritten prescription reader in Urdu & English',          c: '#DB2777', bg: '#FCE7F3', light: '#FDF2F8' },
+    { Icon: StethoscopeIcon, t: 'Vital Signs',      d: 'BP, blood sugar & oxygen level monitoring & tracking',       c: '#0D9488', bg: '#CCFBF1', light: '#F0FDFA' },
+    { Icon: SirenIcon,       t: 'Emergency Aid',    d: 'Instant first aid guidance for critical situations',         c: '#EA580C', bg: '#FFEDD5', light: '#FFF7ED' },
   ];
 
   return (
@@ -306,7 +243,7 @@ export default function App() {
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <div style={{ width: 38, height: 38, borderRadius: 10, background: 'linear-gradient(135deg,#2563EB,#7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', boxShadow: '0 4px 16px rgba(37,99,235,.5)', flexShrink: 0 }}>
-            <div style={{ width: 22, height: 22 }}><IconLogo /></div>
+            <LogoIcon size={22} />
           </div>
           <span style={{ fontWeight: 800, fontSize: 16, letterSpacing: '-.5px', color: '#fff', whiteSpace: 'nowrap' }}>
             MedCare <span style={{ background: 'linear-gradient(135deg,#60A5FA,#A78BFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI</span>
@@ -371,7 +308,7 @@ export default function App() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,.06)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg,#2563EB,#7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div style={{ width: 17, height: 17 }}><IconLogo /></div>
+                <LogoIcon size={17} />
               </div>
               <span style={{ fontWeight: 800, fontSize: 15, color: '#fff' }}>MedCare <span style={{ background: 'linear-gradient(135deg,#60A5FA,#A78BFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI</span></span>
             </div>
@@ -494,7 +431,7 @@ export default function App() {
               <div style={{ background: 'rgba(255,255,255,.04)', padding: '12px 15px', borderBottom: '1px solid rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', gap: 6 }}>
                 {['#EF4444','#F59E0B','#22C55E'].map((c,i) => <div key={i} style={{ width: 10, height: 10, borderRadius: '50%', background: c, opacity: .8 }} />)}
                 <div style={{ flex: 1, margin: '0 8px', background: 'rgba(255,255,255,.06)', borderRadius: 5, padding: '4px 10px', display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <span style={{ fontSize: 9.5 }}>🔒</span>
+                  <span style={{ fontSize: 9.5, display: 'flex' }}><ShieldCheckIcon size={10} /></span>
                   <span style={{ fontSize: 10.5, color: 'rgba(255,255,255,.4)', fontFamily: 'monospace' }}>medcareai.app</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -510,7 +447,7 @@ export default function App() {
                     onMouseEnter={e => { const el = e.currentTarget; el.style.background = 'rgba(255,255,255,.04)'; el.style.borderColor = 'rgba(255,255,255,.06)'; }}
                     onMouseLeave={e => { const el = e.currentTarget; el.style.background = 'transparent'; el.style.borderColor = 'transparent'; }}
                   >
-                    <div style={{ width: 20, height: 20, flexShrink: 0, color: 'rgba(255,255,255,.6)' }}><m.icon /></div>
+                    <m.Icon size={20} />
                     <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,.7)' }}>{m.t}</div>
                   </div>
                 ))}
@@ -552,16 +489,16 @@ export default function App() {
         <Reveal>
           <div style={{ maxWidth: 1000, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 2 }}>
             {[
-              { n: 10000, s: '+', label: 'Patients Served',   icon: IconClinic, col: '#60A5FA', desc: 'Across all of Pakistan' },
-              { n: 9,     s: '',  label: 'AI Modules',        icon: IconBrain, col: '#A78BFA', desc: 'Covering all major scans' },
-              { n: 98,    s: '%', label: 'Accuracy Rate',     icon: IconSearch, col: '#FBBF24', desc: 'Radiologist-level results' },
-              { n: 100,   s: '%', label: 'Free for Patients', icon: IconHeart, col: '#34D399', desc: 'No hidden charges. Ever.' },
+              { n: 10000, s: '+', label: 'Patients Served',   Icon: MedicalCrossIcon, col: '#60A5FA', desc: 'Across all of Pakistan' },
+              { n: 9,     s: '',  label: 'AI Modules',        Icon: BrainIcon, col: '#A78BFA', desc: 'Covering all major scans' },
+              { n: 98,    s: '%', label: 'Accuracy Rate',     Icon: SearchIcon, col: '#FBBF24', desc: 'Radiologist-level results' },
+              { n: 100,   s: '%', label: 'Free for Patients', Icon: HeartPulseIcon, col: '#34D399', desc: 'No hidden charges. Ever.' },
             ].map((s, i) => (
               <div key={i} style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.06)', borderRadius: 20, padding: '36px 28px', textAlign: 'center', transition: 'all .28s', cursor: 'default' }}
                 onMouseEnter={e => { const el = e.currentTarget; el.style.background = 'rgba(255,255,255,.06)'; el.style.borderColor = 'rgba(255,255,255,.1)'; el.style.transform = 'translateY(-4px)'; }}
                 onMouseLeave={e => { const el = e.currentTarget; el.style.background = 'rgba(255,255,255,.03)'; el.style.borderColor = 'rgba(255,255,255,.06)'; el.style.transform = ''; }}
               >
-                <div style={{ width: 48, height: 48, margin: '0 auto 16px', color: s.col }}><s.icon /></div>
+                <div style={{ width: 48, height: 48, margin: '0 auto 16px', color: s.col }}><s.Icon size={48} /></div>
                 <div style={{ fontSize: 48, fontWeight: 900, letterSpacing: '-3px', color: s.col, lineHeight: 1, marginBottom: 6 }}><Counter end={s.n} suffix={s.s} /></div>
                 <div style={{ color: '#fff', fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{s.label}</div>
                 <div style={{ color: 'rgba(255,255,255,.35)', fontSize: 12 }}>{s.desc}</div>
@@ -596,7 +533,7 @@ export default function App() {
                   onMouseLeave={e => { const el = e.currentTarget; el.style.borderColor = '#F1F5F9'; el.style.boxShadow = '0 1px 4px rgba(0,0,0,.04)'; el.style.background = '#fff'; }}
                   onClick={() => go('login')}
                 >
-                  <div style={{ width: 48, height: 48, borderRadius: 13, flexShrink: 0, background: m.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: m.c }}><m.icon /></div>
+                  <div style={{ width: 48, height: 48, borderRadius: 13, flexShrink: 0, background: m.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', color: m.c }}><m.Icon size={28} /></div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14.5, color: '#0F172A', marginBottom: 4 }}>{m.t}</div>
                     <div style={{ color: '#64748B', fontSize: 13, lineHeight: 1.6 }}>{m.d}</div>
@@ -626,10 +563,10 @@ export default function App() {
           </Reveal>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 14 }}>
             {[
-              { n:'01', icon: IconXRay, t:'Upload Scan',    d:'Drag & drop your X-ray, ECG, or blood report',       c:'#60A5FA', border:'rgba(96,165,250,.3)' },
-              { n:'02', icon: IconBrain, t:'AI Analyzes',   d:'LLaVA-Med processes with precision in 2-3 min',      c:'#A78BFA', border:'rgba(167,139,250,.3)' },
-              { n:'03', icon: IconChart, t:'Get Report',    d:'Detailed findings in Urdu & English instantly',     c:'#34D399', border:'rgba(52,211,153,.3)' },
-              { n:'04', icon: IconDoctorApprove, t:'Doctor Approves', d:'Certified physician verifies & signs off', c:'#FBBF24', border:'rgba(251,191,36,.3)' },
+              { n:'01', Icon: UploadIcon, t:'Upload Scan',    d:'Drag & drop your X-ray, ECG, or blood report',       c:'#60A5FA', border:'rgba(96,165,250,.3)' },
+              { n:'02', Icon: BrainIcon, t:'AI Analyzes',   d:'LLaVA-Med processes with precision in 2-3 min',      c:'#A78BFA', border:'rgba(167,139,250,.3)' },
+              { n:'03', Icon: ActivityIcon, t:'Get Report',    d:'Detailed findings in Urdu & English instantly',     c:'#34D399', border:'rgba(52,211,153,.3)' },
+              { n:'04', Icon: DoctorIcon, t:'Doctor Approves', d:'Certified physician verifies & signs off', c:'#FBBF24', border:'rgba(251,191,36,.3)' },
             ].map((s, i) => (
               <Reveal key={i} delay={i * 0.1}>
                 <div className="card-hover" style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${s.border}`, borderRadius: 20, padding: '30px 20px', textAlign: 'center', backdropFilter: 'blur(10px)', height: '100%' }}
@@ -637,7 +574,7 @@ export default function App() {
                   onMouseLeave={e => { const el = e.currentTarget; el.style.background = 'rgba(255,255,255,.04)'; el.style.boxShadow = ''; }}
                 >
                   <div style={{ fontSize: 11, fontWeight: 800, color: s.c, letterSpacing: '.15em', marginBottom: 14, opacity: .7 }}>{s.n}</div>
-                  <div style={{ width: 62, height: 62, borderRadius: 18, margin: '0 auto 18px', background: `${s.c}18`, border: `1px solid ${s.c}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.c }}><s.icon /></div>
+                  <div style={{ width: 62, height: 62, borderRadius: 18, margin: '0 auto 18px', background: `${s.c}18`, border: `1px solid ${s.c}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.c }}><s.Icon size={36} /></div>
                   <div style={{ fontWeight: 700, fontSize: 16, color: '#fff', marginBottom: 8 }}>{s.t}</div>
                   <div style={{ color: 'rgba(255,255,255,.45)', fontSize: 13, lineHeight: 1.65 }}>{s.d}</div>
                 </div>
@@ -725,7 +662,7 @@ export default function App() {
                 <div style={{ padding: '18px 22px', fontSize: 12, color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.05em' }}>Feature</div>
                 <div style={{ padding: '18px 22px', fontSize: 12, color: '#94A3B8', fontWeight: 700, textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,.06)' }}>Traditional</div>
                 <div style={{ padding: '18px 22px', fontSize: 12, color: '#60A5FA', fontWeight: 800, textAlign: 'center', borderLeft: '1px solid rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
-                  🏥 MedCare AI <span style={{ background: 'linear-gradient(135deg,#2563EB,#7C3AED)', color: '#fff', fontSize: 8, padding: '2px 7px', borderRadius: 100, fontWeight: 800 }}>BEST</span>
+                  <LogoIcon size={14} /> MedCare AI <span style={{ background: 'linear-gradient(135deg,#2563EB,#7C3AED)', color: '#fff', fontSize: 8, padding: '2px 7px', borderRadius: 100, fontWeight: 800 }}>BEST</span>
                 </div>
               </div>
               {[
@@ -798,17 +735,17 @@ export default function App() {
             <p style={{ color: 'rgba(255,255,255,.2)', fontSize: 11, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 28 }}>Powered by world-class technology</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
               {[
-                { n:'Microsoft Research', icon: IconSearch, c:'#60A5FA', b:'rgba(96,165,250,.2)' },
-                { n:'Nature Medicine',    icon: IconLab, c:'#34D399', b:'rgba(52,211,153,.2)' },
-                { n:'Google Cloud',       icon: IconChart, c:'#93C5FD', b:'rgba(147,197,253,.2)' },
-                { n:'LLaVA-Med AI',       icon: IconBrain, c:'#A78BFA', b:'rgba(167,139,250,.2)' },
-                { n:'Atomcamp Cohort 15', icon: IconAlert, c:'#FCD34D', b:'rgba(252,211,77,.2)' },
+                { n:'Microsoft Research', Icon: SearchIcon, c:'#60A5FA', b:'rgba(96,165,250,.2)' },
+                { n:'Nature Medicine',    Icon: TestTubeIcon, c:'#34D399', b:'rgba(52,211,153,.2)' },
+                { n:'Google Cloud',       Icon: ActivityIcon, c:'#93C5FD', b:'rgba(147,197,253,.2)' },
+                { n:'LLaVA-Med AI',       Icon: BrainIcon, c:'#A78BFA', b:'rgba(167,139,250,.2)' },
+                { n:'Atomcamp Cohort 15', Icon: SparklesIcon, c:'#FCD34D', b:'rgba(252,211,77,.2)' },
               ].map((p, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, background: p.b, border: `1px solid ${p.b}`, borderRadius: 12, padding: '10px 18px', transition: 'all .22s', cursor: 'default', backdropFilter: 'blur(8px)' }}
                   onMouseEnter={e => { const el = e.currentTarget; el.style.transform = 'translateY(-3px)'; el.style.boxShadow = `0 8px 24px ${p.c}22`; }}
                   onMouseLeave={e => { const el = e.currentTarget; el.style.transform = ''; el.style.boxShadow = ''; }}
                 >
-                  <div style={{ width: 18, height: 18, color: p.c }}><p.icon /></div>
+                  <div style={{ width: 18, height: 18, color: p.c }}><p.Icon size={18} /></div>
                   <span style={{ fontWeight: 700, fontSize: 13, color: p.c }}>{p.n}</span>
                 </div>
               ))}
@@ -821,12 +758,12 @@ export default function App() {
       <section style={{ padding: '80px 6%', position: 'relative', zIndex: 1 }}>
         <Reveal>
           <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
-            <div style={{ fontSize: 36, marginBottom: 14 }}>📬</div>
+            <div style={{ marginBottom: 14, color: '#60A5FA' }}><SparklesIcon size={36} /></div>
             <h2 style={{ fontSize: 'clamp(22px,3vw,34px)', fontWeight: 800, letterSpacing: '-1.5px', color: '#fff', marginBottom: 10 }}>Get Health Tips in Urdu</h2>
             <p style={{ color: 'rgba(255,255,255,.45)', fontSize: 14.5, marginBottom: 28, lineHeight: 1.7 }}>Weekly medical insights, AI health updates, and free guides — delivered to your inbox in Urdu & English.</p>
             {subDone ? (
-              <div style={{ background: 'rgba(52,211,153,.15)', border: '1px solid rgba(52,211,153,.3)', borderRadius: 12, padding: '16px 24px', color: '#34D399', fontWeight: 700, fontSize: 15 }}>
-                ✅ Subscribed! Health tips coming your way.
+              <div style={{ background: 'rgba(52,211,153,.15)', border: '1px solid rgba(52,211,153,.3)', borderRadius: 12, padding: '16px 24px', color: '#34D399', fontWeight: 700, fontSize: 15, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <CheckCircleIcon size={18} /> Subscribed! Health tips coming your way.
               </div>
             ) : (
               <div style={{ display: 'flex', gap: 0, borderRadius: 12, overflow: 'hidden', border: '1px solid rgba(255,255,255,.12)', background: 'rgba(255,255,255,.05)', backdropFilter: 'blur(10px)', maxWidth: 440, margin: '0 auto' }}>
@@ -879,7 +816,7 @@ export default function App() {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
                 <div style={{ width: 32, height: 32, borderRadius: 9, background: 'linear-gradient(135deg,#2563EB,#7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-                  <div style={{ width: 18, height: 18 }}><IconClinic /></div>
+                  <LogoIcon size={18} />
                 </div>
                 <span style={{ fontWeight: 800, fontSize: 15, color: '#fff' }}>MedCare <span style={{ background: 'linear-gradient(135deg,#60A5FA,#A78BFA)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI</span></span>
               </div>
@@ -914,7 +851,7 @@ export default function App() {
                 >{icon.substring(0, 1)}</div>
               ))}
             </div>
-            <p style={{ color: 'rgba(255,255,255,.2)', fontSize: 12, textAlign: 'center' }}>© 2026 MedCare AI — Built with ❤️ by Syed Hassan Tayyab — Atomcamp Cohort 15</p>
+            <p style={{ color: 'rgba(255,255,255,.2)', fontSize: 12, textAlign: 'center' }}>© 2026 MedCare AI — Built with ♥ by Syed Hassan Tayyab — Atomcamp Cohort 15</p>
           </div>
 
         </div>

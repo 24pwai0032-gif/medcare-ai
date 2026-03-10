@@ -1,6 +1,5 @@
 # backend/routers/imaging.py
 from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
-from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 import logging
 import time
@@ -19,27 +18,11 @@ router = APIRouter(
 
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/bmp", "image/avif", "image/tiff"}
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login", auto_error=False)
-
-
-# ✅ Optional auth — token ho toh user milega, na ho toh None
-def get_optional_user(
-    token: str = Depends(oauth2_scheme),
-    db: Session = Depends(get_db),
-):
-    if not token:
-        return None
-    try:
-        return auth.get_current_user(token, db)
-    except Exception:
-        return None
-
-
 async def analyze_scan(
     scan_type: str,
     file: UploadFile,
     db: Session,
-    current_user=None,
+    current_user,
 ):
     if file.content_type not in ALLOWED_TYPES:
         raise HTTPException(status_code=400, detail="Invalid file type. Allowed: JPEG, PNG, WEBP, BMP")
@@ -65,32 +48,33 @@ async def analyze_scan(
 
     time_taken = round(time.time() - start_time, 1)
 
-    # Save scan to DB if user is logged in
-    if current_user:
-        try:
-            scan = models.Scan(
-                user_id      = current_user.id,
-                scan_type    = scan_type,
-                filename     = file.filename or f"{scan_type}_scan.jpg",
-                report       = result.get("report", ""),
-                severity     = result.get("severity", ""),
-                confidence   = float(result.get("confidence", 0)),
-                time_seconds = time_taken,
-                status       = "pending",   # doctor review ke liye
-            )
-            db.add(scan)
-            db.commit()
-            db.refresh(scan)
-            logger.info(f"✅ Scan saved: user={current_user.id}, type={scan_type}, id={scan.id}")
-        except Exception as e:
-            logger.error(f"DB save error: {e}")
-            db.rollback()
-    else:
-        logger.warning(f"⚠️ Scan not saved — no authenticated user")
+    # Save scan to DB — always saved since auth is required
+    scan_id = None
+    try:
+        scan = models.Scan(
+            user_id      = current_user.id,
+            scan_type    = scan_type,
+            filename     = file.filename or f"{scan_type}_scan.jpg",
+            report       = result.get("report", ""),
+            severity     = result.get("severity", ""),
+            confidence   = float(result.get("confidence", 0)),
+            time_seconds = time_taken,
+            status       = "pending",   # doctor review ke liye
+        )
+        db.add(scan)
+        db.commit()
+        db.refresh(scan)
+        scan_id = scan.id
+        logger.info(f"✅ Scan saved: user={current_user.id}, type={scan_type}, id={scan.id}")
+    except Exception as e:
+        logger.error(f"DB save error: {e}")
+        db.rollback()
 
     return {
         "success"     : True,
         "scan_type"   : scan_type,
+        "scan_id"     : scan_id,
+        "scan_saved"  : scan_id is not None,
         "filename"    : file.filename,
         "report"      : result.get("report", ""),
         "urdu_report" : result.get("report_urdu", ""),
@@ -105,7 +89,7 @@ async def analyze_scan(
 async def analyze_xray(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),
+    current_user=Depends(auth.get_current_user),
 ):
     return await analyze_scan("xray", file, db, current_user)
 
@@ -114,7 +98,7 @@ async def analyze_xray(
 async def analyze_ecg(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),
+    current_user=Depends(auth.get_current_user),
 ):
     return await analyze_scan("ecg", file, db, current_user)
 
@@ -123,7 +107,7 @@ async def analyze_ecg(
 async def analyze_blood_test(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),
+    current_user=Depends(auth.get_current_user),
 ):
     return await analyze_scan("blood-test", file, db, current_user)
 
@@ -132,7 +116,7 @@ async def analyze_blood_test(
 async def analyze_bone(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),
+    current_user=Depends(auth.get_current_user),
 ):
     return await analyze_scan("bone", file, db, current_user)
 
@@ -141,7 +125,7 @@ async def analyze_bone(
 async def analyze_skin(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),
+    current_user=Depends(auth.get_current_user),
 ):
     return await analyze_scan("skin", file, db, current_user)
 
@@ -150,6 +134,6 @@ async def analyze_skin(
 async def analyze_prescription(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user=Depends(get_optional_user),
+    current_user=Depends(auth.get_current_user),
 ):
     return await analyze_scan("prescription", file, db, current_user)

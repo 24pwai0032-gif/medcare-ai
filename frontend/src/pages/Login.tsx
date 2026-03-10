@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { registerUser, loginUser, saveToken, saveUser } from '../services/api';
+import {
+  LogoIcon, UserIcon, DoctorIcon, ShieldCheckIcon,
+  CheckCircleIcon, AlertTriangleIcon, EyeIcon,
+} from '../components/Icons';
 
 interface LoginProps { onLogin: (user: any) => void; }
 
@@ -128,11 +132,11 @@ export default function Login({ onLogin }: LoginProps) {
 
         {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 28 }}>
-          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #3182CE, #805AD5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, boxShadow: '0 4px 14px rgba(49,130,206,0.4)' }}>🏥</div>
+          <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, #3182CE, #805AD5)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 14px rgba(49,130,206,0.4)', color: '#fff' }}><LogoIcon size={18} /></div>
           <span style={{ fontWeight: 700, fontSize: 18, color: '#fff', letterSpacing: '-0.3px' }}>MedCare <span style={{ background: 'linear-gradient(135deg,#63B3ED,#B794F4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>AI</span></span>
           <div className="badge" style={{ marginLeft: 4 }}>
             <div className="pulse-dot" />
-            <span style={{ fontSize: 11, color: '#90CDF4', fontWeight: 600 }}>🇵🇰 Pakistan</span>
+            <span style={{ fontSize: 11, color: '#90CDF4', fontWeight: 600 }}>&#127477;&#127472; Pakistan</span>
           </div>
         </div>
 
@@ -164,8 +168,8 @@ export default function Login({ onLogin }: LoginProps) {
             <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.35)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 9 }}>I am a</div>
             <div className="role-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
               {([
-                ['patient', '🙋', 'Patient'],
-                ['doctor',  '👨‍⚕️', 'Doctor'],
+                ['patient', 'patient', 'Patient'],
+                ['doctor',  'doctor', 'Doctor'],
               ] as const).map(([r, emoji, label]) => (
                 <div key={r} className="role-btn"
                   onClick={() => { setRole(r); setPmdc(''); }}
@@ -173,7 +177,7 @@ export default function Login({ onLogin }: LoginProps) {
                     background: role === r ? 'rgba(49,130,206,0.15)' : 'rgba(255,255,255,0.03)',
                     borderColor: role === r ? 'rgba(99,179,237,0.5)' : 'rgba(255,255,255,0.07)',
                   }}>
-                  <div style={{ fontSize: 22, marginBottom: 4 }}>{emoji}</div>
+                  <div style={{ marginBottom: 4, color: role === r ? '#63B3ED' : 'rgba(255,255,255,0.4)' }}>{emoji === 'patient' ? <UserIcon size={22} /> : <DoctorIcon size={22} />}</div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: role === r ? '#63B3ED' : 'rgba(255,255,255,0.6)' }}>{label}</div>
                   {role === r && (
                     <div style={{ fontSize: 10.5, color: '#63B3ED', fontWeight: 600, marginTop: 4, opacity: 0.8 }}>✓ Selected</div>
@@ -194,7 +198,7 @@ export default function Login({ onLogin }: LoginProps) {
                   value={name} onChange={e => { setName(e.target.value); setFieldErr(p => ({ ...p, name: '' })); }}
                   placeholder="Your full name"
                 />
-                {fieldErr.name && <div className="field-err">⚠ {fieldErr.name}</div>}
+                {fieldErr.name && <div className="field-err"><AlertTriangleIcon size={12} /> {fieldErr.name}</div>}
               </div>
             )}
 
@@ -206,7 +210,7 @@ export default function Login({ onLogin }: LoginProps) {
                 value={email} onChange={e => { setEmail(e.target.value); setFieldErr(p => ({ ...p, email: '' })); }}
                 placeholder="you@example.com"
               />
-              {fieldErr.email && <div className="field-err">⚠ {fieldErr.email}</div>}
+              {fieldErr.email && <div className="field-err"><AlertTriangleIcon size={12} /> {fieldErr.email}</div>}
             </div>
 
             <div className="field-group">
@@ -223,9 +227,9 @@ export default function Login({ onLogin }: LoginProps) {
                 <button onClick={() => setShowPass(p => !p)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 15, color: 'rgba(255,255,255,0.3)', transition: 'color 0.2s', padding: 0, lineHeight: 1 }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.3)'; }}
-                >{showPass ? '🙈' : '👁'}</button>
+                ><EyeIcon size={15} /></button>
               </div>
-              {fieldErr.password && <div className="field-err">⚠ {fieldErr.password}</div>}
+              {fieldErr.password && <div className="field-err"><AlertTriangleIcon size={12} /> {fieldErr.password}</div>}
             </div>
 
             {mode === 'register' && role === 'doctor' && (
@@ -239,7 +243,7 @@ export default function Login({ onLogin }: LoginProps) {
                   placeholder="e.g. PMDC-12345-P"
                 />
                 {fieldErr.pmdc
-                  ? <div className="field-err">⚠ {fieldErr.pmdc}</div>
+                  ? <div className="field-err"><AlertTriangleIcon size={12} /> {fieldErr.pmdc}</div>
                   : <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,0.25)', marginTop: 5 }}>Required for doctor verification</div>
                 }
               </div>
@@ -249,7 +253,7 @@ export default function Login({ onLogin }: LoginProps) {
           {/* Error */}
           {error && (
             <div style={{ marginTop: 16, padding: '11px 14px', background: 'rgba(252,129,74,0.1)', border: '1px solid rgba(252,129,74,0.25)', borderRadius: 9, fontSize: 13, color: '#FBD38D', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span>⚠️</span> {error}
+              <span style={{ display: 'flex', flexShrink: 0 }}><AlertTriangleIcon size={14} /></span> {error}
             </div>
           )}
 
@@ -273,10 +277,10 @@ export default function Login({ onLogin }: LoginProps) {
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            {[['👤 Patient Demo', 'patient@demo.com', 'patient'], ['👨‍⚕️ Doctor Demo', 'doctor@demo.com', 'doctor']].map(([label, hint, r], i) => (
+            {[['Patient Demo', 'patient@demo.com', 'patient'], ['Doctor Demo', 'doctor@demo.com', 'doctor']].map(([label, hint, r], i) => (
               <button key={i} className="demo-btn"
                 onClick={() => { setEmail(hint); setPassword('demo123'); setRole(r as any); setMode('login'); }}>
-                {label}
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>{r === 'patient' ? <UserIcon size={13} /> : <DoctorIcon size={13} />} {label}</span>
               </button>
             ))}
           </div>
@@ -292,9 +296,9 @@ export default function Login({ onLogin }: LoginProps) {
 
         {/* Trust footer */}
         <div style={{ display: 'flex', justifyContent: 'center', gap: 22, marginTop: 18, flexWrap: 'wrap' }}>
-          {[['🔒', 'Encrypted'], ['💚', 'Free Forever'], ['🌐', 'Urdu & English']].map(([e, t]) => (
+          {[['lock', 'Encrypted'], ['check', 'Free Forever'], ['globe', 'Urdu & English']].map(([e, t]) => (
             <div key={t} className="trust-pill">
-              <span style={{ fontSize: 12 }}>{e}</span>
+              <span style={{ display: 'flex', color: 'rgba(255,255,255,0.35)' }}>{e === 'lock' ? <ShieldCheckIcon size={13} /> : e === 'check' ? <CheckCircleIcon size={13} /> : <span style={{ fontSize: 12 }}>&#127760;</span>}</span>
               <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.25)', fontWeight: 500 }}>{t}</span>
             </div>
           ))}
