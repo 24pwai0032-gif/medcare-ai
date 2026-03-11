@@ -285,33 +285,15 @@ export const LogoIcon = ({ size = 24 }: P) => (
   <svg width={size} height={size} viewBox="0 0 512 512" fill="none">
     <defs>
       <linearGradient id="logoBg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#020617"/>
-        <stop offset="100%" stopColor="#0f172a"/>
-      </linearGradient>
-      <linearGradient id="logoHeart" x1="120" y1="100" x2="400" y2="420" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#818cf8"/>
-        <stop offset="35%" stopColor="#6366f1"/>
-        <stop offset="70%" stopColor="#4f46e5"/>
+        <stop offset="0%" stopColor="#4f46e5"/>
         <stop offset="100%" stopColor="#0ea5e9"/>
       </linearGradient>
-      <linearGradient id="logoPulse" x1="110" y1="270" x2="400" y2="270" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#ffffff" stopOpacity={0}/>
-        <stop offset="15%" stopColor="#ffffff" stopOpacity={0.95}/>
-        <stop offset="85%" stopColor="#e0f2fe" stopOpacity={0.95}/>
-        <stop offset="100%" stopColor="#e0f2fe" stopOpacity={0}/>
-      </linearGradient>
-      <radialGradient id="logoAiDot" cx="42%" cy="36%" r="55%">
-        <stop offset="0%" stopColor="#6ee7b7"/>
-        <stop offset="100%" stopColor="#059669"/>
-      </radialGradient>
     </defs>
-    <rect width="512" height="512" rx="110" fill="url(#logoBg)"/>
-    <path d="M256 420 C256 420 80 290 80 190 C80 130 120 80 180 80 C215 80 244 100 256 128 C268 100 297 80 332 80 C392 80 432 130 432 190 C432 290 256 420 256 420Z"
-          fill="url(#logoHeart)"/>
-    <path d="M110 250 L195 250 L215 250 L230 210 L248 300 L266 200 L284 290 L298 250 L318 250 L402 250"
-          fill="none" stroke="url(#logoPulse)" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round"/>
-    <circle cx="416" cy="96" r="28" fill="url(#logoAiDot)"/>
-    <circle cx="409" cy="89" r="9" fill="white" opacity={0.6}/>
+    <rect width="512" height="512" rx="128" fill="url(#logoBg)"/>
+    <rect x="196" y="80" width="120" height="352" rx="28" fill="white"/>
+    <rect x="80" y="196" width="352" height="120" rx="28" fill="white"/>
+    <path d="M100 256 L190 256 L220 200 L244 320 L268 190 L292 310 L316 256 L412 256"
+          fill="none" stroke="#4f46e5" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
