@@ -282,10 +282,27 @@ export const MedicalCrossIcon = ({ size = 24 }: P) => (
 );
 
 export const LogoIcon = ({ size = 24 }: P) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <rect x="3" y="5" width="5" height="14" rx="1.5" fill="#60A5FA" />
-    <rect x="10" y="3" width="5" height="16" rx="1.5" fill="#A78BFA" />
-    <rect x="17" y="7" width="5" height="12" rx="1.5" fill="#60A5FA" />
+  <svg width={size} height={size} viewBox="0 0 512 512" fill="none">
+    <defs>
+      <linearGradient id="logoBg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#1e1b4b"/>
+        <stop offset="45%" stopColor="#3730a3"/>
+        <stop offset="100%" stopColor="#0891b2"/>
+      </linearGradient>
+      <linearGradient id="logoCross" x1="160" y1="120" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#ffffff"/>
+        <stop offset="100%" stopColor="#e0f2fe"/>
+      </linearGradient>
+      <radialGradient id="logoAiDot" cx="45%" cy="38%" r="55%">
+        <stop offset="0%" stopColor="#6ee7b7"/>
+        <stop offset="100%" stopColor="#059669"/>
+      </radialGradient>
+    </defs>
+    <rect width="512" height="512" rx="112" fill="url(#logoBg)"/>
+    <rect x="206" y="96" width="100" height="320" rx="22" fill="url(#logoCross)"/>
+    <rect x="96" y="206" width="320" height="100" rx="22" fill="url(#logoCross)"/>
+    <circle cx="420" cy="92" r="30" fill="url(#logoAiDot)"/>
+    <circle cx="414" cy="86" r="10" fill="white" opacity={0.55}/>
   </svg>
 );
 
