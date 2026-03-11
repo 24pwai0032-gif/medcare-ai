@@ -285,15 +285,26 @@ export const LogoIcon = ({ size = 24 }: P) => (
   <svg width={size} height={size} viewBox="0 0 512 512" fill="none">
     <defs>
       <linearGradient id="logoBg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#4f46e5"/>
-        <stop offset="100%" stopColor="#0ea5e9"/>
+        <stop offset="0%" stopColor="#4338ca"/>
+        <stop offset="50%" stopColor="#4f46e5"/>
+        <stop offset="100%" stopColor="#0891b2"/>
+      </linearGradient>
+      <linearGradient id="logoCross" x1="196" y1="80" x2="316" y2="432" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#ffffff"/>
+        <stop offset="100%" stopColor="#e0e7ff"/>
+      </linearGradient>
+      <linearGradient id="logoEcg" x1="100" y1="256" x2="412" y2="256" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#4338ca" stopOpacity={0.2}/>
+        <stop offset="15%" stopColor="#4338ca"/>
+        <stop offset="85%" stopColor="#0891b2"/>
+        <stop offset="100%" stopColor="#0891b2" stopOpacity={0.2}/>
       </linearGradient>
     </defs>
     <rect width="512" height="512" rx="128" fill="url(#logoBg)"/>
-    <rect x="196" y="80" width="120" height="352" rx="28" fill="white"/>
-    <rect x="80" y="196" width="352" height="120" rx="28" fill="white"/>
+    <rect x="196" y="80" width="120" height="352" rx="28" fill="url(#logoCross)"/>
+    <rect x="80" y="196" width="352" height="120" rx="28" fill="url(#logoCross)"/>
     <path d="M100 256 L190 256 L220 200 L244 320 L268 190 L292 310 L316 256 L412 256"
-          fill="none" stroke="#4f46e5" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
+          fill="none" stroke="url(#logoEcg)" strokeWidth="14" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
