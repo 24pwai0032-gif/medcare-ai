@@ -1,11 +1,54 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#4F46E5"/>
-      <stop offset="100%" style="stop-color:#06B6D4"/>
+    <!-- Premium background gradient -->
+    <linearGradient id="bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="45%" stop-color="#3730a3"/>
+      <stop offset="100%" stop-color="#0891b2"/>
     </linearGradient>
+    <!-- Cross subtle gradient for depth -->
+    <linearGradient id="crossFill" x1="160" y1="120" x2="380" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0f2fe"/>
+    </linearGradient>
+    <!-- AI dot radial gradient -->
+    <radialGradient id="aiDot" cx="45%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </radialGradient>
+    <!-- Cross drop shadow -->
+    <filter id="crossShadow">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#0c0a2a" flood-opacity="0.4"/>
+    </filter>
+    <!-- AI dot outer glow -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
-  <path d="M32 12 L32 52 M12 32 L52 32" stroke="white" stroke-width="10" stroke-linecap="round"/>
-  <circle cx="50" cy="14" r="6" fill="#34D399"/>
+
+  <!-- Background rounded square -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Subtle glass highlight -->
+  <ellipse cx="210" cy="140" rx="210" ry="110" fill="white" opacity="0.05"/>
+
+  <!-- Medical cross with shadow -->
+  <g filter="url(#crossShadow)">
+    <rect x="206" y="96" width="100" height="320" rx="22" fill="url(#crossFill)"/>
+    <rect x="96" y="206" width="320" height="100" rx="22" fill="url(#crossFill)"/>
+  </g>
+
+  <!-- ECG heartbeat line on cross (visible at larger sizes) -->
+  <path d="M136 256 L214 256 L234 222 L256 298 L278 222 L298 256 L376 256"
+        fill="none" stroke="#3730a3" stroke-width="10" stroke-linecap="round"
+        stroke-linejoin="round" opacity="0.22"/>
+
+  <!-- AI indicator dot — layered glow -->
+  <circle cx="420" cy="92" r="44" fill="#10b981" opacity="0.25" filter="url(#glow)"/>
+  <circle cx="420" cy="92" r="30" fill="url(#aiDot)"/>
+  <circle cx="414" cy="86" r="10" fill="white" opacity="0.55"/>
 </svg>
