@@ -190,7 +190,7 @@ export default function App() {
           align-items: center;
           gap: 6%;
         }
-        .hero-left { flex: 1 1 460px; max-width: 600px; }
+        .hero-left { flex: 1 1 460px; max-width: 720px; }
         .hero-right { flex: 1 1 340px; max-width: 400px; }
 
         /* ── MOBILE BREAKPOINTS ── */
@@ -209,7 +209,7 @@ export default function App() {
         @media (max-width: 640px) {
           section { padding: 48px 4% !important; }
           nav { padding: 0 4% !important; }
-          h1 { font-size: clamp(32px, 9vw, 52px) !important; letter-spacing: -2px !important; }
+          h1 { font-size: clamp(32px, 9vw, 48px) !important; letter-spacing: -1.5px !important; }
           h2 { font-size: clamp(22px, 6vw, 36px) !important; }
         }
 
@@ -366,7 +366,7 @@ export default function App() {
             </div>
 
             {/* Headline */}
-            <h1 style={{ fontWeight: 900, lineHeight: 1.04, letterSpacing: '-3px', marginBottom: 22, animation: 'heroTextIn .8s .2s ease both', opacity: 0 }}>
+            <h1 style={{ fontWeight: 900, fontSize: 'clamp(38px, 5.2vw, 72px)', lineHeight: 1.08, letterSpacing: '-2.5px', marginBottom: 28, animation: 'heroTextIn .8s .2s ease both', opacity: 0 }}>
               <span style={{ color: '#fff' }}>Your Doctor</span><br />
               <span style={{ color: '#fff' }}>is Now </span>
               <span style={{ background: 'linear-gradient(130deg,#60A5FA 0%,#A78BFA 50%,#F472B6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundSize: '200% 200%', animation: 'gradShift 5s ease infinite' }}>Always Home</span>
