@@ -1,13 +1,11 @@
 # backend/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from database import engine
 import db_models as models
 from routers import imaging
 from routers.users import router as users_router
 import logging
-import os
 
 # Logging setup
 logging.basicConfig(
@@ -20,17 +18,6 @@ logger = logging.getLogger(__name__)
 try:
     models.Base.metadata.create_all(bind=engine)
     logger.info("✅ Database connected!")
-
-    # ── Safe migration: add missing columns to existing tables ──
-    from sqlalchemy import inspect, text
-    inspector = inspect(engine)
-    if "scans" in inspector.get_table_names():
-        existing_columns = {col["name"] for col in inspector.get_columns("scans")}
-        if "image_path" not in existing_columns:
-            with engine.begin() as conn:
-                conn.execute(text("ALTER TABLE scans ADD COLUMN image_path TEXT"))
-            logger.info("✅ Migration: added 'image_path' column to scans table")
-
 except Exception as e:
     logger.error(f"DB Error: {e}")
     logger.info("⚠️ Starting without DB...")
@@ -53,11 +40,6 @@ app.add_middleware(
 
 app.include_router(imaging.router)
 app.include_router(users_router)
-
-# Serve uploaded scan images
-scans_dir = os.path.join(os.path.dirname(__file__), "data", "scans")
-os.makedirs(scans_dir, exist_ok=True)
-app.mount("/scans", StaticFiles(directory=scans_dir), name="scans")
 
 @app.get("/")
 def root():

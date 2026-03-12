@@ -259,7 +259,7 @@ async def _call_gemini_api(payload: dict, request_id: str) -> dict:
 # Public API — called from imaging.py
 # ═══════════════════════════════════════════════════════════════
 
-async def analyze_medical_image(image_bytes: bytes, scan_type: str, patient_name: str = "", patient_id: int = 0) -> dict:
+async def analyze_medical_image(image_bytes: bytes, scan_type: str) -> dict:
     """
     Send a medical image to Google Gemini Vision API and return structured results.
     Required env var: GEMINI_API_KEY
@@ -271,17 +271,7 @@ async def analyze_medical_image(image_bytes: bytes, scan_type: str, patient_name
         raise ValueError(f"Image too large ({len(image_bytes) // (1024*1024)} MB). Max: {MAX_IMAGE_BYTES // (1024*1024)} MB.")
 
     request_id = uuid.uuid4().hex[:8]
-    base_prompt = SCAN_PROMPTS.get(scan_type, DEFAULT_PROMPT)
-
-    # Prepend patient details to the prompt so the AI includes them in the report header
-    patient_header = (
-        f"**PATIENT DETAILS** (include these at the top of your report):\n"
-        f"- Patient Name: {patient_name or 'Not Provided'}\n"
-        f"- Patient ID: MCA-{patient_id:05d}\n"
-        f"- Date of Study: {__import__('datetime').date.today().isoformat()}\n\n"
-    )
-    prompt = patient_header + base_prompt
-
+    prompt     = SCAN_PROMPTS.get(scan_type, DEFAULT_PROMPT)
     image_b64  = base64.b64encode(image_bytes).decode("utf-8")
 
     # Detect MIME type from magic bytes

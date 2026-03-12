@@ -26,7 +26,6 @@ class Scan(Base):
     user_id      = Column(Integer, ForeignKey("users.id"))
     scan_type    = Column(String, nullable=False)
     filename     = Column(String, nullable=False)
-    image_path   = Column(String, nullable=True)
     report       = Column(Text, nullable=True)
     severity     = Column(String, nullable=True)
     confidence   = Column(Float, nullable=True)

@@ -116,7 +116,7 @@ def get_my_scans(
 
 
 def _enrich_scans(scans, db):
-    """Attach patient_name, patient_email, and image_url to each scan."""
+    """Attach patient_name and patient_email to each scan."""
     result = []
     user_cache: dict = {}
     for scan in scans:
@@ -124,21 +124,13 @@ def _enrich_scans(scans, db):
             u = db.query(models.User).filter(models.User.id == scan.user_id).first()
             user_cache[scan.user_id] = u
         u = user_cache.get(scan.user_id)
-
-        # Build image URL from stored image_path (e.g. "data/scans/abc123.jpg" -> "/scans/abc123.jpg")
-        image_url = None
-        if scan.image_path:
-            image_url = "/" + scan.image_path.replace("data/", "", 1)
-
         result.append({
             "id"           : scan.id,
             "user_id"      : scan.user_id,
             "patient_name" : u.full_name if u else "Unknown",
             "patient_email": u.email     if u else "",
-            "patient_id"   : f"MCA-{scan.user_id:05d}" if scan.user_id else "",
             "scan_type"    : scan.scan_type,
             "filename"     : scan.filename,
-            "image_url"    : image_url,
             "report"       : scan.report,
             "severity"     : scan.severity,
             "confidence"   : scan.confidence,
