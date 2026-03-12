@@ -8,9 +8,25 @@
 
 <br/>
 
+<!-- LIVE DEMO BUTTON -->
+<a href="https://www.medcareai.app">
+<img src="https://img.shields.io/badge/🌐_LIVE_DEMO-www.medcareai.app-00C853?style=for-the-badge&logoColor=white&labelColor=059669" height="35" />
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/24pwai0032-gif/medcare-ai">
+<img src="https://img.shields.io/github/stars/24pwai0032-gif/medcare-ai?style=for-the-badge&logo=github&color=f59e0b&labelColor=1c1917" height="35" />
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/24pwai0032-gif/medcare-ai/fork">
+<img src="https://img.shields.io/github/forks/24pwai0032-gif/medcare-ai?style=for-the-badge&logo=git&color=6366f1&labelColor=1c1917" height="35" />
+</a>
+
+<br/><br/>
+
 <!-- BADGES ROW 1 - Status -->
 ![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white)
-![Deploy](https://img.shields.io/badge/GCP-Cloud%20Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Deploy](https://img.shields.io/badge/Vercel-Frontend-000000?style=for-the-badge&logo=vercel&logoColor=white)
+![GCP](https://img.shields.io/badge/GCP-Backend-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Live-00C853?style=for-the-badge&logo=statuspage&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
 
@@ -27,10 +43,11 @@
 <br/>
 
 <!-- QUICK LINKS -->
+[<img src="https://img.shields.io/badge/🌐_Live_Demo-059669?style=for-the-badge" />](https://www.medcareai.app)
 [<img src="https://img.shields.io/badge/✨_Features-4f46e5?style=for-the-badge" />](#-features)
-[<img src="https://img.shields.io/badge/🚀_Quick_Start-059669?style=for-the-badge" />](#-quick-start)
-[<img src="https://img.shields.io/badge/📡_API_Docs-0891b2?style=for-the-badge" />](#-api-endpoints)
-[<img src="https://img.shields.io/badge/🏗️_Architecture-7c3aed?style=for-the-badge" />](#%EF%B8%8F-architecture)
+[<img src="https://img.shields.io/badge/🚀_Quick_Start-0891b2?style=for-the-badge" />](#-quick-start)
+[<img src="https://img.shields.io/badge/📡_API_Docs-7c3aed?style=for-the-badge" />](#-api-endpoints)
+[<img src="https://img.shields.io/badge/🏗️_Architecture-b45309?style=for-the-badge" />](#%EF%B8%8F-architecture)
 [<img src="https://img.shields.io/badge/🤝_Contributing-dc2626?style=for-the-badge" />](#-contributing)
 
 </div>
@@ -61,6 +78,65 @@
 
 ---
 
+## 🖥️ Live Demo
+
+<div align="center">
+
+### 👉 **[www.medcareai.app](https://www.medcareai.app)** 👈
+
+<br/>
+
+<table>
+<tr>
+<td width="50%">
+
+**🏠 Landing Page**
+> Beautiful animated landing with glassmorphism UI, gradient hero section, and module showcase
+
+</td>
+<td width="50%">
+
+**🔐 Authentication**
+> Role-based login/register — Patient or Doctor (PMDC verified)
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**📊 Patient Dashboard**
+> 9 AI modules, scan history, PDF reports, bilingual results
+
+</td>
+<td width="50%">
+
+**👨‍⚕️ Doctor Dashboard**
+> Review AI scans, approve/reject with notes, patient management
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**🫁 X-Ray Analysis**
+> Upload chest X-ray → AI returns structured radiology report with severity
+
+</td>
+<td width="50%">
+
+**💓 ECG Analysis**
+> Upload ECG strip → heart rate, rhythm, intervals, arrhythmia detection
+
+</td>
+</tr>
+</table>
+
+> 💡 **Try it now** — Register as a patient, upload any medical image, and get your AI report in under 3 minutes!
+
+</div>
+
+---
+
 ## <img src="https://media2.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif?cid=ecf05e47a0n3gi1bfqntqmob8g9aid1oyj2wr3ds3mg700bl&rid=giphy.gif" width="30"> &nbsp;Features
 
 ### 🤖 9 AI-Powered Medical Modules
@@ -86,8 +162,9 @@
 <div align="center">
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4f46e5', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#6366f1', 'lineColor': '#a5b4fc', 'secondaryColor': '#0891b2', 'tertiaryColor': '#7c3aed' }}}%%
 mindmap
-  root((MedCare AI))
+  root((🏥 MedCare AI))
     🔒 Security
       JWT Authentication
       bcrypt Password Hashing
@@ -339,6 +416,8 @@ npm start
 Frontend → http://localhost:3000
 Backend  → http://localhost:8000
 API Docs → http://localhost:8000/docs
+
+Live App → https://www.medcareai.app
 ```
 
 ---
@@ -444,6 +523,35 @@ Every AI-generated report follows international medical reporting standards:
 
 ---
 
+## 📈 GitHub Stats
+
+<div align="center">
+
+<a href="https://github.com/24pwai0032-gif/medcare-ai">
+<img src="https://github-readme-stats.vercel.app/api?username=24pwai0032-gif&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0d1117&title_color=818cf8&icon_color=4f46e5&text_color=c9d1d9" height="180" />
+</a>
+&nbsp;&nbsp;
+<a href="https://github.com/24pwai0032-gif/medcare-ai">
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=24pwai0032-gif&layout=compact&theme=tokyonight&hide_border=true&bg_color=0d1117&title_color=818cf8&text_color=c9d1d9" height="180" />
+</a>
+
+<br/><br/>
+
+<!-- ACTIVITY GRAPH -->
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=24pwai0032-gif&theme=tokyo-night&hide_border=true&bg_color=0d1117&color=818cf8&line=4f46e5&point=c084fc" width="95%" />
+
+<br/>
+
+<!-- REPO STATS -->
+![Repo Size](https://img.shields.io/github/repo-size/24pwai0032-gif/medcare-ai?style=for-the-badge&color=4f46e5&labelColor=1c1917)
+![Last Commit](https://img.shields.io/github/last-commit/24pwai0032-gif/medcare-ai?style=for-the-badge&color=059669&labelColor=1c1917)
+![Issues](https://img.shields.io/github/issues/24pwai0032-gif/medcare-ai?style=for-the-badge&color=f59e0b&labelColor=1c1917)
+![PRs](https://img.shields.io/github/issues-pr/24pwai0032-gif/medcare-ai?style=for-the-badge&color=0891b2&labelColor=1c1917)
+
+</div>
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Here's how:
@@ -473,11 +581,18 @@ git push origin feature/amazing-feature
 <br/>
 
 [![GitHub](https://img.shields.io/badge/GitHub-24pwai0032--gif-181717?style=for-the-badge&logo=github)](https://github.com/24pwai0032-gif)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Syed%20Hassan%20Tayyab-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/syedhassantayyab/)
+[![Gmail](https://img.shields.io/badge/Gmail-hassanayaxy@gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hassanayaxy@gmail.com)
 [![Atomcamp](https://img.shields.io/badge/Atomcamp-Cohort%2015-FF6B00?style=for-the-badge)](https://atomcamp.com/)
 
 <br/>
 
 *Built with ❤️ for Pakistan's 230M+ people who deserve better healthcare*
+
+<br/>
+
+<!-- PROFILE VIEWS -->
+<img src="https://komarev.com/ghpvc/?username=24pwai0032-gif&label=Profile%20Views&color=4f46e5&style=for-the-badge" />
 
 </div>
 
@@ -501,6 +616,8 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 | ⚛️ | **React** — Frontend Library |
 | 🐘 | **PostgreSQL** — Database |
 | 🇵🇰 | **Pakistan** — The inspiration behind it all |
+| ☁️ | **Vercel** — Frontend Hosting |
+| ☁️ | **GCP Cloud Run** — Backend Hosting |
 
 </div>
 
@@ -510,8 +627,18 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=120&section=footer"/>
 
-**If this project helped you, give it a ⭐!**
+### ⭐ Star this repo if MedCare AI inspired you!
 
-<img src="https://img.shields.io/badge/MedCare%20AI-Bringing%20AI%20Healthcare%20to%20Pakistan%20🏥🇵🇰🤖-4f46e5?style=for-the-badge" />
+<a href="https://www.medcareai.app"><img src="https://img.shields.io/badge/🌐_Try_MedCare_AI_Now-www.medcareai.app-4f46e5?style=for-the-badge" height="35" /></a>
+
+<br/>
+
+<img src="https://img.shields.io/badge/Made%20in-Pakistan%20🇵🇰-059669?style=for-the-badge" />
+<img src="https://img.shields.io/badge/With-❤️%20%26%20AI-dc2626?style=for-the-badge" />
+<img src="https://img.shields.io/badge/For-230M+%20People-4f46e5?style=for-the-badge" />
+
+<br/><br/>
+
+<sub>© 2026 MedCare AI — Syed Hassan Tayyab | All Rights Reserved</sub>
 
 </div>
