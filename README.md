@@ -1,377 +1,466 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/MedCare%20AI-Pakistan's%20First%20AI%20Medical%20Platform-blue?style=for-the-badge&logo=heart&logoColor=white" />
+<!-- ANIMATED HEADER -->
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=220&section=header&text=MedCare%20AI&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=32&desc=Pakistan%27s%20First%20AI-Powered%20Medical%20Diagnosis%20Platform&descSize=18&descAlignY=52&descAlign=50"/>
 
-# 🏥 MedCare AI
-### Pakistan's First AI-Powered Medical Diagnosis Platform
+<!-- ANIMATED TYPING SVG -->
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=818CF8&center=true&vCenter=true&multiline=true&repeat=true&random=false&width=700&height=100&lines=%F0%9F%8F%A5+AI-Powered+X-Ray%2C+ECG+%26+Blood+Test+Analysis;%F0%9F%87%B5%F0%9F%87%B0+Built+for+Pakistan+%7C+Bilingual+English+%2B+Urdu;%E2%9A%A1+Results+in+2-3+Minutes+%7C+Free+Forever;%F0%9F%A7%A0+Powered+by+LLaVA-Med+Vision+AI" alt="Typing SVG" /></a>
 
-*Revolutionizing healthcare in Pakistan through cutting-edge artificial intelligence*
+<br/>
 
-[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.133-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?style=flat-square&logo=postgresql)](https://postgresql.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)](https://typescriptlang.org/)
-[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python)](https://python.org/)
-[![LLaVA-Med](https://img.shields.io/badge/LLaVA--Med-AI%20Model-FF6B6B?style=flat-square&logo=openai)](https://github.com/microsoft/LLaVA-Med)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Atomcamp](https://img.shields.io/badge/Atomcamp-Cohort%2015-orange?style=flat-square)](https://atomcamp.com/)
+<!-- BADGES ROW 1 - Status -->
+![Build](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white)
+![Deploy](https://img.shields.io/badge/GCP-Cloud%20Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Live-00C853?style=for-the-badge&logo=statuspage&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
 
----
+<!-- BADGES ROW 2 - Tech -->
+![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript_5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![LLaVA-Med](https://img.shields.io/badge/LLaVA--Med-8E75B2?style=for-the-badge&logo=openai&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
-**🇵🇰 Built for Pakistan | 🤖 Powered by LLaVA-Med | 🏆 Atomcamp Cohort 15**
+<br/>
 
-[✨ Features](#-features) • [🚀 Demo](#-live-demo) • [⚡ Quick Start](#-quick-start) • [📖 Docs](#-documentation) • [🤝 Contributing](#-contributing)
+<!-- QUICK LINKS -->
+[<img src="https://img.shields.io/badge/✨_Features-4f46e5?style=for-the-badge" />](#-features)
+[<img src="https://img.shields.io/badge/🚀_Quick_Start-059669?style=for-the-badge" />](#-quick-start)
+[<img src="https://img.shields.io/badge/📡_API_Docs-0891b2?style=for-the-badge" />](#-api-endpoints)
+[<img src="https://img.shields.io/badge/🏗️_Architecture-7c3aed?style=for-the-badge" />](#%EF%B8%8F-architecture)
+[<img src="https://img.shields.io/badge/🤝_Contributing-dc2626?style=for-the-badge" />](#-contributing)
 
 </div>
 
 ---
 
-## 🌟 What is MedCare AI?
+<!-- ABOUT SECTION with animated line -->
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
-MedCare AI is Pakistan's **first AI-powered medical diagnosis platform** that connects patients with doctors through intelligent medical imaging analysis. Built with **LLaVA-Med** (Large Language and Vision Assistant for Medicine), it provides instant AI medical reports in both **English and Urdu**, making quality healthcare accessible across Pakistan.
+## <img src="https://media.giphy.com/media/iY8CRBdQXODJSCERIr/giphy.gif" width="30"> &nbsp;What is MedCare AI?
 
-> *"Bringing world-class AI diagnostics to every corner of Pakistan"* 🇵🇰
+> **MedCare AI** is Pakistan's **first AI-powered medical diagnosis platform** that delivers instant medical imaging analysis using **LLaVA-Med Vision AI**. Upload an X-ray, ECG strip, or blood test — get a professional diagnostic report in **2-3 minutes**, completely **free**, in both **English and Urdu**.
+
+<div align="center">
+
+```
+🇵🇰  Built for Pakistan's 230M+ people who deserve accessible healthcare
+🤖  Powered by LLaVA-Med — state-of-the-art Medical Vision AI
+⚡  Results in 2-3 minutes — no waiting rooms, no bills
+🏥  9 Medical Modules — from X-Ray to Emergency First Aid
+👨‍⚕️  Doctor Review System — AI + Human verification
+🔒  Encrypted & Private — your health data stays safe
+```
+
+</div>
+
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%">
 
 ---
 
-## ✨ Features
+## <img src="https://media2.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif?cid=ecf05e47a0n3gi1bfqntqmob8g9aid1oyj2wr3ds3mg700bl&rid=giphy.gif" width="30"> &nbsp;Features
 
-### 🤖 AI-Powered Medical Modules
+### 🤖 9 AI-Powered Medical Modules
 
-| Module | Description | AI Model |
-|--------|-------------|----------|
-| 🫁 **X-Ray Analyzer** | Chest X-ray analysis with radiology reports | LLaVA-Med |
-| 💓 **ECG Analyzer** | Electrocardiogram interpretation | LLaVA-Med |
-| 🧪 **Blood Test Reader** | Blood report analysis & interpretation | LLaVA-Med |
-| 🦴 **Bone Scan** | Orthopedic imaging analysis | LLaVA-Med |
-| 🔬 **Skin Analysis** | Dermatological condition detection | LLaVA-Med |
-| 🧠 **Mental Health** | AI-powered mental wellness assessment | LLaVA-Med |
-| 💊 **Prescription Reader** | Medicine & prescription OCR analysis | LLaVA-Med |
-| 📊 **Vital Signs** | Health metrics tracking & analysis | Rule-based |
-| 🚨 **Emergency Aid** | Emergency guidance with 1122 integration | Rule-based |
+<div align="center">
 
-### 🔐 Platform Features
+| &nbsp; | Module | What It Does | AI Engine |
+|:---:|:---|:---|:---:|
+| 🫁 | **X-Ray Analyzer** | Chest X-ray, MRI, CT Scan & Bone X-ray analysis with radiology-grade reports | LLaVA-Med |
+| 🦴 | **Bone Scan** | Fracture detection, bone density, joint assessment, displacement analysis | LLaVA-Med |
+| 💓 | **ECG Analyzer** | Heart rate, rhythm, axis, intervals, ST-segment, arrhythmia detection | LLaVA-Med |
+| 🧪 | **Blood Test Reader** | CBC, LFT, RFT, Lipid Panel — tabulated results vs normal ranges | LLaVA-Med |
+| 🧠 | **Mental Health** | PHQ-9 validated depression screening with bilingual scoring | Rule-based |
+| 🩺 | **Diagnosis AI** | Symptom-based differential diagnosis across 10 categories | Local DB |
+| 💊 | **Prescription Reader** | Handwritten & printed prescription OCR, drug interactions | LLaVA-Med |
+| 📊 | **Vital Signs** | BP, heart rate, SpO2, temperature monitoring with color-coded alerts | Rule-based |
+| 🚨 | **Emergency Aid** | First aid guides for 6 emergencies with Pakistan's 1122/115 numbers | Guide-based |
 
-- **JWT Authentication** — Secure login/register for patients & doctors
-- **Role-Based Access** — Separate dashboards for patients and doctors
-- **Doctor Approval Flow** — Doctors review & approve AI diagnoses
-- **Scan History** — Complete medical history saved in PostgreSQL
-- **PDF Reports** — Professional downloadable medical reports
-- **Urdu Support** 🇵🇰 — Reports available in Urdu language
-- **3-Run Majority Voting** — AI runs 3x for higher accuracy
-- **Severity Assessment** — 🟢 Normal → 🚨 URGENT classification
-- **Confidence Scoring** — AI confidence percentage per analysis
+</div>
+
+### 🔐 Platform Capabilities
+
+<div align="center">
+
+```mermaid
+mindmap
+  root((MedCare AI))
+    🔒 Security
+      JWT Authentication
+      bcrypt Password Hashing
+      Role-Based Access Control
+      168hr Token Expiry
+    👥 Roles
+      Patient Dashboard
+      Doctor Dashboard
+      PMDC Verification
+    🤖 AI Engine
+      LLaVA-Med Vision
+      Bilingual Reports EN/UR
+      Severity Assessment
+      Confidence Scoring
+    📋 Reports
+      PDF Generation
+      Scan History
+      Doctor Approval Flow
+      Urdu Summary اردو
+```
+
+</div>
 
 ---
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                     MedCare AI Stack                     │
-├──────────────┬──────────────────┬───────────────────────┤
-│   Frontend   │     Backend      │      AI Engine        │
-│              │                  │                       │
-│  React 18    │   FastAPI        │   LLaVA-Med           │
-│  TypeScript  │   PostgreSQL     │   (Google Colab)      │
-│  Tailwind    │   SQLAlchemy     │   ngrok Tunnel        │
-│  JWT Auth    │   JWT Tokens     │   3-Run Voting        │
-│              │   bcrypt         │   Severity Score      │
-└──────────────┴──────────────────┴───────────────────────┘
+<div align="center">
+
+```mermaid
+graph TB
+    subgraph Client["🌐 Frontend — React 19 + TypeScript"]
+        A[Patient Dashboard] --> C[API Service Layer]
+        B[Doctor Dashboard] --> C
+    end
+
+    subgraph Server["⚡ Backend — FastAPI + Python"]
+        C -->|REST API| D[Auth Router - JWT]
+        C -->|REST API| E[Imaging Router]
+        D --> F[(PostgreSQL DB)]
+        E --> F
+        E -->|Image + Prompt| G
+    end
+
+    subgraph AI["🧠 AI Engine"]
+        G[LLaVA-Med Vision AI] -->|Structured Report| E
+    end
+
+    subgraph Deploy["☁️ Deployment"]
+        H[GCP Cloud Run]
+        I[Docker Container]
+    end
+
+    style Client fill:#1e1b4b,stroke:#818cf8,color:#e0e7ff
+    style Server fill:#042f2e,stroke:#2dd4bf,color:#ccfbf1
+    style AI fill:#3b0764,stroke:#c084fc,color:#f3e8ff
+    style Deploy fill:#172554,stroke:#60a5fa,color:#dbeafe
 ```
 
+</div>
+
+<details>
+<summary><b>📂 Project Structure (click to expand)</b></summary>
+
 ```
-User → React Frontend (localhost:3000)
-         ↓ Auth Requests
-       FastAPI Backend (localhost:8000)
-         ↓ Save to DB
-       PostgreSQL Database
-         ↓ AI Analysis
-       LLaVA-Med on Colab (ngrok URL)
-         ↓ Return Report
-       PDF Generation + Urdu Translation
+medcare-ai/
+│
+├── 🔧 backend/
+│   ├── main.py                 # FastAPI app — CORS, routes, health check
+│   ├── database.py             # PostgreSQL/SQLite connection + sessions
+│   ├── db_models.py            # SQLAlchemy models (User, Scan)
+│   ├── schemas.py              # Pydantic request/response schemas
+│   ├── auth.py                 # JWT token creation + verification
+│   ├── Dockerfile              # Container config for GCP Cloud Run
+│   ├── requirements.txt        # Python dependencies
+│   ├── routers/
+│   │   ├── users.py            # Register, login, scans, doctor approval
+│   │   └── imaging.py          # X-ray, ECG, blood, bone, prescription analysis
+│   └── models/
+│       └── llava_model.py      # LLaVA-Med Vision API integration
+│
+├── 🎨 frontend/
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── src/
+│       ├── App.tsx              # Main app — routing, landing page, navigation
+│       ├── components/
+│       │   ├── Icons.tsx        # 30+ custom SVG icons
+│       │   ├── Skeleton.tsx     # Loading skeletons
+│       │   └── ErrorBoundary.tsx
+│       ├── pages/
+│       │   ├── Login.tsx              # Auth with role selection
+│       │   ├── PatientDashboard.tsx   # 9-module hub + scan history
+│       │   ├── DoctorDashboard.tsx    # Scan review + approve/reject
+│       │   ├── XrayAnalyzer.tsx       # X-Ray / MRI / CT analysis
+│       │   ├── BoneScan.tsx           # Bone fracture detection
+│       │   ├── ECGAnalyzer.tsx        # Cardiac rhythm analysis
+│       │   ├── BloodTestAnalyzer.tsx  # Blood report interpretation
+│       │   ├── PrescriptionReader.tsx # Prescription OCR
+│       │   ├── DiagnosisAI.tsx        # Symptom-based diagnosis
+│       │   ├── MentalHealth.tsx       # PHQ-9 screening
+│       │   ├── VitalSigns.tsx         # Vitals monitoring
+│       │   └── EmergencyAid.tsx       # First aid guides
+│       ├── services/
+│       │   └── api.ts           # Axios API client + interceptors
+│       └── utils/
+│           └── generatePDF.ts   # html2canvas + jsPDF report export
+│
+├── 📓 notebooks/                # Colab notebooks for AI experimentation
+└── 📄 README.md                 # You are here!
 ```
+
+</details>
 
 ---
 
-## 🚀 Live Demo
+## <img src="https://media.giphy.com/media/WUlplcMpOCEmTGBtBW/giphy.gif" width="30"> &nbsp;Tech Stack
 
-> 🔗 **Coming Soon** — GCP Deployment in progress
+<div align="center">
 
-**Test Credentials:**
-```
-Patient:  hassan@test.com / test123
-Doctor:   doctor@test.com / test123
-```
+### Frontend
+![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS_3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+
+### Backend
+![FastAPI](https://img.shields.io/badge/FastAPI_0.115-005571?style=for-the-badge&logo=fastapi&logoColor=white)
+![Python](https://img.shields.io/badge/Python_3.12-14354C?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy_2.x-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
+
+### AI & Cloud
+![LLaVA-Med](https://img.shields.io/badge/LLaVA--Med-4285F4?style=for-the-badge&logo=openai&logoColor=white)
+![GCP](https://img.shields.io/badge/GCP_Cloud_Run-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
+
+</div>
 
 ---
 
-## ⚡ Quick Start
+## 📡 API Endpoints
+
+<details>
+<summary><b>🔐 Authentication</b></summary>
+
+| Method | Endpoint | Auth | Description |
+|:---:|:---|:---:|:---|
+| `POST` | `/api/v1/users/register` | ❌ | Register patient or doctor (PMDC required for doctors) |
+| `POST` | `/api/v1/users/login` | ❌ | Login — returns JWT Bearer token |
+| `GET` | `/api/v1/users/me` | ✅ | Get current user profile |
+| `GET` | `/api/v1/users/scans` | ✅ | Get patient's scan history |
+
+</details>
+
+<details>
+<summary><b>🤖 Medical Analysis</b></summary>
+
+| Method | Endpoint | Auth | Description |
+|:---:|:---|:---:|:---|
+| `POST` | `/api/v1/analyze/xray` | ✅ | X-Ray / MRI / CT scan analysis |
+| `POST` | `/api/v1/analyze/ecg` | ✅ | ECG strip interpretation |
+| `POST` | `/api/v1/analyze/blood-test` | ✅ | Blood test report analysis |
+| `POST` | `/api/v1/analyze/bone` | ✅ | Bone scan / fracture detection |
+| `POST` | `/api/v1/analyze/skin` | ✅ | Skin condition analysis |
+| `POST` | `/api/v1/analyze/prescription` | ✅ | Prescription OCR & reading |
+
+</details>
+
+<details>
+<summary><b>👨‍⚕️ Doctor Portal</b></summary>
+
+| Method | Endpoint | Auth | Description |
+|:---:|:---|:---:|:---|
+| `GET` | `/api/v1/users/doctor/all-scans` | 👨‍⚕️ | View all patient scans |
+| `GET` | `/api/v1/users/doctor/pending-scans` | 👨‍⚕️ | View pending scans only |
+| `PUT` | `/api/v1/users/doctor/approve-scan/{id}` | 👨‍⚕️ | Approve scan + add notes |
+| `PUT` | `/api/v1/users/doctor/reject-scan/{id}` | 👨‍⚕️ | Reject scan + add notes |
+
+</details>
+
+<details>
+<summary><b>🔧 System</b></summary>
+
+| Method | Endpoint | Auth | Description |
+|:---:|:---|:---:|:---|
+| `GET` | `/` | ❌ | App info & version |
+| `GET` | `/health` | ❌ | Health check — DB & AI status |
+
+</details>
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-```bash
-# Required
-Node.js 18+
-Python 3.12+
-PostgreSQL 16+
-Google Colab (for AI model)
+```
+Node.js 18+  •  Python 3.12+  •  PostgreSQL 16+  •  Git
 ```
 
-### 1️⃣ Clone Repository
+### 1️⃣ Clone & Setup
 
 ```bash
 git clone https://github.com/24pwai0032-gif/medcare-ai.git
 cd medcare-ai
 ```
 
-### 2️⃣ Backend Setup
+### 2️⃣ Backend
 
 ```bash
 cd backend
-
-# Create virtual environment
 python -m venv venv
-venv\Scripts\activate  # Windows
-source venv/bin/activate  # Mac/Linux
 
-# Install dependencies
-pip install fastapi uvicorn sqlalchemy psycopg2-binary
-pip install python-jose[cryptography] passlib[bcrypt]
-pip install python-dotenv alembic python-multipart
-pip install torch transformers pillow opencv-python
+# Windows
+venv\Scripts\activate
 
-# Setup environment
-cp .env.example .env
-# Edit .env with your PostgreSQL credentials
+# Mac/Linux
+source venv/bin/activate
 
-# Start backend
-uvicorn main:app --reload
+pip install -r requirements.txt
 ```
 
-### 3️⃣ Frontend Setup
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Setup environment
-cp .env.example .env
-# Edit .env with your API URLs
-
-# Start frontend
-npm start
-```
-
-### 4️⃣ AI Model (Google Colab)
-
-```python
-# Run in Google Colab
-!pip install fastapi uvicorn pyngrok nest-asyncio transformers torch
-
-from pyngrok import ngrok
-from google.colab import userdata
-
-ngrok.set_auth_token(userdata.get('NGROK_SECRET'))
-public_url = ngrok.connect(8000)
-print(f"AI URL: {public_url}")
-
-# Then run the LLaVA-Med server
-# Update REACT_APP_COLAB_URL in frontend/.env
-```
-
-### 5️⃣ Environment Variables
-
-**`backend/.env`**
+Create `backend/.env`:
 ```env
 DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/medcare_db
 SECRET_KEY=your-secret-key-here
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_HOURS=168
+LLAVA_API_KEY=your-llava-api-key
 ```
 
-**`frontend/.env`**
-```env
-REACT_APP_API_URL=http://localhost:8000/api/v1
-REACT_APP_COLAB_URL=https://your-ngrok-url.ngrok-free.dev
+```bash
+uvicorn main:app --reload --port 8000
 ```
 
----
+### 3️⃣ Frontend
 
-## 📁 Project Structure
-
-```
-medcare-ai/
-├── 🔧 backend/
-│   ├── main.py              # FastAPI app entry point
-│   ├── database.py          # PostgreSQL connection
-│   ├── db_models.py         # SQLAlchemy models (User, Scan)
-│   ├── schemas.py           # Pydantic schemas
-│   ├── auth.py              # JWT authentication
-│   ├── .env                 # Environment variables
-│   ├── routers/
-│   │   ├── users.py         # Auth + Doctor endpoints
-│   │   └── imaging.py       # Medical scan endpoints
-│   ├── models/
-│   │   └── llava_model.py   # LLaVA-Med integration
-│   └── utils/
-│       └── medical_utils.py # Medical analysis utilities
-│
-├── 🎨 frontend/
-│   └── src/
-│       ├── pages/
-│       │   ├── Login.tsx           # Auth page
-│       │   ├── PatientDashboard.tsx # Patient view
-│       │   ├── DoctorDashboard.tsx  # Doctor view
-│       │   ├── XrayAnalyzer.tsx    # X-Ray module
-│       │   ├── ECGAnalyzer.tsx     # ECG module
-│       │   ├── BloodTestAnalyzer.tsx
-│       │   ├── BoneScan.tsx
-│       │   ├── MentalHealth.tsx
-│       │   ├── DiagnosisAI.tsx
-│       │   ├── PrescriptionReader.tsx
-│       │   ├── VitalSigns.tsx
-│       │   └── EmergencyAid.tsx
-│       ├── services/
-│       │   └── api.ts       # API service layer
-│       └── utils/
-│           └── generatePDF.ts # PDF generation
-│
-└── 📓 notebooks/            # Colab notebooks
+```bash
+cd frontend
+npm install
+npm start
 ```
 
----
-
-## 🔌 API Endpoints
-
-### Authentication
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/users/register` | Register new user |
-| POST | `/api/v1/users/login` | Login user |
-| GET | `/api/v1/users/me` | Get current user |
-| GET | `/api/v1/users/scans` | Get scan history |
-
-### Medical Analysis
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/analyze/xray` | Analyze X-Ray |
-| POST | `/api/v1/analyze/ecg` | Analyze ECG |
-| POST | `/api/v1/analyze/blood-test` | Analyze blood test |
-| POST | `/api/v1/analyze/bone` | Analyze bone scan |
-| POST | `/api/v1/analyze/skin` | Analyze skin condition |
-
-### Doctor Portal
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/users/doctor/pending-scans` | Get pending scans |
-| PUT | `/api/v1/users/doctor/approve-scan/{id}` | Approve scan |
-| PUT | `/api/v1/users/doctor/reject-scan/{id}` | Reject scan |
-
----
-
-## 🧠 AI Model Details
+### 4️⃣ Open
 
 ```
-Model:      LLaVA-Med (LLaVA-v1.6-Mistral-7B)
-Type:       Multimodal Vision-Language Model
-Training:   Fine-tuned on medical imaging datasets
-Inference:  Google Colab (T4/A100 GPU)
-Accuracy:   3-run majority voting system
-Languages:  English + Urdu (bilingual reports)
-
-Severity Levels:
-🟢 Normal   → No intervention needed
-🟡 Mild     → Monitor & follow up
-🟠 Moderate → Medical attention advised
-🔴 Severe   → Immediate treatment needed
-🚨 URGENT   → Emergency care required
+Frontend → http://localhost:3000
+Backend  → http://localhost:8000
+API Docs → http://localhost:8000/docs
 ```
-
----
-
-## 🛠️ Tech Stack
-
-### Frontend
-- **React 18** + TypeScript
-- **Tailwind CSS** — Styling
-- **jsPDF** — PDF generation
-- **React Hooks** — State management
-
-### Backend
-- **FastAPI** — REST API framework
-- **SQLAlchemy** — ORM
-- **PostgreSQL** — Database
-- **JWT** — Authentication
-- **bcrypt** — Password hashing
-- **Pydantic** — Data validation
-
-### AI/ML
-- **LLaVA-Med** — Medical vision-language model
-- **PyTorch** — Deep learning framework
-- **Transformers** — HuggingFace library
-- **Google Colab** — GPU inference
-- **ngrok** — Tunnel to local model
-
-### DevOps
-- **GitHub** — Version control
-- **Docker** — Containerization (coming)
-- **GCP Cloud Run** — Deployment (coming)
 
 ---
 
 ## 📊 Database Schema
 
-```sql
--- Users Table
-CREATE TABLE users (
-    id          SERIAL PRIMARY KEY,
-    full_name   VARCHAR NOT NULL,
-    email       VARCHAR UNIQUE NOT NULL,
-    password    VARCHAR NOT NULL,  -- bcrypt hashed
-    role        VARCHAR DEFAULT 'patient',  -- patient/doctor
-    pmdc        VARCHAR,  -- Doctor's PMDC number
-    is_active   BOOLEAN DEFAULT true,
-    created_at  TIMESTAMP DEFAULT NOW()
-);
+<div align="center">
 
--- Scans Table
-CREATE TABLE scans (
-    id           SERIAL PRIMARY KEY,
-    user_id      INTEGER REFERENCES users(id),
-    scan_type    VARCHAR NOT NULL,
-    filename     VARCHAR,
-    report       TEXT,
-    severity     VARCHAR,
-    confidence   INTEGER,
-    time_seconds FLOAT,
-    status       VARCHAR DEFAULT 'pending',  -- pending/approved/rejected
-    created_at   TIMESTAMP DEFAULT NOW()
-);
+```mermaid
+erDiagram
+    USERS {
+        int id PK
+        string full_name
+        string email UK
+        string password "bcrypt hashed"
+        string role "patient | doctor"
+        string pmdc "PMDC number (doctors)"
+        boolean is_active
+        timestamp created_at
+    }
+
+    SCANS {
+        int id PK
+        int user_id FK
+        string scan_type
+        string filename
+        text report "Full AI report"
+        string severity "normal|mild|moderate|severe"
+        float confidence "0-100%"
+        float time_seconds
+        string status "pending|approved|rejected"
+        text doctor_notes
+        timestamp created_at
+    }
+
+    USERS ||--o{ SCANS : "has many"
 ```
+
+</div>
+
+---
+
+## 🧠 AI Report System
+
+Every AI-generated report follows international medical reporting standards:
+
+<div align="center">
+
+```
+┌───────────────────────────────────────────────────────┐
+│                  AI DIAGNOSTIC REPORT                   │
+├───────────────────────────────────────────────────────┤
+│                                                        │
+│   📋  Structured Clinical Findings                     │
+│   🎯  Severity: Normal │ Mild │ Moderate │ Severe      │
+│   📊  Confidence Score: 0-100%                         │
+│   💡  Clinical Recommendations                         │
+│   🗣️  Patient-Friendly Explanation                     │
+│   🇵🇰  Urdu Summary (اردو خلاصہ)                       │
+│                                                        │
+│   Standards: BI-RADS • TNM • AHA Guidelines            │
+│   Retry Logic: 3× with exponential backoff             │
+│   Max Upload: 20MB  •  Timeout: 60s                    │
+│                                                        │
+└───────────────────────────────────────────────────────┘
+```
+
+| Severity | Indicator | Action Required |
+|:---:|:---:|:---|
+| Normal | 🟢 | No intervention needed |
+| Mild | 🟡 | Monitor & follow up |
+| Moderate | 🟠 | Medical attention advised |
+| Severe | 🔴 | Immediate treatment needed |
+
+</div>
 
 ---
 
 ## 🔮 Roadmap
 
-- [x] 9 Medical Analysis Modules
-- [x] JWT Authentication
-- [x] PostgreSQL Database
-- [x] Real AI (LLaVA-Med)
-- [x] PDF Report Generation
-- [x] Doctor Approval Flow
-- [x] Urdu Language Support
-- [x] Scan History
-- [ ] GCP Cloud Deployment
-- [ ] Custom Domain (medcareai.me)
-- [ ] LLaVA-Med Fine-tuning on Pakistani data
-- [ ] Mobile App (React Native)
-- [ ] Email Notifications
-- [ ] WhatsApp Integration 🇵🇰
-- [ ] PMDC Doctor Verification
-- [ ] Telemedicine Video Calls
+<div align="center">
+
+| Status | Feature |
+|:---:|:---|
+| ✅ | 9 Medical Analysis Modules |
+| ✅ | JWT Authentication + Role-Based Access |
+| ✅ | PostgreSQL Database + Scan History |
+| ✅ | LLaVA-Med Vision AI |
+| ✅ | PDF Report Generation |
+| ✅ | Doctor Approval / Rejection Flow |
+| ✅ | Bilingual Reports (English + Urdu) |
+| ✅ | GCP Cloud Run Deployment |
+| ✅ | Docker Containerization |
+| 🔄 | Custom Domain (medcareai.pk) |
+| 📋 | Mobile App (React Native) |
+| 📋 | Email & SMS Notifications |
+| 📋 | WhatsApp Integration 🇵🇰 |
+| 📋 | PMDC Doctor Verification API |
+| 📋 | Telemedicine Video Calls |
+| 📋 | Fine-tuning on Pakistani medical data |
+
+</div>
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how:
+
+```bash
+# 1. Fork the repo
+# 2. Create your feature branch
+git checkout -b feature/amazing-feature
+
+# 3. Commit your changes
+git commit -m "Add amazing feature"
+
+# 4. Push to the branch
+git push origin feature/amazing-feature
+
+# 5. Open a Pull Request
+```
 
 ---
 
@@ -379,14 +468,16 @@ CREATE TABLE scans (
 
 <div align="center">
 
-**Syed Hassan Tayyab**
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&duration=3000&pause=1000&color=4F46E5&center=true&vCenter=true&width=500&lines=Syed+Hassan+Tayyab;AI+Engineer+%7C+Full+Stack+Developer;Atomcamp+Cohort+15+%F0%9F%87%B5%F0%9F%87%B0" alt="Developer" />
 
-*AI Engineer | Full Stack Developer | Pakistan 🇵🇰*
+<br/>
 
-[![GitHub](https://img.shields.io/badge/GitHub-24pwai0032--gif-181717?style=flat-square&logo=github)](https://github.com/24pwai0032-gif)
-[![Atomcamp](https://img.shields.io/badge/Atomcamp-Cohort%2015-orange?style=flat-square)](https://atomcamp.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-24pwai0032--gif-181717?style=for-the-badge&logo=github)](https://github.com/24pwai0032-gif)
+[![Atomcamp](https://img.shields.io/badge/Atomcamp-Cohort%2015-FF6B00?style=for-the-badge)](https://atomcamp.com/)
 
-*Built with ❤️ for Pakistan's healthcare system*
+<br/>
+
+*Built with ❤️ for Pakistan's 230M+ people who deserve better healthcare*
 
 </div>
 
@@ -394,24 +485,33 @@ CREATE TABLE scans (
 
 ## 📄 License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+Distributed under the **MIT License**. See `LICENSE` for more information.
 
 ---
 
 ## 🙏 Acknowledgements
 
-- **Atomcamp** — For the amazing AI bootcamp program
-- **Microsoft** — For LLaVA-Med model
-- **HuggingFace** — For Transformers library
-- **FastAPI** — For the incredible web framework
-- **The people of Pakistan** — This is for you 🇵🇰
+<div align="center">
+
+| &nbsp; | Credit |
+|:---:|:---|
+| 🎓 | **Atomcamp** — AI Bootcamp Program |
+| 🤖 | **LLaVA-Med** — Medical Vision AI Model |
+| ⚡ | **FastAPI** — Backend Framework |
+| ⚛️ | **React** — Frontend Library |
+| 🐘 | **PostgreSQL** — Database |
+| 🇵🇰 | **Pakistan** — The inspiration behind it all |
+
+</div>
 
 ---
 
 <div align="center">
 
-**⭐ Star this repo if you find it helpful!**
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=120&section=footer"/>
 
-*MedCare AI — Bringing AI Healthcare to Pakistan* 🏥🇵🇰🤖
+**If this project helped you, give it a ⭐!**
+
+<img src="https://img.shields.io/badge/MedCare%20AI-Bringing%20AI%20Healthcare%20to%20Pakistan%20🏥🇵🇰🤖-4f46e5?style=for-the-badge" />
 
 </div>
