@@ -4,7 +4,7 @@
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=220&section=header&text=MedCare%20AI&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=32&desc=Pakistan%27s%20First%20AI-Powered%20Medical%20Diagnosis%20Platform&descSize=18&descAlignY=52&descAlign=50"/>
 
 <!-- ANIMATED TYPING SVG -->
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=818CF8&center=true&vCenter=true&multiline=true&repeat=true&random=false&width=700&height=100&lines=%F0%9F%8F%A5+AI-Powered+X-Ray%2C+ECG+%26+Blood+Test+Analysis;%F0%9F%87%B5%F0%9F%87%B0+Built+for+Pakistan+%7C+Bilingual+English+%2B+Urdu;%E2%9A%A1+Results+in+2-3+Minutes+%7C+Free+Forever;%F0%9F%A7%A0+Powered+by+LLaVA-Med+Vision+AI" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=818CF8&center=true&vCenter=true&multiline=true&repeat=true&random=false&width=700&height=100&lines=%F0%9F%8F%A5+AI-Powered+X-Ray%2C+ECG+%26+Blood+Test+Analysis;%F0%9F%87%B5%F0%9F%87%B0+Built+for+Pakistan+%7C+Bilingual+English+%2B+Urdu;%E2%9A%A1+Results+in+2-3+Minutes+%7C+Free+Forever;%F0%9F%A7%A0" alt="Typing SVG" /></a>
 
 <br/>
 
