@@ -3,6 +3,8 @@ from fastapi import APIRouter, File, UploadFile, HTTPException, Depends
 from sqlalchemy.orm import Session
 import logging
 import time
+import os
+import uuid
 
 from database import get_db
 import db_models as models
@@ -10,6 +12,10 @@ import auth
 from models.llava_model import analyze_medical_image
 
 logger = logging.getLogger(__name__)
+
+# Directory to persist uploaded scan images
+SCAN_UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "scans")
+os.makedirs(SCAN_UPLOAD_DIR, exist_ok=True)
 
 router = APIRouter(
     prefix="/api/v1/analyze",
@@ -31,11 +37,24 @@ async def analyze_scan(
     if not contents:
         raise HTTPException(status_code=400, detail="Empty file uploaded")
 
+    # ── Save image to disk for doctor review ───────────────────
+    ext = os.path.splitext(file.filename or "scan.jpg")[1] or ".jpg"
+    safe_filename = f"{uuid.uuid4().hex}{ext}"
+    image_path = os.path.join(SCAN_UPLOAD_DIR, safe_filename)
+    with open(image_path, "wb") as f:
+        f.write(contents)
+    # Relative path stored in DB (portable)
+    relative_image_path = f"data/scans/{safe_filename}"
+
     start_time = time.time()
 
     # ── Call Gemini Vision API ──────────────────────────────────
     try:
-        result = await analyze_medical_image(contents, scan_type)
+        result = await analyze_medical_image(
+            contents, scan_type,
+            patient_name=current_user.full_name,
+            patient_id=current_user.id,
+        )
     except ValueError as e:
         logger.error(f"Config error: {e}")
         raise HTTPException(status_code=503, detail=str(e))
@@ -55,6 +74,7 @@ async def analyze_scan(
             user_id      = current_user.id,
             scan_type    = scan_type,
             filename     = file.filename or f"{scan_type}_scan.jpg",
+            image_path   = relative_image_path,
             report       = result.get("report", ""),
             severity     = result.get("severity", ""),
             confidence   = float(result.get("confidence", 0)),

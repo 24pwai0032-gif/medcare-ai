@@ -19,3 +19,6 @@ build/
 # Database
 *.db
 *.sqlite3
+
+# Uploaded scan images (patient data)
+data/scans/

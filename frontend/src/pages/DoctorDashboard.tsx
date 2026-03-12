@@ -257,7 +257,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                           </div>
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ fontWeight: 700, fontSize: 13.5, color: '#fff', marginBottom: 2 }}>{scan.scan_type?.replace(/-/g,' ').replace(/\b\w/g,(l:string)=>l.toUpperCase()) || 'Medical Scan'}</div>
-                            <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.35)' }}>Patient: <span style={{ color: 'rgba(255,255,255,.65)', fontWeight: 600 }}>{scan.patient_name || scan.user_email || 'Unknown'}</span> &middot; {new Date(scan.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'short' })}</div>
+                            <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.35)' }}>Patient: <span style={{ color: 'rgba(255,255,255,.65)', fontWeight: 600 }}>{scan.patient_name || scan.user_email || 'Unknown'}</span> &middot; <span style={{ color: 'rgba(96,165,250,.7)', fontFamily: 'monospace', fontSize: 10.5 }}>{scan.patient_id || `MCA-${String(scan.user_id).padStart(5, '0')}`}</span> &middot; {new Date(scan.created_at).toLocaleDateString('en-PK', { day:'numeric', month:'short' })}</div>
                             {scan.report && <div style={{ fontSize: 11, color: 'rgba(255,255,255,.25)', marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 280, display: 'flex', alignItems: 'center', gap: 4 }}><SparklesIcon size={10} /> {scan.report}</div>}
                           </div>
                           {scan.severity && <div style={{ fontSize: 11.5, color: sv.color, background: sv.bg, border: `1px solid ${sv.border}`, borderRadius: 8, padding: '4px 10px', flexShrink: 0, fontWeight: 700 }}>{scan.severity}</div>}
@@ -358,7 +358,8 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                           <div style={{ fontWeight: 700, fontSize: 14, color: '#fff', marginBottom: 3 }}>{scan.scan_type?.replace(/-/g,' ').replace(/\b\w/g,(l:string)=>l.toUpperCase()) || 'Medical Scan'}</div>
                           <div style={{ fontSize: 12, color: 'rgba(255,255,255,.35)' }}>
                             Patient: <span style={{ color: 'rgba(255,255,255,.7)', fontWeight: 600 }}>{scan.patient_name || scan.user_email || 'Unknown'}</span>
-                            {' \u00B7 '}{new Date(scan.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}
+                            {' · '}<span style={{ color: 'rgba(96,165,250,.7)', fontFamily: 'monospace', fontSize: 11 }}>{scan.patient_id || `MCA-${String(scan.user_id).padStart(5, '0')}`}</span>
+                            {' · '}{new Date(scan.created_at).toLocaleDateString('en-PK',{day:'numeric',month:'short',year:'numeric'})}
                           </div>
                           {scan.report && <div style={{ fontSize: 11.5, color: 'rgba(255,255,255,.28)', marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 320, display: 'flex', alignItems: 'center', gap: 4 }}><SparklesIcon size={10} /> {scan.report}</div>}
                         </div>
@@ -385,7 +386,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
       {/* REVIEW MODAL */}
       {selectedScan && (
         <div onClick={() => setSelectedScan(null)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.75)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, backdropFilter: 'blur(10px)', animation: 'fadeIn .2s ease' }}>
-          <div onClick={e => e.stopPropagation()} style={{ background: '#0D1526', border: '1px solid rgba(255,255,255,.1)', borderRadius: 24, width: '100%', maxWidth: 600, maxHeight: '88vh', overflow: 'auto', boxShadow: '0 40px 100px rgba(0,0,0,.7)', animation: 'fadeUp .3s ease' }}>
+          <div onClick={e => e.stopPropagation()} style={{ background: '#0D1526', border: '1px solid rgba(255,255,255,.1)', borderRadius: 24, width: '100%', maxWidth: 700, maxHeight: '88vh', overflow: 'auto', boxShadow: '0 40px 100px rgba(0,0,0,.7)', animation: 'fadeUp .3s ease' }}>
             <div style={{ padding: '22px 24px 18px', borderBottom: '1px solid rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: '#0D1526', zIndex: 2 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: 13, background: modules.find(m => m.route === selectedScan.scan_type)?.bg || 'rgba(255,255,255,.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: modules.find(m => m.route === selectedScan.scan_type)?.c || '#60A5FA' }}>
@@ -418,6 +419,50 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                 </div>
                 <span style={{ fontSize: 12, color: 'rgba(255,255,255,.3)' }}>{new Date(selectedScan.created_at).toLocaleString('en-PK')}</span>
               </div>
+
+              {/* Patient Details Card */}
+              <div style={{ marginBottom: 20, background: 'rgba(96,165,250,.06)', border: '1px solid rgba(96,165,250,.15)', borderRadius: 14, padding: '16px 18px' }}>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,.3)', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 7 }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#60A5FA', display: 'inline-block' }} />
+                  Patient Information
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 20px' }}>
+                  <div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.28)', marginBottom: 3 }}>Patient Name</div>
+                    <div style={{ fontSize: 14, color: '#fff', fontWeight: 700 }}>{selectedScan.patient_name || 'Unknown'}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.28)', marginBottom: 3 }}>Patient ID</div>
+                    <div style={{ fontSize: 14, color: '#60A5FA', fontWeight: 700, fontFamily: 'monospace' }}>{selectedScan.patient_id || `MCA-${String(selectedScan.user_id).padStart(5, '0')}`}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.28)', marginBottom: 3 }}>Email</div>
+                    <div style={{ fontSize: 13, color: 'rgba(255,255,255,.65)', fontWeight: 500 }}>{selectedScan.patient_email || '—'}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.28)', marginBottom: 3 }}>Scan Type</div>
+                    <div style={{ fontSize: 13, color: 'rgba(255,255,255,.65)', fontWeight: 600 }}>{selectedScan.scan_type?.replace(/-/g,' ').replace(/\b\w/g,(l:string)=>l.toUpperCase())}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Uploaded Image */}
+              {selectedScan.image_url && (
+                <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,.3)', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 7 }}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#818CF8', display: 'inline-block' }} />
+                    Uploaded Scan Image
+                  </div>
+                  <div style={{ background: 'rgba(0,0,0,.4)', border: '1px solid rgba(255,255,255,.1)', borderRadius: 14, padding: 12, textAlign: 'center' }}>
+                    <img
+                      src={`${(process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1').replace('/api/v1', '')}${selectedScan.image_url}`}
+                      alt={`${selectedScan.scan_type} scan`}
+                      style={{ maxWidth: '100%', maxHeight: 360, borderRadius: 10, objectFit: 'contain' }}
+                    />
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,.25)', marginTop: 8 }}>{selectedScan.filename}</div>
+                  </div>
+                </div>
+              )}
 
               {selectedScan.report && (
                 <div style={{ marginBottom: 20 }}>

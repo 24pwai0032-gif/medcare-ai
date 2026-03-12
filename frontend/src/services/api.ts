@@ -15,6 +15,7 @@ export interface Scan {
   user_id: number;
   scan_type: string;
   filename: string;
+  image_url?: string;
   report: string;
   severity: string;
   confidence: number;
@@ -23,6 +24,7 @@ export interface Scan {
   doctor_notes?: string;
   patient_name?: string;
   patient_email?: string;
+  patient_id?: string;
   created_at: string;
 }
 
