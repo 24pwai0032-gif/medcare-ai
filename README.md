@@ -84,31 +84,41 @@
 ### 🔐 Platform Capabilities
 
 <div align="center">
-
-```mermaid
-mindmap
-  root((MedCare AI))
-    🔒 Security
-      JWT Authentication
-      bcrypt Password Hashing
-      Role-Based Access Control
-      168hr Token Expiry
-    👥 Roles
-      Patient Dashboard
-      Doctor Dashboard
-      PMDC Verification
-    🤖 AI Engine
-      LLaVA-Med Vision
-      Bilingual Reports EN/UR
-      Severity Assessment
-      Confidence Scoring
-    📋 Reports
-      PDF Generation
-      Scan History
-      Doctor Approval Flow
-      Urdu Summary اردو
-```
-
+  <table>
+    <tr>
+      <td align="center" valign="top">
+        <span style="font-size:1.5em;">🔒</span><br/>
+        <b style="color:#4338ca;">Security</b><br/>
+        <span style="background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:8px;">JWT Auth</span><br/>
+        <span style="background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:8px;">bcrypt Hashing</span><br/>
+        <span style="background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:8px;">Role-Based Access</span><br/>
+        <span style="background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:8px;">168hr Token Expiry</span>
+      </td>
+      <td align="center" valign="top">
+        <span style="font-size:1.5em;">👥</span><br/>
+        <b style="color:#0ea5e9;">Roles</b><br/>
+        <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">Patient Dashboard</span><br/>
+        <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">Doctor Dashboard</span><br/>
+        <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">PMDC Verification</span>
+      </td>
+      <td align="center" valign="top">
+        <span style="font-size:1.5em;">🤖</span><br/>
+        <b style="color:#16a34a;">AI Engine</b><br/>
+        <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">LLaVA-Med Vision</span><br/>
+        <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Bilingual Reports EN/UR</span><br/>
+        <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Severity Assessment</span><br/>
+        <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Confidence Scoring</span>
+      </td>
+      <td align="center" valign="top">
+        <span style="font-size:1.5em;">📋</span><br/>
+        <b style="color:#f59e42;">Reports</b><br/>
+        <span style="background:#fef9c3;color:#b45309;padding:2px 8px;border-radius:8px;">PDF Generation</span><br/>
+        <span style="background:#fef9c3;color:#b45309;padding:2px 8px;border-radius:8px;">Scan History</span><br/>
+        <span style="background:#fef9c3;color:#b45309;padding:2px 8px;border-radius:8px;">Doctor Approval Flow</span><br/>
+        <span style="background:#fef9c3;color:#b45309;padding:2px 8px;border-radius:8px;">Urdu Summary اردو</span>
+      </td>
+    </tr>
+  </table>
 </div>
 
 ---
