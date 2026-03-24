@@ -1,6 +1,6 @@
 <div align="center">
 
-<!-- ANIMATED HEADER -->
+<!-- ANIMATED Header -->
 <img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=220&section=header&text=MedCare%20AI&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=32&desc=Pakistan%27s%20First%20AI-Powered%20Medical%20Diagnosis%20Platform&descSize=18&descAlignY=52&descAlign=50"/>
 
 
