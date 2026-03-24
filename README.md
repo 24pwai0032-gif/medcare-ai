@@ -1,10 +1,10 @@
 <div align="center">
 
-<!-- ANIMATED Header -->
-<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=220&section=header&text=MedCare%20AI&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=32&desc=Pakistan%27s%20First%20Ai-powered%20Medical%20Diagnosis%20Platform&descSize=18&descAlignY=52&descAlign=50"/>
+<!-- ANIMATED HEADER -->
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:4338ca,50:4f46e5,100:0ea5e9&height=220&section=header&text=MedCare%20AI&fontSize=72&fontColor=ffffff&animation=fadeIn&fontAlignY=32&desc=Pakistan%27s%20First%20AI-Powered%20Medical%20Diagnosis%20Platform&descSize=18&descAlignY=52&descAlign=50"/>
 
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=818CF8&center=true&vCenter=true&multiline=true&repeat=true&random=false&width=700&height=100&lines=%F0%9F%8F%A5+Ai-Powered+X-Ray%2C+ECG+%26+Blood+Test+Analysis;%F0%9F%87%B5%F0%9F%87%B0+Built+for+Pakistan+%7C+Bilingual+English+%2B+Urdu;%E2%9A%A1+Results+in+2-3+Minutes+%7C+Free+Forever;%F0%9F%A7%A0" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=22&duration=3000&pause=1000&color=818CF8&center=true&vCenter=true&multiline=true&repeat=true&random=false&width=700&height=100&lines=%F0%9F%8F%A5+AI-Powered+X-Ray%2C+ECG+%26+Blood+Test+Analysis;%F0%9F%87%B5%F0%9F%87%B0+Built+for+Pakistan+%7C+Bilingual+English+%2B+Urdu;%E2%9A%A1+Results+in+2-3+Minutes+%7C+Free+Forever;%F0%9F%A7%A0" alt="Typing SVG" /></a>
 
 <br/>
 
@@ -15,13 +15,13 @@
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge&logo=opensourceinitiative&logoColor=white)
 
 <!-- BADGES ROW 2 - Tech -->
-![React](https://img.shields.io/badge/React_19.-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![TypeScript](https://img.shields.io/badge/Typescript_5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![FastAPI](https://img.shields.io/badge/Fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![Python](https://img.shields.io/badge/python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/Postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![LLaVA-Med](https://img.shields.io/badge/Llava--Med-8E75B2?style=for-the-badge&logo=openai&logoColor=white)
-![Docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![React](https://img.shields.io/badge/React_19-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript_5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![LLaVA-Med](https://img.shields.io/badge/LLaVA--Med-8E75B2?style=for-the-badge&logo=openai&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
 <br/>
