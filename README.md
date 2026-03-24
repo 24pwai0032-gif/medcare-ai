@@ -20,7 +20,7 @@
 ![FastAPI](https://img.shields.io/badge/Fastapi-009688?style=for-the-badge&logo=fastapi&logoColor=white)
 ![Python](https://img.shields.io/badge/python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/Postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![LLaVA-Med](https://img.shields.io/badge/LLaVA--Med-8E75B2?style=for-the-badge&logo=openai&logoColor=white)
+![LLaVA-Med](https://img.shields.io/badge/Llava--Med-8E75B2?style=for-the-badge&logo=openai&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
