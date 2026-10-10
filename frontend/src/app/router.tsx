@@ -28,6 +28,22 @@ const legacyPortal = (load: () => Promise<{ default: ComponentType<PortalProps> 
   return { Component: LegacyPortalRoute };
 };
 
+/** Signed-in layout: query cache + toasts + the app shell (sidebar / bottom navigation). */
+const shellLayout = (role: 'patient' | 'doctor') => async () => {
+  const [{ AppShell }, { AppDataProvider }] = await Promise.all([
+    import('@/components/layout/AppShell'),
+    import('./AppDataProvider'),
+  ]);
+  function ShellLayout() {
+    return (
+      <AppDataProvider>
+        <AppShell role={role} />
+      </AppDataProvider>
+    );
+  }
+  return { Component: ShellLayout };
+};
+
 const devRoutes: RouteObject[] = import.meta.env.DEV
   ? [
       { path: 'design', lazy: () => import('@/features/design/DesignPage').then((m) => ({ Component: m.default })) },
@@ -89,11 +105,15 @@ export const routes: RouteObject[] = [
         ),
         children: [
           { index: true, lazy: legacyPortal(() => import('../pages/PatientDashboard')) },
-          { path: 'analyze/xray', lazy: legacyModule(() => import('../pages/XrayAnalyzer')) },
-          { path: 'analyze/bone', lazy: legacyModule(() => import('../pages/BoneScan')) },
-          { path: 'analyze/ecg', lazy: legacyModule(() => import('../pages/ECGAnalyzer')) },
-          { path: 'analyze/blood', lazy: legacyModule(() => import('../pages/BloodTestAnalyzer')) },
-          { path: 'analyze/prescription', lazy: legacyModule(() => import('../pages/PrescriptionReader')) },
+          {
+            lazy: shellLayout('patient'),
+            children: [
+              {
+                path: 'analyze/:module',
+                lazy: () => import('@/features/analyzer/AnalyzerPage').then((m) => ({ Component: m.default })),
+              },
+            ],
+          },
           { path: 'diagnosis', lazy: legacyModule(() => import('../pages/DiagnosisAI')) },
           { path: 'mental-health', lazy: legacyModule(() => import('../pages/MentalHealth')) },
           { path: 'vitals', lazy: legacyModule(() => import('../pages/VitalSigns')) },

@@ -123,5 +123,23 @@
   "toasts": {
     "region": "Notifications",
     "close": "Close notification"
+  },
+  "reportTitles": {
+    "xray": "X-ray report",
+    "bone": "Bone X-ray report",
+    "ecg": "ECG report",
+    "blood": "Blood test report",
+    "prescription": "Prescription report",
+    "skin": "Skin report",
+    "unknown": "AI report"
+  },
+  "scanTypes": {
+    "xray": "X-ray",
+    "bone": "Bone X-ray",
+    "ecg": "ECG",
+    "blood": "Blood test",
+    "prescription": "Prescription",
+    "skin": "Skin",
+    "unknown": "Scan"
   }
 }

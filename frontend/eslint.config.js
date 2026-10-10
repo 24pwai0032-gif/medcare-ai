@@ -8,7 +8,6 @@ import tseslint from 'typescript-eslint';
 const legacy = [
   'src/pages/**',
   'src/components/Icons.tsx',
-  'src/utils/generatePDF.ts',
   'src/services/legacyApi.ts',
 ];
 
@@ -61,6 +60,31 @@ const noLiteralUiString = {
   },
 };
 
+
+/**
+ * `useEffect(() => something())` returns whatever something() returns; React then treats it as
+ * the clean-up. In current Chrome, scrollTo() returns a Promise, which crashed production builds.
+ */
+const noExpressionEffect = {
+  meta: {
+    type: 'problem',
+    messages: { expression: 'Give effect callbacks a block body so they can only return a clean-up function.' },
+    schema: [],
+  },
+  create(context) {
+    return {
+      CallExpression(node) {
+        const name = node.callee.type === 'Identifier' ? node.callee.name : node.callee.property?.name;
+        if (name !== 'useEffect' && name !== 'useLayoutEffect') return;
+        const callback = node.arguments[0];
+        if (callback?.type !== 'ArrowFunctionExpression' || callback.body.type === 'BlockStatement') return;
+        if (callback.body.type === 'ArrowFunctionExpression' || callback.body.type === 'FunctionExpression') return;
+        context.report({ node: callback, messageId: 'expression' });
+      },
+    };
+  },
+};
+
 export default defineConfig([
   globalIgnores(['dist', 'build', 'coverage', 'playwright-report', 'test-results', ...legacy]),
   {
@@ -76,5 +100,10 @@ export default defineConfig([
     ignores: ['src/**/*.test.tsx', 'src/test/**', 'src/features/design/**'],
     plugins: { medcare: { rules: { 'no-literal-ui-string': noLiteralUiString } } },
     rules: { 'medcare/no-literal-ui-string': 'error' },
+  },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    plugins: { effects: { rules: { 'no-expression-effect': noExpressionEffect } } },
+    rules: { 'effects/no-expression-effect': 'error' },
   },
 ]);

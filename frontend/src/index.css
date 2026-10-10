@@ -239,6 +239,41 @@
   line-height: 2;
 }
 
+/* Off-screen block that html2canvas turns into an image of Urdu text for the PDF (fixed colours, any theme). */
+.pdf-render-host {
+  position: fixed;
+  top: 0;
+  left: -10000px;
+  width: 680px;
+  padding: 8px 6px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: "Noto Nastaliq Urdu", serif;
+  font-size: 18px;
+  line-height: 2.1;
+}
+
+.pdf-render-host h2 {
+  margin: 0 0 6px;
+  color: #0f766e;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.pdf-render-host p {
+  margin: 0 0 4px;
+}
+
+.pdf-render-note {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: 1px solid #b9dcd7;
+  border-radius: 6px;
+  background: #f0f7f6;
+  color: #0b4a45;
+  font-size: 16px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
