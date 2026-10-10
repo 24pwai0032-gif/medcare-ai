@@ -50,7 +50,7 @@ export function EmergencyCallButtons({ className }: { className?: string }) {
           <span className="inline-flex items-center gap-2 text-lg">
             <Phone className="size-5" aria-hidden="true" />
             {item.label}
-          </span>
+          </span>{' '}
           <span className="text-sm font-medium">{item.service}</span>
         </a>
       ))}

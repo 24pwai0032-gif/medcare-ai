@@ -1,15 +1,37 @@
 import type { ComponentType } from 'react';
-import { createBrowserRouter, Navigate, Outlet, useNavigate, useSearchParams, type RouteObject } from 'react-router';
+import { createBrowserRouter, Navigate, Outlet, useNavigate, type RouteObject } from 'react-router';
 import { useAuth } from '@/features/auth/authContext';
-import { destinationAfterLogin, homeFor } from '@/features/auth/redirects';
+import { homeFor } from '@/features/auth/redirects';
 import { RequireRole } from '@/features/auth/RequireRole';
+import type { Role } from '@/services/types';
 import { NotFoundPage, RouteError } from './NotFoundPage';
 import { RootLayout } from './RootLayout';
 
+/** Lazily loaded route module with a default-exported page component. */
+const page = (load: () => Promise<{ default: ComponentType }>) => () => load().then((m) => ({ Component: m.default }));
+
+/** Signed-in layout: query cache, toasts and the app shell (sidebar or bottom navigation). */
+const shellLayout = (role: Role) => async () => {
+  const [{ AppShell }, { AppDataProvider }] = await Promise.all([
+    import('@/components/layout/AppShell'),
+    import('./AppDataProvider'),
+  ]);
+  function ShellLayout() {
+    return (
+      <AppDataProvider>
+        <AppShell role={role} />
+      </AppDataProvider>
+    );
+  }
+  return { Component: ShellLayout };
+};
+
+const publicLayout = () => import('@/components/layout/PublicLayout').then((m) => ({ Component: m.PublicLayout }));
+
+// Pre-rebuild pages, wired to the router until their phase replaces them.
 type BackProps = { onBack: () => void };
 type PortalProps = { user: unknown; onLogout: () => void };
 
-// Pre-rebuild pages, wired to the router until their phase replaces them.
 const legacyModule = (load: () => Promise<{ default: ComponentType<BackProps> }>) => async () => {
   const { default: Page } = await load();
   function LegacyModuleRoute() {
@@ -28,25 +50,9 @@ const legacyPortal = (load: () => Promise<{ default: ComponentType<PortalProps> 
   return { Component: LegacyPortalRoute };
 };
 
-/** Signed-in layout: query cache + toasts + the app shell (sidebar / bottom navigation). */
-const shellLayout = (role: 'patient' | 'doctor') => async () => {
-  const [{ AppShell }, { AppDataProvider }] = await Promise.all([
-    import('@/components/layout/AppShell'),
-    import('./AppDataProvider'),
-  ]);
-  function ShellLayout() {
-    return (
-      <AppDataProvider>
-        <AppShell role={role} />
-      </AppDataProvider>
-    );
-  }
-  return { Component: ShellLayout };
-};
-
 const devRoutes: RouteObject[] = import.meta.env.DEV
   ? [
-      { path: 'design', lazy: () => import('@/features/design/DesignPage').then((m) => ({ Component: m.default })) },
+      { path: 'design', lazy: page(() => import('@/features/design/DesignPage')) },
       {
         path: 'design/shell',
         lazy: () => import('@/features/design/ShellPreview').then((m) => ({ Component: m.ShellPreviewLayout })),
@@ -78,23 +84,11 @@ export const routes: RouteObject[] = [
         },
       },
       {
-        path: 'login',
-        lazy: async () => {
-          const { default: Login } = await import('../pages/Login');
-          function LoginRoute() {
-            const navigate = useNavigate();
-            const [params] = useSearchParams();
-            const { user, syncFromStorage } = useAuth();
-            if (user) return <Navigate to={homeFor(user.role)} replace />;
-            const onLogin = (u: { role?: string }) => {
-              syncFromStorage();
-              const role = u.role === 'doctor' ? 'doctor' : 'patient';
-              navigate(destinationAfterLogin(role, params.get('next')), { replace: true });
-            };
-            return <Login onLogin={onLogin} />;
-          }
-          return { Component: LoginRoute };
-        },
+        lazy: publicLayout,
+        children: [
+          { path: 'login', lazy: page(() => import('@/features/auth/LoginPage')) },
+          { path: 'register', lazy: page(() => import('@/features/auth/RegisterPage')) },
+        ],
       },
       {
         path: 'app',
@@ -104,14 +98,13 @@ export const routes: RouteObject[] = [
           </RequireRole>
         ),
         children: [
-          { index: true, lazy: legacyPortal(() => import('../pages/PatientDashboard')) },
           {
             lazy: shellLayout('patient'),
             children: [
-              {
-                path: 'analyze/:module',
-                lazy: () => import('@/features/analyzer/AnalyzerPage').then((m) => ({ Component: m.default })),
-              },
+              { index: true, lazy: page(() => import('@/features/patient/PatientDashboard')) },
+              { path: 'scans', lazy: page(() => import('@/features/patient/ScanHistoryPage')) },
+              { path: 'scans/:id', lazy: page(() => import('@/features/patient/ScanDetailPage')) },
+              { path: 'analyze/:module', lazy: page(() => import('@/features/analyzer/AnalyzerPage')) },
             ],
           },
           { path: 'diagnosis', lazy: legacyModule(() => import('../pages/DiagnosisAI')) },

@@ -10,6 +10,10 @@ import { homeFor } from '@/features/auth/redirects';
 import { SkipLink } from './AppShell';
 import { LanguageToggle, ThemeToggle } from './toggles';
 
+// Public pages that exist so far; Phase 6 adds /emergency, Phase 7 adds About, Privacy and Terms.
+const FIRST_AID_PATH: string | null = null;
+const FOOTER_LINKS: Array<{ to: string; key: 'nav.emergency' | 'nav.about' | 'nav.privacy' | 'nav.terms' }> = [];
+
 /** A quiet, always-visible route to emergency help on every public page. */
 function EmergencyStrip() {
   const { t } = useTranslation();
@@ -24,9 +28,11 @@ function EmergencyStrip() {
         <a href="tel:115" className="inline-flex min-h-8 items-center font-bold underline underline-offset-2">
           {t('emergencyNumbers.callEdhi')}
         </a>
-        <Link to="/emergency" className="inline-flex min-h-8 items-center underline underline-offset-2">
-          {t('emergencyStrip.guide')}
-        </Link>
+        {FIRST_AID_PATH ? (
+          <Link to={FIRST_AID_PATH} className="inline-flex min-h-8 items-center underline underline-offset-2">
+            {t('emergencyStrip.guide')}
+          </Link>
+        ) : null}
       </div>
     </div>
   );
@@ -34,26 +40,22 @@ function EmergencyStrip() {
 
 function PublicFooter() {
   const { t } = useTranslation();
-  const links = [
-    { to: '/emergency', label: t('nav.emergency') },
-    { to: '/about', label: t('nav.about') },
-    { to: '/privacy', label: t('nav.privacy') },
-    { to: '/terms', label: t('nav.terms') },
-  ];
   return (
     <footer className="border-t bg-surface">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm sm:px-6">
-        <nav aria-label={t('nav.footer')}>
-          <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            {links.map((link) => (
-              <li key={link.to}>
-                <Link to={link.to} className="inline-flex min-h-11 items-center font-medium hover:underline">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        {FOOTER_LINKS.length ? (
+          <nav aria-label={t('nav.footer')}>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="inline-flex min-h-11 items-center font-medium hover:underline">
+                    {t(link.key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ) : null}
         <p className="text-muted-foreground">{t('footer.notMedicalAdvice')}</p>
         <p className="text-muted-foreground">{t('footer.copyright', { year: new Date().getFullYear() })}</p>
       </div>

@@ -4,6 +4,7 @@ import {
   Brain,
   ClipboardList,
   HeartPulse,
+  History,
   House,
   Inbox,
   Pill,
@@ -45,6 +46,7 @@ export interface NavItem {
 export const NAV: Record<Role, NavItem[]> = {
   patient: [
     { to: '/app', labelKey: 'nav.home', icon: House, end: true, mobile: true, group: 'main' },
+    { to: '/app/scans', labelKey: 'nav.scans', icon: History, mobile: true, group: 'main' },
     { to: '/app/analyze/xray', labelKey: 'modules.xray', icon: ScanLine, group: 'analyze' },
     { to: '/app/analyze/bone', labelKey: 'modules.bone', icon: Bone, group: 'analyze' },
     { to: '/app/analyze/ecg', labelKey: 'modules.ecg', icon: HeartPulse, group: 'analyze' },

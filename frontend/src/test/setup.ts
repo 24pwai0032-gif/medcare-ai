@@ -8,6 +8,12 @@ if (!URL.createObjectURL) URL.createObjectURL = () => 'blob:test-preview';
 if (!URL.revokeObjectURL) URL.revokeObjectURL = () => undefined;
 // Like current Chrome, scrollTo() returns a Promise; an effect that returns it must fail a test.
 window.scrollTo = (() => Promise.resolve()) as unknown as typeof window.scrollTo;
+// Radix radio groups inside a <form> measure themselves.
+globalThis.ResizeObserver ??= class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 
 const FATAL_REACT_WARNINGS = [/must not return anything besides a function/, /unique "key" prop/];
 const originalError = console.error;
