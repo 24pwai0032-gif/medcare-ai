@@ -1,0 +1,171 @@
+{
+  "symptoms": {
+    "title": "Symptom guide",
+    "description": "General information about 10 common symptoms. This is not AI and not a diagnosis.",
+    "choose": "Choose the symptoms you have",
+    "show": "Show information",
+    "chooseFirst": "Choose at least one symptom.",
+    "reset": "Choose different symptoms",
+    "resultsHeading": "Information for your symptoms",
+    "causes": "Possible causes to discuss with a doctor",
+    "advice": "Advice",
+    "urgent": "One or more of these symptoms can need urgent care.",
+    "notListed": "If you feel very unwell or your symptom isn't listed, see a doctor. In an emergency, call 1122 or 115.",
+    "disclaimer": "This guide is for initial information only. See a doctor for a diagnosis.",
+    "items": {
+      "headache": {
+        "label": "Headache",
+        "conditions": ["Tension Headache", "Migraine", "Sinusitis"],
+        "advice": "Rest in a dark room. Stay hydrated. Take OTC pain relief if needed. See a doctor if persistent."
+      },
+      "fever": {
+        "label": "Fever",
+        "conditions": ["Viral Infection", "Flu", "COVID-19", "Bacterial Infection"],
+        "advice": "Monitor temperature. Stay hydrated. Take paracetamol. Seek medical help if above 103°F."
+      },
+      "cough": {
+        "label": "Cough",
+        "conditions": ["Common Cold", "Bronchitis", "Allergies", "Pneumonia"],
+        "advice": "Stay hydrated. Use honey and warm water. Avoid irritants. See doctor if cough persists >2 weeks."
+      },
+      "chestPain": {
+        "label": "Chest pain",
+        "conditions": ["Angina", "Acid Reflux (GERD)", "Muscle Strain", "Anxiety"],
+        "advice": "SEEK IMMEDIATE MEDICAL ATTENTION. Call emergency services if accompanied by shortness of breath."
+      },
+      "stomachPain": {
+        "label": "Stomach pain",
+        "conditions": ["Gastritis", "Food Poisoning", "IBS", "Appendicitis"],
+        "advice": "Eat bland foods. Avoid spicy food. Stay hydrated. See doctor if pain is severe or persistent."
+      },
+      "backPain": {
+        "label": "Back pain",
+        "conditions": ["Muscle Strain", "Herniated Disc", "Poor Posture", "Sciatica"],
+        "advice": "Apply heat/ice. Gentle stretching. Maintain good posture. See doctor if numbness develops."
+      },
+      "dizziness": {
+        "label": "Dizziness",
+        "conditions": ["Vertigo", "Low Blood Pressure", "Dehydration", "Anemia"],
+        "advice": "Sit or lie down safely. Drink water. Avoid sudden movements. See doctor if frequent."
+      },
+      "shortnessOfBreath": {
+        "label": "Shortness of breath",
+        "conditions": ["Asthma", "Anxiety", "Pneumonia", "Heart Failure"],
+        "advice": "SEEK IMMEDIATE MEDICAL ATTENTION if severe or sudden onset. Use inhaler if prescribed."
+      },
+      "fatigue": {
+        "label": "Fatigue",
+        "conditions": ["Anemia", "Thyroid Issues", "Depression", "Diabetes"],
+        "advice": "Get adequate sleep. Eat balanced diet. Exercise regularly. See doctor if persistent."
+      },
+      "jointPain": {
+        "label": "Joint pain",
+        "conditions": ["Arthritis", "Gout", "Bursitis", "Lupus"],
+        "advice": "Rest the affected joint. Apply ice. Take anti-inflammatory medication. See doctor if swelling persists."
+      }
+    }
+  },
+  "phq9": {
+    "title": "Depression screening (PHQ-9)",
+    "description": "Nine questions about the last two weeks. It takes about two minutes.",
+    "privacy": "Your answers stay on this device and are not sent anywhere.",
+    "englishOnly": "The questions are shown in English, the language of the validated PHQ-9 wording used here.",
+    "stem": "Over the last 2 weeks, how often have you been bothered by any of the following problems?",
+    "questionLabel": "Question {{number}} of 9",
+    "progress": "{{count}} of 9 answered",
+    "submit": "See my results",
+    "answerAll": "Answer all 9 questions to see your results.",
+    "items": [
+      "Little interest or pleasure in doing things",
+      "Feeling down, depressed, or hopeless",
+      "Trouble falling or staying asleep, or sleeping too much",
+      "Feeling tired or having little energy",
+      "Poor appetite or overeating",
+      "Feeling bad about yourself — or that you are a failure or have let yourself or your family down",
+      "Trouble concentrating on things, such as reading the newspaper or watching television",
+      "Moving or speaking so slowly that other people could have noticed? Or the opposite — being so fidgety or restless that you have been moving around a lot more than usual",
+      "Thoughts that you would be better off dead or of hurting yourself in some way"
+    ],
+    "options": ["Not at all", "Several days", "More than half the days", "Nearly every day"],
+    "resultsHeading": "Your results",
+    "score": "Score: {{score}} out of 27",
+    "band": "Result",
+    "bands": {
+      "minimal": {
+        "label": "Minimal",
+        "advice": "Your mental health appears to be in a good state. Keep maintaining healthy habits."
+      },
+      "mild": {
+        "label": "Mild",
+        "advice": "Mild symptoms detected. Consider self-care activities: exercise, meditation, talking to friends."
+      },
+      "moderate": {
+        "label": "Moderate",
+        "advice": "Moderate depression symptoms. We recommend consulting a mental health professional."
+      },
+      "moderatelySevere": {
+        "label": "Moderately severe",
+        "advice": "Significant depression symptoms. Please seek professional help as soon as possible."
+      },
+      "severe": {
+        "label": "Severe",
+        "advice": "Severe depression detected. Please contact a mental health professional or crisis helpline immediately."
+      }
+    },
+    "edit": "Change my answers",
+    "restart": "Start again",
+    "disclaimer": "This is a screening questionnaire, not a diagnosis. Talk to a mental health professional for an assessment.",
+    "attribution": "PHQ-9 © Pfizer Inc.",
+    "crisis": {
+      "title": "You mentioned thoughts of harming yourself or of being better off dead",
+      "body": "You don't have to face this alone. Please talk to someone today.",
+      "danger": "If you are in immediate danger, call 1122 or 115 now.",
+      "helplines": "Mental health helplines in Pakistan",
+      "call": "Call {{number}}"
+    }
+  },
+  "helplines": {
+    "umang": { "name": "Umang mental health helpline", "hours": "24 hours" },
+    "gov": { "name": "Government mental health helpline", "hours": "Toll-free" },
+    "rozan": { "name": "Rozan Counseling Helpline", "hours": "Monday to Friday, 9 am to 5 pm" }
+  },
+  "vitals": {
+    "title": "Vital signs check",
+    "description": "Enter any readings you have. Each one is compared with the usual adult range.",
+    "privacy": "Your readings stay on this device and are not saved.",
+    "check": "Check readings",
+    "enterOne": "Enter at least one reading.",
+    "reset": "Enter new readings",
+    "resultsHeading": "Your readings",
+    "normalRange": "Normal: {{min}}–{{max}} {{unit}}",
+    "fields": {
+      "heartRate": "Heart rate",
+      "systolic": "Systolic blood pressure (top number)",
+      "diastolic": "Diastolic blood pressure (bottom number)",
+      "temperature": "Temperature",
+      "oxygen": "Blood oxygen (SpO₂)",
+      "respiratory": "Breathing rate"
+    },
+    "units": {
+      "heartRate": "bpm",
+      "systolic": "mmHg",
+      "diastolic": "mmHg",
+      "temperature": "°F",
+      "oxygen": "%",
+      "respiratory": "/min"
+    },
+    "invalid": "Enter a number between {{min}} and {{max}}.",
+    "temperatureHint": "In {{unit}}, for example 98.6.",
+    "status": {
+      "normal": "Normal",
+      "warning": "Warning",
+      "critical": "Critical"
+    },
+    "summary": {
+      "normal": "All your vital signs are normal. Keep up healthy habits.",
+      "warning": "Some vital signs are outside the normal range. Consult a doctor.",
+      "critical": "Get medical help immediately! Some vital signs are in a dangerous range."
+    },
+    "disclaimer": "This tool is for monitoring only and can't replace a professional medical check-up."
+  }
+}

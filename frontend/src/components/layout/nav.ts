@@ -55,11 +55,11 @@ export const NAV: Record<Role, NavItem[]> = {
     { to: '/app/diagnosis', labelKey: 'modules.diagnosis', icon: Stethoscope, group: 'tools' },
     { to: '/app/mental-health', labelKey: 'modules.mentalHealth', icon: Brain, group: 'tools' },
     { to: '/app/vitals', labelKey: 'modules.vitals', icon: Activity, group: 'tools' },
-    // Phase 6 moves Emergency Aid to the public /emergency page.
-    { to: '/app/emergency', labelKey: 'nav.emergency', icon: Siren, mobile: true, group: 'main', tone: 'emergency' },
+    { to: '/emergency', labelKey: 'nav.emergency', icon: Siren, mobile: true, group: 'main', tone: 'emergency' },
   ],
   doctor: [
     { to: '/doctor', labelKey: 'nav.queue', icon: Inbox, end: true, mobile: true, group: 'main' },
     { to: '/doctor/scans', labelKey: 'nav.allScans', icon: ClipboardList, mobile: true, group: 'main' },
+    { to: '/emergency', labelKey: 'nav.emergency', icon: Siren, mobile: true, group: 'main', tone: 'emergency' },
   ],
 };

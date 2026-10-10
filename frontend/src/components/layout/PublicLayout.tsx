@@ -10,9 +10,11 @@ import { homeFor } from '@/features/auth/redirects';
 import { SkipLink } from './AppShell';
 import { LanguageToggle, ThemeToggle } from './toggles';
 
-// Public pages that exist so far; Phase 6 adds /emergency, Phase 7 adds About, Privacy and Terms.
-const FIRST_AID_PATH: string | null = null;
-const FOOTER_LINKS: Array<{ to: string; key: 'nav.emergency' | 'nav.about' | 'nav.privacy' | 'nav.terms' }> = [];
+// Public pages that exist so far; Phase 7 adds About, Privacy and Terms.
+const FIRST_AID_PATH: string | null = '/emergency';
+const FOOTER_LINKS: Array<{ to: string; key: 'nav.emergency' | 'nav.about' | 'nav.privacy' | 'nav.terms' }> = [
+  { to: '/emergency', key: 'nav.emergency' },
+];
 
 /** A quiet, always-visible route to emergency help on every public page. */
 function EmergencyStrip() {

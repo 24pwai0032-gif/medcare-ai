@@ -27,6 +27,12 @@ export function formatDate(value: string | Date | null | undefined, language: st
   return new Intl.DateTimeFormat(localeFor(language), { dateStyle: 'medium' }).format(date);
 }
 
+const LRI = String.fromCodePoint(0x2066);
+const PDI = String.fromCodePoint(0x2069);
+
+/** Keeps a Latin unit such as "°F" or "/min" in order inside Urdu (right-to-left) text. */
+export const isolateLtr = (text: string) => `${LRI}${text}${PDI}`;
+
 /** Never use this for phone numbers: it would print 1122 as "1,122". */
 export function formatNumber(value: number, language: string, options?: Intl.NumberFormatOptions) {
   return new Intl.NumberFormat(localeFor(language), options).format(value);

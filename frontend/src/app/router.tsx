@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import { createBrowserRouter, Navigate, Outlet, useNavigate, type RouteObject } from 'react-router';
+import { createBrowserRouter, Navigate, Outlet, type RouteObject } from 'react-router';
 import { useAuth } from '@/features/auth/authContext';
 import { homeFor } from '@/features/auth/redirects';
 import { RequireRole } from '@/features/auth/RequireRole';
@@ -27,18 +27,6 @@ const shellLayout = (role: Role) => async () => {
 };
 
 const publicLayout = () => import('@/components/layout/PublicLayout').then((m) => ({ Component: m.PublicLayout }));
-
-// Pre-rebuild pages, wired to the router until their phase replaces them.
-type BackProps = { onBack: () => void };
-
-const legacyModule = (load: () => Promise<{ default: ComponentType<BackProps> }>) => async () => {
-  const { default: Page } = await load();
-  function LegacyModuleRoute() {
-    const navigate = useNavigate();
-    return <Page onBack={() => navigate('/app')} />;
-  }
-  return { Component: LegacyModuleRoute };
-};
 
 const devRoutes: RouteObject[] = import.meta.env.DEV
   ? [
@@ -78,6 +66,9 @@ export const routes: RouteObject[] = [
         children: [
           { path: 'login', lazy: page(() => import('@/features/auth/LoginPage')) },
           { path: 'register', lazy: page(() => import('@/features/auth/RegisterPage')) },
+          // Public on purpose: first aid must never sit behind sign-in.
+          { path: 'emergency', lazy: page(() => import('@/features/emergency/EmergencyListPage')) },
+          { path: 'emergency/:slug', lazy: page(() => import('@/features/emergency/EmergencyDetailPage')) },
         ],
       },
       {
@@ -95,12 +86,13 @@ export const routes: RouteObject[] = [
               { path: 'scans', lazy: page(() => import('@/features/patient/ScanHistoryPage')) },
               { path: 'scans/:id', lazy: page(() => import('@/features/patient/ScanDetailPage')) },
               { path: 'analyze/:module', lazy: page(() => import('@/features/analyzer/AnalyzerPage')) },
+              { path: 'diagnosis', lazy: page(() => import('@/features/tools/SymptomGuidePage')) },
+              { path: 'mental-health', lazy: page(() => import('@/features/tools/MentalHealthPage')) },
+              { path: 'vitals', lazy: page(() => import('@/features/tools/VitalSignsPage')) },
             ],
           },
-          { path: 'diagnosis', lazy: legacyModule(() => import('../pages/DiagnosisAI')) },
-          { path: 'mental-health', lazy: legacyModule(() => import('../pages/MentalHealth')) },
-          { path: 'vitals', lazy: legacyModule(() => import('../pages/VitalSigns')) },
-          { path: 'emergency', lazy: legacyModule(() => import('../pages/EmergencyAid')) },
+          // The pre-rebuild URL for first aid.
+          { path: 'emergency', element: <Navigate to="/emergency" replace /> },
         ],
       },
       {

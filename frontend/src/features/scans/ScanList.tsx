@@ -19,7 +19,7 @@ export function ScanList({ scans, hrefFor, showPatient = false }: ScanListProps)
   const { t } = useTranslation('common');
   const fmt = useFormatters();
   return (
-    <ul className="space-y-3">
+    <ul role="list" className="space-y-3">
       {scans.map((scan) => {
         const kind = scanKind(scan.scan_type);
         const Icon = SCAN_ICONS[kind];

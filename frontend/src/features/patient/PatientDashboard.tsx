@@ -61,7 +61,7 @@ export default function PatientDashboard() {
         <h2 id="analyze-heading" className="text-lg font-semibold">
           {t('patient:dashboard.analyzeHeading')}
         </h2>
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul role="list" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {MODULE_IDS.map((id) => {
             const Icon = ANALYZER_MODULES[id].icon;
             return (
@@ -83,7 +83,7 @@ export default function PatientDashboard() {
         <h2 id="tools-heading" className="text-lg font-semibold">
           {t('patient:dashboard.toolsHeading')}
         </h2>
-        <ul className="grid gap-3 sm:grid-cols-3">
+        <ul role="list" className="grid gap-3 sm:grid-cols-3">
           {TOOLS.map((tool) => (
             <li key={tool.key}>
               <Link to={tool.to} className={tileClass}>
@@ -105,7 +105,7 @@ export default function PatientDashboard() {
         </h2>
         <p>{t('patient:dashboard.emergencyBody')}</p>
         <EmergencyCallButtons />
-        <Link to="/app/emergency" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-2">
+        <Link to="/emergency" className="inline-flex min-h-11 items-center font-semibold underline underline-offset-2">
           {t('patient:dashboard.firstAidGuide')}
         </Link>
       </section>
