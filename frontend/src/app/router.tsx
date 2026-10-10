@@ -1,15 +1,15 @@
 import type { ComponentType } from 'react';
-import { createBrowserRouter, Navigate, Outlet, useNavigate, useSearchParams } from 'react-router';
-import { logout } from '../services/api';
+import { createBrowserRouter, Navigate, Outlet, useNavigate, useSearchParams, type RouteObject } from 'react-router';
+import { useAuth } from '@/features/auth/authContext';
+import { destinationAfterLogin, homeFor } from '@/features/auth/redirects';
+import { RequireRole } from '@/features/auth/RequireRole';
 import { NotFoundPage, RouteError } from './NotFoundPage';
-import { RequireRole } from './RequireRole';
 import { RootLayout } from './RootLayout';
-import { currentUser, homeFor, safeNext } from './session';
 
 type BackProps = { onBack: () => void };
 type PortalProps = { user: unknown; onLogout: () => void };
 
-/** Pre-rebuild module pages take an onBack callback; each gets its own lazily loaded route. */
+// Pre-rebuild pages, wired to the router until their phase replaces them.
 const legacyModule = (load: () => Promise<{ default: ComponentType<BackProps> }>) => async () => {
   const { default: Page } = await load();
   function LegacyModuleRoute() {
@@ -22,28 +22,40 @@ const legacyModule = (load: () => Promise<{ default: ComponentType<BackProps> }>
 const legacyPortal = (load: () => Promise<{ default: ComponentType<PortalProps> }>) => async () => {
   const { default: Page } = await load();
   function LegacyPortalRoute() {
-    const navigate = useNavigate();
-    const onLogout = () => {
-      logout();
-      navigate('/', { replace: true });
-    };
-    return <Page user={currentUser()} onLogout={onLogout} />;
+    const { user, logout } = useAuth();
+    return <Page user={user} onLogout={logout} />;
   }
   return { Component: LegacyPortalRoute };
 };
 
-export const router = createBrowserRouter([
+const devRoutes: RouteObject[] = import.meta.env.DEV
+  ? [
+      { path: 'design', lazy: () => import('@/features/design/DesignPage').then((m) => ({ Component: m.default })) },
+      {
+        path: 'design/shell',
+        lazy: () => import('@/features/design/ShellPreview').then((m) => ({ Component: m.ShellPreviewLayout })),
+        children: [
+          {
+            index: true,
+            lazy: () => import('@/features/design/ShellPreview').then((m) => ({ Component: m.ShellPreviewContent })),
+          },
+        ],
+      },
+    ]
+  : [];
+
+export const routes: RouteObject[] = [
   {
     element: <RootLayout />,
     errorElement: <RouteError />,
-    hydrateFallbackElement: <div aria-busy="true" className="min-h-screen" />,
+    hydrateFallbackElement: <div aria-busy="true" className="min-h-dvh" />,
     children: [
       {
         index: true,
         lazy: async () => {
           const { default: Landing } = await import('../pages/LegacyLanding');
           function LandingRoute() {
-            const user = currentUser();
+            const { user } = useAuth();
             return user ? <Navigate to={homeFor(user.role)} replace /> : <Landing />;
           }
           return { Component: LandingRoute };
@@ -56,12 +68,13 @@ export const router = createBrowserRouter([
           function LoginRoute() {
             const navigate = useNavigate();
             const [params] = useSearchParams();
-            const user = currentUser();
+            const { user, syncFromStorage } = useAuth();
             if (user) return <Navigate to={homeFor(user.role)} replace />;
-            const onLogin = (u: { role?: string }) =>
-              navigate(safeNext(params.get('next')) ?? homeFor(u.role === 'doctor' ? 'doctor' : 'patient'), {
-                replace: true,
-              });
+            const onLogin = (u: { role?: string }) => {
+              syncFromStorage();
+              const role = u.role === 'doctor' ? 'doctor' : 'patient';
+              navigate(destinationAfterLogin(role, params.get('next')), { replace: true });
+            };
             return <Login onLogin={onLogin} />;
           }
           return { Component: LoginRoute };
@@ -96,7 +109,10 @@ export const router = createBrowserRouter([
         ),
         children: [{ index: true, lazy: legacyPortal(() => import('../pages/DoctorDashboard')) }],
       },
+      ...devRoutes,
       { path: '*', element: <NotFoundPage /> },
     ],
   },
-]);
+];
+
+export const router = createBrowserRouter(routes);

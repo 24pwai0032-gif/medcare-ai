@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { registerUser, loginUser, saveToken, saveUser } from '../services/api';
+import { registerUser, loginUser, saveToken, saveUser } from '../services/legacyApi';
 import {
   LogoIcon, UserIcon, DoctorIcon, ShieldCheckIcon,
   CheckCircleIcon, AlertTriangleIcon, EyeIcon,

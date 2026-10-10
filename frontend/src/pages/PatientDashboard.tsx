@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { getMyScans } from '../services/api';
+import { getMyScans } from '../services/legacyApi';
 import {
   LungsIcon, BoneIcon, HeartPulseIcon, TestTubeIcon, BrainIcon,
   StethoscopeIcon, PillIcon, ActivityIcon, SirenIcon,

@@ -2,12 +2,29 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script>
+      // Apply the saved theme and language before the first paint (no flash of the wrong theme or direction).
+      (function () {
+        var root = document.documentElement;
+        try {
+          var theme = localStorage.getItem('medcare_theme');
+          var dark = theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          root.setAttribute('data-theme', dark ? 'dark' : 'light');
+          if (localStorage.getItem('medcare_lang') === 'ur') {
+            root.lang = 'ur';
+            root.dir = 'rtl';
+          }
+        } catch (e) {
+          root.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0f766e" />
     <meta name="description" content="Web site created using create-react-app" />
     <title>Medcare AI</title>
   </head>

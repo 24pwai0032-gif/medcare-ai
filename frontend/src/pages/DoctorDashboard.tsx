@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getAllScansDoctor, approveScan, rejectScan } from '../services/api';
+import { getAllScansDoctor, approveScan, rejectScan } from '../services/legacyApi';
 import {
   LungsIcon, BoneIcon, HeartPulseIcon, TestTubeIcon, BrainIcon,
   StethoscopeIcon, PillIcon, ActivityIcon, SirenIcon,

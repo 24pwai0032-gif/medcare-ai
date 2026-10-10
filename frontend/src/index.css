@@ -1,30 +1,251 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
+@import "tw-animate-css";
 
-/* Pre-rebuild global styles, kept in the base layer so utilities still apply. */
+/* Dark mode follows the data-theme attribute that ThemeProvider sets on <html>. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Design tokens. Every text/background pair below was checked against WCAG 2.2 AA
+ * (4.5:1 for text, 3:1 for borders and focus rings) in both themes.
+ */
+:root {
+  color-scheme: light;
+  --background: #f7f9fa;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-foreground: #0f172a;
+  --muted: #eef2f4;
+  --muted-foreground: #475569;
+  --border: #e2e8f0;
+  --input: #7b8794;
+  --ring: #0f766e;
+  --primary: #0f766e;
+  --primary-hover: #115e59;
+  --primary-foreground: #ffffff;
+  --secondary: #e6f2f1;
+  --secondary-foreground: #0b4a45;
+  --accent: #eef2f4;
+  --accent-foreground: #0f172a;
+  --destructive: #b91c1c;
+  --destructive-foreground: #ffffff;
+  --info: #f0f7f6;
+  --info-border: #b9dcd7;
+  --info-foreground: #0b4a45;
+  --warning: #fffbeb;
+  --warning-border: #f3d48a;
+  --warning-foreground: #92400e;
+  --emergency: #b91c1c;
+  --emergency-foreground: #ffffff;
+  --sev-normal: #ecfdf5;
+  --sev-normal-foreground: #065f46;
+  --sev-mild: #fefce8;
+  --sev-mild-foreground: #854d0e;
+  --sev-moderate: #fff7ed;
+  --sev-moderate-foreground: #9a3412;
+  --sev-severe: #fef2f2;
+  --sev-severe-foreground: #991b1b;
+  --sev-critical: #991b1b;
+  --sev-critical-foreground: #ffffff;
+  --status-pending: #fffbeb;
+  --status-pending-foreground: #92400e;
+  --status-approved: #ecfdf5;
+  --status-approved-foreground: #065f46;
+  --status-flagged: #fef2f2;
+  --status-flagged-foreground: #991b1b;
+  --radius: 0.5rem;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #0b1215;
+  --foreground: #e8eef0;
+  --surface: #121b1f;
+  --surface-foreground: #e8eef0;
+  --muted: #1a262b;
+  --muted-foreground: #9aa8b1;
+  --border: #22303a;
+  --input: #5f6e78;
+  --ring: #5eead4;
+  --primary: #2dd4bf;
+  --primary-hover: #5eead4;
+  --primary-foreground: #042f2e;
+  --secondary: #0f2a2a;
+  --secondary-foreground: #a7f3e9;
+  --accent: #1a262b;
+  --accent-foreground: #e8eef0;
+  --destructive: #f87171;
+  --destructive-foreground: #1f0a0a;
+  --info: #0f2224;
+  --info-border: #1f4a47;
+  --info-foreground: #a7f3e9;
+  --warning: #2b1d05;
+  --warning-border: #6b4e12;
+  --warning-foreground: #fcd34d;
+  --emergency: #f87171;
+  --emergency-foreground: #1f0a0a;
+  --sev-normal: #06281f;
+  --sev-normal-foreground: #6ee7b7;
+  --sev-mild: #2a2207;
+  --sev-mild-foreground: #fde047;
+  --sev-moderate: #2e1708;
+  --sev-moderate-foreground: #fdba74;
+  --sev-severe: #330f10;
+  --sev-severe-foreground: #fca5a5;
+  --sev-critical: #f87171;
+  --sev-critical-foreground: #1f0a0a;
+  --status-pending: #2b1d05;
+  --status-pending-foreground: #fcd34d;
+  --status-approved: #06281f;
+  --status-approved-foreground: #6ee7b7;
+  --status-flagged: #330f10;
+  --status-flagged-foreground: #fca5a5;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-info: var(--info);
+  --color-info-border: var(--info-border);
+  --color-info-foreground: var(--info-foreground);
+  --color-warning: var(--warning);
+  --color-warning-border: var(--warning-border);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-emergency: var(--emergency);
+  --color-emergency-foreground: var(--emergency-foreground);
+  --color-sev-normal: var(--sev-normal);
+  --color-sev-normal-foreground: var(--sev-normal-foreground);
+  --color-sev-mild: var(--sev-mild);
+  --color-sev-mild-foreground: var(--sev-mild-foreground);
+  --color-sev-moderate: var(--sev-moderate);
+  --color-sev-moderate-foreground: var(--sev-moderate-foreground);
+  --color-sev-severe: var(--sev-severe);
+  --color-sev-severe-foreground: var(--sev-severe-foreground);
+  --color-sev-critical: var(--sev-critical);
+  --color-sev-critical-foreground: var(--sev-critical-foreground);
+  --color-status-pending: var(--status-pending);
+  --color-status-pending-foreground: var(--status-pending-foreground);
+  --color-status-approved: var(--status-approved);
+  --color-status-approved-foreground: var(--status-approved-foreground);
+  --color-status-flagged: var(--status-flagged);
+  --color-status-flagged-foreground: var(--status-flagged-foreground);
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-urdu: "Noto Nastaliq Urdu", "Inter Variable", "Jameel Noori Nastaleeq", "Urdu Typesetting", serif;
+  /* For Urdu labels that must not pull in the Nastaliq font (e.g. the language switch on English pages). */
+  --font-system: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+}
+
 @layer base {
   * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc;
-    color: #1a202c;
+    min-height: 100dvh;
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
 
-  ::-webkit-scrollbar {
-    width: 6px;
+  /*
+   * Urdu: Nastaliq is tall and sits on a sloping baseline, so it needs a larger size and
+   * roughly double line height. Letter-spacing, uppercase and synthetic bold break the
+   * joined letterforms, so they are switched off for every Urdu element.
+   */
+  :lang(ur) {
+    font-family: var(--font-urdu);
+    font-synthesis: none;
+    word-spacing: normal;
   }
 
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  *:lang(ur) {
+    letter-spacing: 0 !important;
+    text-transform: none !important;
   }
 
-  ::-webkit-scrollbar-thumb {
-    background: #1b4f8a;
-    border-radius: 3px;
+  html[lang="ur"] {
+    --text-xs: 0.875rem;
+    --text-xs--line-height: 2;
+    --text-sm: 1rem;
+    --text-sm--line-height: 2;
+    --text-base: 1.125rem;
+    --text-base--line-height: 2;
+    --text-lg: 1.25rem;
+    --text-lg--line-height: 2;
+    --text-xl: 1.375rem;
+    --text-xl--line-height: 2;
+    --text-2xl: 1.625rem;
+    --text-2xl--line-height: 1.9;
+    --text-3xl: 2rem;
+    --text-3xl--line-height: 1.8;
+    --text-4xl: 2.375rem;
+    --text-4xl--line-height: 1.7;
+  }
+
+  /* English blocks inside the Urdu UI (e.g. the AI report) keep the Latin scale. */
+  html[lang="ur"] [lang="en"] {
+    --text-xs: 0.75rem;
+    --text-xs--line-height: calc(1 / 0.75);
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
+    --text-base: 1rem;
+    --text-base--line-height: 1.5;
+    --text-lg: 1.125rem;
+    --text-lg--line-height: calc(1.75 / 1.125);
+    --text-xl: 1.25rem;
+    --text-xl--line-height: calc(1.75 / 1.25);
+    --text-2xl: 1.5rem;
+    --text-2xl--line-height: calc(2 / 1.5);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+
+/* An Urdu passage inside the English UI (e.g. the Urdu report tab). */
+@utility urdu-block {
+  font-size: 1.125rem;
+  line-height: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

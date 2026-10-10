@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { getToken } from '../services/api';
+import { getToken } from '../services/legacyApi';
 import { generateMedicalPDF } from '../utils/generatePDF';
 import {
   BoneIcon, CheckCircleIcon, AlertTriangleIcon, ClockIcon,
