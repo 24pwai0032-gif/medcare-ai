@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { getMyScans } from '../services/api';
 import {
   LungsIcon, BoneIcon, HeartPulseIcon, TestTubeIcon, BrainIcon,
@@ -7,17 +8,20 @@ import {
   CheckCircleIcon, ClockIcon, AlertTriangleIcon, SparklesIcon,
   SignalIcon, XIcon, ChevronRightIcon, LogoIcon,
 } from '../components/Icons';
-import XrayAnalyzer from './XrayAnalyzer';
-import BoneScan from './BoneScan';
-import ECGAnalyzer from './ECGAnalyzer';
-import BloodTestAnalyzer from './BloodTestAnalyzer';
-import PrescriptionReader from './PrescriptionReader';
-import DiagnosisAI from './DiagnosisAI';
-import MentalHealth from './MentalHealth';
-import VitalSigns from './VitalSigns';
-import EmergencyAid from './EmergencyAid';
 
 interface PatientDashboardProps { user: any; onLogout: () => void; }
+
+const MODULE_PATHS: Record<string, string> = {
+  xray: '/app/analyze/xray',
+  bone: '/app/analyze/bone',
+  ecg: '/app/analyze/ecg',
+  blood: '/app/analyze/blood',
+  prescription: '/app/analyze/prescription',
+  diagnosis: '/app/diagnosis',
+  mental: '/app/mental-health',
+  vitals: '/app/vitals',
+  emergency: '/app/emergency',
+};
 
 const modules = [
   { icon: LungsIcon,       t: 'X-Ray Analysis',  d: 'Chest X-ray, MRI & CT scan',  route: 'xray',         c: '#3B82F6', bg: 'rgba(59,130,246,.12)',  border: 'rgba(59,130,246,.25)' },
@@ -43,7 +47,8 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
   const [scans, setScans]               = useState<any[]>([]);
   const [loading, setLoading]           = useState(true);
   const [selectedScan, setSelectedScan] = useState<any>(null);
-  const [activeModule, setActiveModule] = useState('');
+  const navigate = useNavigate();
+  const openModule = (route: string) => navigate(MODULE_PATHS[route] ?? '/app');
   const [scanError, setScanError]       = useState('');
 
   const loadScans = async () => {
@@ -64,16 +69,6 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
 
   const firstName = user?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Patient';
   const initials  = (user?.full_name || 'P').split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase();
-
-  if (activeModule === 'xray') return <XrayAnalyzer onBack={() => setActiveModule('')} />;
-  if (activeModule === 'bone') return <BoneScan onBack={() => setActiveModule('')} />;
-  if (activeModule === 'ecg') return <ECGAnalyzer onBack={() => setActiveModule('')} />;
-  if (activeModule === 'blood') return <BloodTestAnalyzer onBack={() => setActiveModule('')} />;
-  if (activeModule === 'prescription') return <PrescriptionReader onBack={() => setActiveModule('')} />;
-  if (activeModule === 'diagnosis') return <DiagnosisAI onBack={() => setActiveModule('')} />;
-  if (activeModule === 'mental') return <MentalHealth onBack={() => setActiveModule('')} />;
-  if (activeModule === 'vitals') return <VitalSigns onBack={() => setActiveModule('')} />;
-  if (activeModule === 'emergency') return <EmergencyAid onBack={() => setActiveModule('')} />;
 
   const navItems = [
     { id: 'home',    Icon: HomeIcon,      label: 'Home' },
@@ -198,7 +193,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
                 </div>
                 <div className="modules-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(150px,1fr))', gap: 9 }}>
                   {modules.slice(0, 6).map((m, i) => (
-                    <div key={i} className="mod-card" onClick={() => setActiveModule(m.route)}
+                    <div key={i} className="mod-card" onClick={() => openModule(m.route)}
                       style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${m.border}`, borderRadius: 13, padding: '16px 13px', cursor: 'pointer', textAlign: 'center' }}
                       onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = m.bg; el.style.boxShadow = `0 10px 28px ${m.c}20`; }}
                       onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(255,255,255,.04)'; el.style.boxShadow = ''; }}>
@@ -225,7 +220,7 @@ export default function PatientDashboard({ user, onLogout }: PatientDashboardPro
               <p style={{ color: 'rgba(255,255,255,.35)', fontSize: 13.5, marginBottom: 20 }}>Choose an AI module to analyze your medical data</p>
               <div className="modules-grid-full" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))', gap: 10 }}>
                 {modules.map((m, i) => (
-                  <div key={i} className="mod-card" onClick={() => setActiveModule(m.route)}
+                  <div key={i} className="mod-card" onClick={() => openModule(m.route)}
                     style={{ background: 'rgba(255,255,255,.04)', border: `1px solid ${m.border}`, borderRadius: 16, padding: '20px', cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: 14 }}
                     onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = m.bg; el.style.boxShadow = `0 14px 36px ${m.c}18`; el.style.borderColor = m.c + '55'; }}
                     onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(255,255,255,.04)'; el.style.boxShadow = ''; el.style.borderColor = m.border; }}>

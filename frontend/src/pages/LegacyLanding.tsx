@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Login from './pages/Login';
-import PatientDashboard from './pages/PatientDashboard';
-import DoctorDashboard from './pages/DoctorDashboard';
-import { isLoggedIn, getUser, logout } from './services/api';
+import { useNavigate } from 'react-router';
 import {
   LungsIcon, BoneIcon, HeartPulseIcon, TestTubeIcon, BrainIcon,
   SearchIcon, PillIcon, StethoscopeIcon, SirenIcon, LogoIcon,
   MedicalCrossIcon, ActivityIcon, UploadIcon, DoctorIcon,
   SparklesIcon, CheckCircleIcon, ShieldCheckIcon,
-} from './components/Icons';
+} from '../components/Icons';
 
 /* ─── AI-Generated Avatar Component ─── */
 const AIAvatar = ({ initials, gradient, size = 42 }: { initials: string; gradient: string; size?: number }) => (
@@ -62,9 +59,8 @@ const Reveal = ({ children, delay = 0, from = 'bottom' }: { children: React.Reac
   );
 };
 
-export default function App() {
-  const [page, setPage] = useState('home');
-  const [user, setUser] = useState<any>(null);
+export default function LegacyLanding() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -72,9 +68,6 @@ export default function App() {
   const [subDone, setSubDone] = useState(false);
   const [mobileCtaVis, setMobileCtaVis] = useState(false);
 
-  useEffect(() => {
-    if (isLoggedIn()) { const u = getUser(); if (u) { setUser(u); setPage(u.role === 'doctor' ? 'doctor' : 'dashboard'); } }
-  }, []);
   useEffect(() => {
     const fn = () => { setScrolled(window.scrollY > 24); setMobileCtaVis(window.scrollY > 400); };
     window.addEventListener('scroll', fn); return () => window.removeEventListener('scroll', fn);
@@ -90,12 +83,8 @@ export default function App() {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  const go = (p: string) => setPage(p);
+  const go = (p: string) => navigate(`/${p}`);
   const handleSub = () => { if (email.includes('@')) setSubDone(true); };
-
-  if (page === 'login') return <Login onLogin={(u: any) => { setUser(u); setPage(u.role === 'doctor' ? 'doctor' : 'dashboard'); }} />;
-  if (page === 'dashboard') return <PatientDashboard user={user} onLogout={() => { logout(); setUser(null); setPage('home'); }} />;
-  if (page === 'doctor')    return <DoctorDashboard  user={user} onLogout={() => { logout(); setUser(null); setPage('home'); }} />;
 
   const modules = [
     { Icon: LungsIcon,       t: 'X-Ray Analysis',  d: 'Chest X-ray, MRI & CT scan with radiologist-level accuracy', c: '#2563EB', bg: '#DBEAFE', light: '#EFF6FF' },

@@ -9,7 +9,7 @@ import {
   HeartPulseIcon, SignalIcon, DoctorIcon, LogoIcon,
 } from '../components/Icons';
 
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
+import { API_BASE_URL as BASE_URL } from '../config';
 
 const SCAN_TYPES = [
   { id: 'chest', label: 'Chest X-Ray', Icon: LungsIcon,      endpoint: 'xray' },

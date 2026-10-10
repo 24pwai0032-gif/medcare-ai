@@ -48,7 +48,7 @@ export interface ScanResult {
 }
 
 // GCP Backend URL
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
+import { API_BASE_URL as BASE_URL } from '../config';
 
 // Fetch with timeout
 const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 10000) => {
@@ -75,6 +75,15 @@ export const getUser    = ()              => { try { const u = localStorage.getI
 export const removeUser = ()              => localStorage.removeItem('medcare_user');
 export const isLoggedIn = ()              => !!getToken();
 export const logout     = ()              => { removeToken(); removeUser(); };
+
+// Any 401 on an authenticated call ends the session and sends the user to sign in again.
+const handleUnauthorized = (res: Response) => {
+  if (res.status !== 401) return;
+  logout();
+  const next = encodeURIComponent(window.location.pathname + window.location.search);
+  window.location.assign(`/login?next=${next}`);
+  throw new Error('Session expired. Please sign in again.');
+};
 
 // ── Auth helper ───────────────────────────
 
@@ -122,6 +131,7 @@ export const getProfile = async () => {
   const res = await fetch(`${BASE_URL}/users/me`, {
     headers: { 'Authorization': `Bearer ${getToken()}` },
   });
+  handleUnauthorized(res);
   if (!res.ok) throw new Error('Failed to get profile');
   return res.json();
 };
@@ -136,6 +146,7 @@ export const analyzeScan = async (scanType: string, file: File) => {
     { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData },
     120000
   );
+  handleUnauthorized(res);
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Analysis failed'); }
   return res.json();
 };
@@ -145,6 +156,7 @@ export const getMyScans = async () => {
   const res = await fetch(`${BASE_URL}/users/scans`, {
     headers: { 'Authorization': `Bearer ${getToken()}` },
   });
+  handleUnauthorized(res);
   if (!res.ok) throw new Error('Failed to get scans');
   const data = await res.json();
   return Array.isArray(data) ? data : data.scans || [];
@@ -156,6 +168,7 @@ export const getPendingScans = async () => {
   const res = await fetch(`${BASE_URL}/users/doctor/pending-scans`, {
     headers: { 'Authorization': `Bearer ${getToken()}` },
   });
+  handleUnauthorized(res);
   if (!res.ok) throw new Error('Failed to fetch pending scans');
   const data = await res.json();
   return Array.isArray(data) ? data : [];
@@ -166,6 +179,7 @@ export const getAllScansDoctor = async () => {
   const res = await fetch(`${BASE_URL}/users/doctor/all-scans`, {
     headers: { 'Authorization': `Bearer ${getToken()}` },
   });
+  handleUnauthorized(res);
   if (!res.ok) throw new Error('Failed to fetch scans');
   const data = await res.json();
   return Array.isArray(data) ? data : [];
@@ -178,6 +192,7 @@ export const approveScan = async (scanId: number, notes: string = '') => {
     headers: authHeaders(),
     body: JSON.stringify({ doctor_notes: notes }),
   });
+  handleUnauthorized(res);
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Approve nahi ho saka!'); }
   return res.json();
 };
@@ -189,6 +204,7 @@ export const rejectScan = async (scanId: number, notes: string = '') => {
     headers: authHeaders(),
     body: JSON.stringify({ doctor_notes: notes }),
   });
+  handleUnauthorized(res);
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Flag nahi ho saka!'); }
   return res.json();
 };

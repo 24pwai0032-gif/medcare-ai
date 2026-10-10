@@ -8,7 +8,7 @@ import {
   DoctorIcon, LogoIcon, ActivityIcon,
 } from '../components/Icons';
 
-const BASE = process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
+import { API_BASE_URL as BASE } from '../config';
 
 const ECGAnalyzer = ({ onBack }: { onBack: () => void }) => {
   const [step, setStep] = useState<'upload'|'analyzing'|'result'>('upload');
