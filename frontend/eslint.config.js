@@ -79,13 +79,23 @@ const noExpressionEffect = {
 };
 
 export default defineConfig([
-  globalIgnores(['dist', 'build', 'coverage', 'playwright-report', 'test-results']),
+  globalIgnores(['dist', 'dist-e2e', 'build', 'coverage', 'playwright-report', 'test-results']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [js.configs.recommended, tseslint.configs.recommended, reactHooks.configs.flat.recommended],
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.browser,
+    },
+  },
+  {
+    // Playwright tests and tool configs run in Node. Playwright's fixture callback is called `use`,
+    // which the React hook rule would mistake for React's use().
+    files: ['e2e/**/*.ts', '*.config.ts'],
+    languageOptions: { globals: globals.node },
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
     },
   },
   {

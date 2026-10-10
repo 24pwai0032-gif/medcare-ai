@@ -3,6 +3,7 @@
 
 # builds
 /dist
+/dist-e2e
 /build
 *.tsbuildinfo
 

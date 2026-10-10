@@ -64,23 +64,37 @@
 
 ## <img src="https://media2.giphy.com/media/QssGEmpkyEOhBCb7e1/giphy.gif?cid=ecf05e47a0n3gi1bfqntqmob8g9aid1oyj2wr3ds3mg700bl&rid=giphy.gif" width="30"> &nbsp;Features
 
-### 🤖 9 AI-Powered Medical Modules
+### 🩺 Modules
 
 <div align="center">
 
-| &nbsp; | Module | What It Does | AI Engine |
+| &nbsp; | Module | What it does | Uses AI |
 |:---:|:---|:---|:---:|
-| 🫁 | **X-Ray Analyzer** | Chest X-ray, MRI, CT Scan & Bone X-ray analysis with radiology-grade reports | LLaVA-Med |
-| 🦴 | **Bone Scan** | Fracture detection, bone density, joint assessment, displacement analysis | LLaVA-Med |
-| 💓 | **ECG Analyzer** | Heart rate, rhythm, axis, intervals, ST-segment, arrhythmia detection | LLaVA-Med |
-| 🧪 | **Blood Test Reader** | CBC, LFT, RFT, Lipid Panel — tabulated results vs normal ranges | LLaVA-Med |
-| 🧠 | **Mental Health** | PHQ-9 validated depression screening with bilingual scoring | Rule-based |
-| 🩺 | **Diagnosis AI** | Symptom-based differential diagnosis across 10 categories | Local DB |
-| 💊 | **Prescription Reader** | Handwritten & printed prescription OCR, drug interactions | LLaVA-Med |
-| 📊 | **Vital Signs** | BP, heart rate, SpO2, temperature monitoring with color-coded alerts | Rule-based |
-| 🚨 | **Emergency Aid** | First aid guides for 6 emergencies with Pakistan's 1122/115 numbers | Guide-based |
+| 🫁 | **X-ray and scans** | Report on a chest X-ray. MRI and CT images can be uploaded too, but are read with the same X-ray instructions | Google Gemini |
+| 🦴 | **Bone X-ray** | Report on an X-ray of a bone or joint, such as a possible fracture | Google Gemini |
+| 💓 | **ECG** | Report on a photo or scan of an ECG printout | Google Gemini |
+| 🧪 | **Blood test** | Lists lab values and points out those outside the reference range | Google Gemini |
+| 💊 | **Prescription** | Reads printed or handwritten prescriptions; handwriting is often misread | Google Gemini |
+| 🩺 | **Symptom guide** | General information on 10 common symptoms, chosen from a list | No |
+| 🧠 | **Depression screening** | The PHQ-9 questionnaire; answering item 9 above zero shows a crisis panel with helplines | No |
+| 📊 | **Vital signs** | Compares readings with usual adult ranges; nothing is saved | No |
+| 🚨 | **Emergency first aid** | Six first aid guides in English and Urdu, open to everyone without an account | No |
 
 </div>
+
+> AI reports are informational, not a diagnosis. A doctor must review them before anyone acts on them. In an emergency, call **1122** (Rescue) or **115** (Edhi ambulance).
+
+### 📸 Screenshots
+
+<div align="center">
+
+| Landing page | Urdu, dark theme | Doctor review |
+|---|---|---|
+| <img src="frontend/docs/screenshots/landing-en.png" width="420" alt="Landing page in English"> | <img src="frontend/docs/screenshots/landing-ur-mobile.png" width="200" alt="Landing page in Urdu on a phone"> | <img src="frontend/docs/screenshots/doctor-review.png" width="420" alt="Doctor review page"> |
+
+</div>
+
+Screenshots use made-up sample data. More in [frontend/README.md](frontend/README.md).
 
 ### 🔐 Platform Capabilities
 
@@ -100,12 +114,12 @@
         <b style="color:#0ea5e9;">Roles</b><br/>
         <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">Patient Dashboard</span><br/>
         <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">Doctor Dashboard</span><br/>
-        <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">PMDC Verification</span>
+        <span style="background:#cffafe;color:#0369a1;padding:2px 8px;border-radius:8px;">PMDC number (not verified yet)</span>
       </td>
       <td align="center" valign="top">
         <span style="font-size:1.5em;">🤖</span><br/>
         <b style="color:#16a34a;">AI Engine</b><br/>
-        <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">LLaVA-Med Vision</span><br/>
+        <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Google Gemini</span><br/>
         <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Bilingual Reports EN/UR</span><br/>
         <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Severity Assessment</span><br/>
         <span style="background:#dcfce7;color:#166534;padding:2px 8px;border-radius:8px;">Confidence Scoring</span>
@@ -182,30 +196,26 @@ medcare-ai/
 │
 ├── 🎨 frontend/
 │   ├── package.json
-│   ├── tailwind.config.js
+│   ├── vite.config.ts           # Vite; vitest.config.ts and playwright.config.ts next to it
+│   ├── vercel.json              # Vite preset, single-page rewrite, asset caching
+│   ├── CHANGELOG.md             # What the rebuild changed, removed and needs medical review
+│   ├── e2e/                     # Playwright tests and the mocked API
 │   └── src/
-│       ├── App.tsx              # Main app — routing, landing page, navigation
-│       ├── components/
-│       │   ├── Icons.tsx        # 30+ custom SVG icons
-│       │   ├── Skeleton.tsx     # Loading skeletons
-│       │   └── ErrorBoundary.tsx
-│       ├── pages/
-│       │   ├── Login.tsx              # Auth with role selection
-│       │   ├── PatientDashboard.tsx   # 9-module hub + scan history
-│       │   ├── DoctorDashboard.tsx    # Scan review + approve/reject
-│       │   ├── XrayAnalyzer.tsx       # X-Ray / MRI / CT analysis
-│       │   ├── BoneScan.tsx           # Bone fracture detection
-│       │   ├── ECGAnalyzer.tsx        # Cardiac rhythm analysis
-│       │   ├── BloodTestAnalyzer.tsx  # Blood report interpretation
-│       │   ├── PrescriptionReader.tsx # Prescription OCR
-│       │   ├── DiagnosisAI.tsx        # Symptom-based diagnosis
-│       │   ├── MentalHealth.tsx       # PHQ-9 screening
-│       │   ├── VitalSigns.tsx         # Vitals monitoring
-│       │   └── EmergencyAid.tsx       # First aid guides
-│       ├── services/
-│       │   └── api.ts           # Axios API client + interceptors
-│       └── utils/
-│           └── generatePDF.ts   # html2canvas + jsPDF report export
+│       ├── main.tsx             # Fonts, i18n, providers, router
+│       ├── app/                 # Routes (lazy loaded per page), providers, 404 and error pages
+│       ├── components/          # Shared components; ui/ holds Radix-based primitives
+│       ├── features/
+│       │   ├── auth/            # Sign in, register, session, role guards
+│       │   ├── analyzer/        # One config-driven analyzer for the five AI modules
+│       │   ├── report/          # Report parsing, report view, PDF export
+│       │   ├── patient/         # Dashboard, scan history, report detail
+│       │   ├── doctor/          # Review queue, all scans, review page
+│       │   ├── tools/           # Symptom guide, PHQ-9, vital signs
+│       │   ├── emergency/       # Public first aid guides
+│       │   ├── landing/         # Landing page
+│       │   └── legal/           # About, Privacy and Terms (drafts)
+│       ├── services/            # Typed API client, error mapping, session
+│       └── i18n/                # i18next setup and the en / ur JSON files
 │
 ├── 📓 notebooks/                # Colab notebooks for AI experimentation
 └── 📄 README.md                 # You are here!
@@ -221,9 +231,13 @@ medcare-ai/
 
 ### Frontend
 ![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind](https://img.shields.io/badge/Tailwind_CSS_3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript_5-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite_8-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS_4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router_7-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white)
+![i18next](https://img.shields.io/badge/i18next-26A69A?style=for-the-badge&logo=i18next&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
 
 ### Backend
 ![FastAPI](https://img.shields.io/badge/FastAPI_0.115-005571?style=for-the-badge&logo=fastapi&logoColor=white)
@@ -298,7 +312,7 @@ medcare-ai/
 ### Prerequisites
 
 ```
-Node.js 18+  •  Python 3.12+  •  PostgreSQL 16+  •  Git
+Node.js 20.19+  •  Python 3.12+  •  PostgreSQL 16+  •  Git
 ```
 
 ### 1️⃣ Clone & Setup
@@ -341,13 +355,16 @@ uvicorn main:app --reload --port 8000
 ```bash
 cd frontend
 npm install
-npm start
+cp .env.example .env   # for a local backend: VITE_API_URL=http://localhost:8000/api/v1
+npm run dev
 ```
+
+Tests: `npm test` (unit), `npm run test:e2e` (Playwright, mocked API). See [frontend/README.md](frontend/README.md).
 
 ### 4️⃣ Open
 
 ```
-Frontend → http://localhost:3000
+Frontend → http://localhost:5173
 Backend  → http://localhost:8000
 API Docs → http://localhost:8000/docs
 ```
