@@ -1,17 +1,15 @@
 import { ClipboardList, SearchX } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
+import { FilterSelect, setParam } from '@/components/FilterSelect';
 import { PageHeader } from '@/components/PageHeader';
 import { EmptyState, ErrorState } from '@/components/states';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { ScanList, ScanListSkeleton } from '@/features/scans/ScanList';
 import { scanKind, useMyScans } from '@/features/scans/scans';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 
 const STATUSES = ['pending', 'approved', 'rejected'] as const;
-const selectClass =
-  'h-11 w-full rounded-md border border-input bg-surface px-3 text-base text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
 
 export default function ScanHistoryPage() {
   const { t } = useTranslation(['patient', 'common']);
@@ -21,12 +19,7 @@ export default function ScanHistoryPage() {
   const status = params.get('status') ?? '';
   const type = params.get('type') ?? '';
 
-  const setFilter = (key: 'status' | 'type', value: string) => {
-    const next = new URLSearchParams(params);
-    if (value) next.set(key, value);
-    else next.delete(key);
-    setParams(next, { replace: true });
-  };
+  const setFilter = (key: 'status' | 'type', value: string) => setParams(setParam(params, key, value), { replace: true });
 
   const all = scans.data ?? [];
   const kinds = [...new Set(all.map((s) => scanKind(s.scan_type)))];
@@ -38,28 +31,20 @@ export default function ScanHistoryPage() {
 
       {all.length ? (
         <form role="search" aria-label={t('patient:history.filters')} className="grid gap-4 sm:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
-          <div className="grid gap-1.5">
-            <Label htmlFor="filter-status">{t('patient:history.filterStatus')}</Label>
-            <select id="filter-status" className={selectClass} value={status} onChange={(e) => setFilter('status', e.target.value)}>
-              <option value="">{t('patient:history.all')}</option>
-              {STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {t(`common:status.${s}`)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="grid gap-1.5">
-            <Label htmlFor="filter-type">{t('patient:history.filterType')}</Label>
-            <select id="filter-type" className={selectClass} value={type} onChange={(e) => setFilter('type', e.target.value)}>
-              <option value="">{t('patient:history.allTypes')}</option>
-              {kinds.map((kind) => (
-                <option key={kind} value={kind}>
-                  {t(`common:scanTypes.${kind}`)}
-                </option>
-              ))}
-            </select>
-          </div>
+          <FilterSelect
+            id="filter-status"
+            label={t('patient:history.filterStatus')}
+            value={status}
+            onChange={(value) => setFilter('status', value)}
+            options={[{ value: '', label: t('patient:history.all') }, ...STATUSES.map((s) => ({ value: s, label: t(`common:status.${s}`) }))]}
+          />
+          <FilterSelect
+            id="filter-type"
+            label={t('patient:history.filterType')}
+            value={type}
+            onChange={(value) => setFilter('type', value)}
+            options={[{ value: '', label: t('patient:history.allTypes') }, ...kinds.map((k) => ({ value: k, label: t(`common:scanTypes.${k}`) }))]}
+          />
         </form>
       ) : null}
 

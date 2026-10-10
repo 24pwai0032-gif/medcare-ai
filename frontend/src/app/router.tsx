@@ -30,7 +30,6 @@ const publicLayout = () => import('@/components/layout/PublicLayout').then((m) =
 
 // Pre-rebuild pages, wired to the router until their phase replaces them.
 type BackProps = { onBack: () => void };
-type PortalProps = { user: unknown; onLogout: () => void };
 
 const legacyModule = (load: () => Promise<{ default: ComponentType<BackProps> }>) => async () => {
   const { default: Page } = await load();
@@ -39,15 +38,6 @@ const legacyModule = (load: () => Promise<{ default: ComponentType<BackProps> }>
     return <Page onBack={() => navigate('/app')} />;
   }
   return { Component: LegacyModuleRoute };
-};
-
-const legacyPortal = (load: () => Promise<{ default: ComponentType<PortalProps> }>) => async () => {
-  const { default: Page } = await load();
-  function LegacyPortalRoute() {
-    const { user, logout } = useAuth();
-    return <Page user={user} onLogout={logout} />;
-  }
-  return { Component: LegacyPortalRoute };
 };
 
 const devRoutes: RouteObject[] = import.meta.env.DEV
@@ -120,7 +110,16 @@ export const routes: RouteObject[] = [
             <Outlet />
           </RequireRole>
         ),
-        children: [{ index: true, lazy: legacyPortal(() => import('../pages/DoctorDashboard')) }],
+        children: [
+          {
+            lazy: shellLayout('doctor'),
+            children: [
+              { index: true, lazy: page(() => import('@/features/doctor/ReviewQueuePage')) },
+              { path: 'scans', lazy: page(() => import('@/features/doctor/AllScansPage')) },
+              { path: 'scans/:id', lazy: page(() => import('@/features/doctor/ReviewPage')) },
+            ],
+          },
+        ],
       },
       ...devRoutes,
       { path: '*', element: <NotFoundPage /> },

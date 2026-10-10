@@ -8,7 +8,6 @@ import tseslint from 'typescript-eslint';
 const legacy = [
   'src/pages/**',
   'src/components/Icons.tsx',
-  'src/services/legacyApi.ts',
 ];
 
 const LETTERS = /[A-Za-z؀-ۿ]/;

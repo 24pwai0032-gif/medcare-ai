@@ -61,6 +61,5 @@ export const NAV: Record<Role, NavItem[]> = {
   doctor: [
     { to: '/doctor', labelKey: 'nav.queue', icon: Inbox, end: true, mobile: true, group: 'main' },
     { to: '/doctor/scans', labelKey: 'nav.allScans', icon: ClipboardList, mobile: true, group: 'main' },
-    { to: '/emergency', labelKey: 'nav.emergency', icon: Siren, mobile: true, group: 'main', tone: 'emergency' },
   ],
 };
