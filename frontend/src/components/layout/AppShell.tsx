@@ -7,20 +7,9 @@ import { homeFor } from '@/features/auth/redirects';
 import { cn } from '@/lib/utils';
 import type { Role } from '@/services/types';
 import { NAV, type NavItem } from './nav';
+import { SkipLink } from './SkipLink';
 import { LanguageToggle, ThemeToggle } from './toggles';
 import { SidebarAccount, UserMenu } from './UserMenu';
-
-export function SkipLink() {
-  const { t } = useTranslation();
-  return (
-    <a
-      href="#main"
-      className="sr-only z-50 rounded-md bg-primary px-4 py-3 font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:start-3 focus:top-3"
-    >
-      {t('skipToContent')}
-    </a>
-  );
-}
 
 const linkBase =
   'flex min-h-11 items-center gap-3 rounded-md px-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';

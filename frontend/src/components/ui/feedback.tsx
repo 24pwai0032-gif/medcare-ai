@@ -1,6 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { LoaderCircle } from 'lucide-react';
-import { Progress as ProgressPrimitive, Separator as SeparatorPrimitive } from 'radix-ui';
 import type { ComponentProps } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -29,22 +28,4 @@ export function Skeleton({ className, ...props }: ComponentProps<'div'>) {
 
 export function Spinner({ className }: { className?: string }) {
   return <LoaderCircle aria-hidden="true" className={cn('size-5 animate-spin', className)} />;
-}
-
-export function Separator({ className, ...props }: ComponentProps<typeof SeparatorPrimitive.Root>) {
-  return <SeparatorPrimitive.Root className={cn('shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=vertical]:w-px', className)} {...props} />;
-}
-
-/** Determinate progress bar. Fills from the inline start, so it mirrors in RTL. */
-export function Progress({ value, className, ...props }: ComponentProps<typeof ProgressPrimitive.Root> & { value: number }) {
-  const clamped = Math.max(0, Math.min(100, value));
-  return (
-    <ProgressPrimitive.Root
-      value={clamped}
-      className={cn('h-2.5 w-full overflow-hidden rounded-full bg-muted', className)}
-      {...props}
-    >
-      <ProgressPrimitive.Indicator className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${clamped}%` }} />
-    </ProgressPrimitive.Root>
-  );
 }

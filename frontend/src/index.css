@@ -166,11 +166,14 @@
     text-size-adjust: 100%;
   }
 
+  /* Text without a size class follows the language's base size and line height too (18px / 2 in Urdu). */
   body {
     min-height: 100dvh;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -202,11 +205,13 @@
     --text-xl: 1.375rem;
     --text-xl--line-height: 2;
     --text-2xl: 1.625rem;
-    --text-2xl--line-height: 1.9;
+    --text-2xl--line-height: 2;
     --text-3xl: 2rem;
-    --text-3xl--line-height: 1.8;
+    --text-3xl--line-height: 2;
     --text-4xl: 2.375rem;
-    --text-4xl--line-height: 1.7;
+    --text-4xl--line-height: 1.9;
+    --text-5xl: 2.75rem;
+    --text-5xl--line-height: 1.8;
   }
 
   /* English blocks inside the Urdu UI (e.g. the AI report) keep the Latin scale. */

@@ -101,7 +101,7 @@ export function ReportView({ data, audience, subtitle, actions, children, focusO
             </TabsList>
             <TabsContent value="en">
               {i18n.language === 'ur' ? <p className="mb-4 text-sm text-muted-foreground">{t('report:englishNote')}</p> : null}
-              <div lang="en" dir="ltr">
+              <div lang="en" dir="ltr" className="text-base">
                 {parsed.sections.length ? <ReportBody sections={parsed.sections} /> : <p>{t('report:emptyReport')}</p>}
               </div>
             </TabsContent>

@@ -1,0 +1,77 @@
+{
+  "title": "Informational AI reports in English and Urdu",
+  "hero": {
+    "title": "Understand your scans and medical reports, in English and Urdu",
+    "body": "Upload an X-ray, ECG, blood test or prescription. MedCare AI uses Google's Gemini AI to write an informational report with an Urdu summary, and doctors on MedCare AI can review it.",
+    "emergency": "In an emergency, the first aid guide works without an account.",
+    "emergencyLink": "Open the first aid guide"
+  },
+  "steps": {
+    "heading": "How it works",
+    "account": {
+      "title": "Create a patient account",
+      "body": "Sign up with your name, email address and a password."
+    },
+    "upload": {
+      "title": "Upload a clear image",
+      "body": "A photo or scan in JPEG, PNG or WebP format, up to 10 MB."
+    },
+    "report": {
+      "title": "Read the AI report",
+      "body": "It's in English with an Urdu summary, and you can download it as a PDF."
+    },
+    "review": {
+      "title": "Doctor review",
+      "body": "Doctors on MedCare AI can approve your report or flag it, and add notes. You'll see the status in your history."
+    }
+  },
+  "modules": {
+    "heading": "What the AI can read",
+    "intro": "Five kinds of medical images. The AI can miss findings or get them wrong, so treat a report as a starting point for a talk with your doctor.",
+    "xray": "Chest X-rays. You can also upload MRI and CT images, but they're read with the same X-ray instructions.",
+    "bone": "X-rays of bones and joints, for example to describe a possible fracture.",
+    "ecg": "A photo or scan of an ECG printout.",
+    "blood": "A photo of a lab report. The AI lists the values and points out any outside the reference range.",
+    "prescription": "A photo of a printed or handwritten prescription. Handwriting is often misread."
+  },
+  "tools": {
+    "heading": "Tools that don't use AI",
+    "intro": "After you sign in, these run in your browser. Your answers aren't sent anywhere.",
+    "diagnosis": "General information about 10 common symptoms.",
+    "mentalHealth": "The PHQ-9 questionnaire for symptoms of depression, with helplines.",
+    "vitals": "Compare your readings with usual adult ranges.",
+    "emergencyTitle": "Emergency first aid",
+    "emergencyBody": "Step-by-step first aid for six emergencies, with no account needed."
+  },
+  "faq": {
+    "heading": "Questions",
+    "diagnosis": {
+      "q": "Is a MedCare AI report a diagnosis?",
+      "a": "No. Reports are informational and can be wrong. Have a doctor review a report before you act on it. In an emergency, call <rescue>1122</rescue> or <edhi>115</edhi>."
+    },
+    "ai": {
+      "q": "Which AI writes the reports?",
+      "a": "Google's Gemini AI model, reached through the MedCare AI server. Gemini is a general-purpose AI model, not one made only for medicine."
+    },
+    "doctors": {
+      "q": "Who reviews my report?",
+      "a": "Doctors who register on MedCare AI can see submitted reports and approve or flag them with notes. Their PMDC numbers aren't checked automatically yet, and a review isn't guaranteed, so keep seeing your own doctor."
+    },
+    "image": {
+      "q": "What happens to my image?",
+      "a": "It goes to the MedCare AI server and on to Google's Gemini service for analysis. MedCare AI saves the report and the file name in your account, not the image. Every doctor account can see saved reports, with your name and email address. The <privacy>privacy notice</privacy> has the details."
+    },
+    "urdu": {
+      "q": "Can I use MedCare AI in Urdu?",
+      "a": "Yes. Switch the language at the top of any page, and each AI report includes an Urdu summary. The PHQ-9 questions stay in English, the language of the validated wording used here."
+    },
+    "emergency": {
+      "q": "What should I do in an emergency?",
+      "a": "Call <rescue>1122</rescue> (Rescue) or <edhi>115</edhi> (Edhi ambulance) straight away. The <firstAid>first aid guide</firstAid> works without an account."
+    }
+  },
+  "cta": {
+    "heading": "Ready to upload a scan?",
+    "body": "Create a patient account, or sign in if you already have one."
+  }
+}

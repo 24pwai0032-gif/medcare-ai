@@ -1,0 +1,146 @@
+{
+  "draft": {
+    "title": "Draft for review",
+    "body": "This page is a draft for the people who run MedCare AI to check and complete. It hasn't been reviewed by a lawyer. Highlighted items still need details."
+  },
+  "updated": "Draft of {{date}}",
+  "about": {
+    "title": "About MedCare AI",
+    "intro": "MedCare AI is a web app in English and Urdu, made for people in Pakistan. With it you can understand medical images and reports with the help of AI, and doctors on the platform can review the results.",
+    "sections": {
+      "what": {
+        "heading": "What's in MedCare AI",
+        "paragraphs": [
+          "You upload a photo or scan of an X-ray, ECG, blood test report or prescription. Google's Gemini AI writes an informational report with an Urdu summary, which you can download as a PDF.",
+          "Doctors who register on MedCare AI can review reports, approve or flag them, and add notes for the patient.",
+          "There are also three health tools that don't use AI (a symptom guide, the PHQ-9 depression screening and a vital signs check), and a first aid guide that works without an account."
+        ]
+      },
+      "isnt": {
+        "heading": "What MedCare AI isn't",
+        "paragraphs": [
+          "MedCare AI doesn't diagnose and doesn't replace your doctor. AI reports can miss findings or be wrong. In an emergency, call 1122 (Rescue) or 115 (Edhi ambulance).",
+          "Doctors' PMDC numbers aren't checked automatically yet, so a review on MedCare AI is no substitute for seeing a doctor you know."
+        ]
+      },
+      "who": {
+        "heading": "Who runs it",
+        "paragraphs": [
+          "MedCare AI is run by: <todo>To be confirmed: the name of the person or organisation that runs MedCare AI</todo>.",
+          "Contact: <todo>To be confirmed: a contact email address</todo>."
+        ]
+      }
+    }
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "intro": "This notice explains what MedCare AI collects, where it goes and who can see it.",
+    "geminiTerms": "Google's terms of service for the Gemini API",
+    "sections": {
+      "who": {
+        "heading": "Who is responsible",
+        "paragraphs": [
+          "MedCare AI is run by <todo>To be confirmed: the operator's name and address</todo>, who is responsible for your data.",
+          "Contact: <todo>To be confirmed: a contact email address</todo>."
+        ]
+      },
+      "collect": {
+        "heading": "What MedCare AI collects",
+        "paragraphs": [
+          "Your account: your full name, email address and role (patient or doctor). Your password is stored only as a bcrypt hash. Doctors also give a PMDC number.",
+          "Each analysis: the type of scan, the original file name, the AI report including its Urdu summary, the severity and confidence the server records, how long the analysis took, the review status, any doctor's notes and the date.",
+          "MedCare AI doesn't keep the image itself. The server passes it on for analysis and saves only the report."
+        ]
+      },
+      "ai": {
+        "heading": "AI analysis by Google",
+        "paragraphs": [
+          "Your image is sent to Google's Gemini API, which writes the report. Google's terms for the Gemini API apply to that content.",
+          "Gemini API tier: <todo>To be confirmed: whether production uses the free tier or a paid tier</todo>.",
+          "For its free tier, Google says it uses submitted content to improve its products, that human reviewers may read it, and that people shouldn't submit sensitive or personal information."
+        ]
+      },
+      "access": {
+        "heading": "Who can see your reports",
+        "paragraphs": [
+          "You can see your own reports in your history.",
+          "Every doctor account on MedCare AI can see every patient's saved reports, with the patient's name and email address.",
+          "Anyone can create a doctor account, and the PMDC number they enter isn't checked yet."
+        ]
+      },
+      "device": {
+        "heading": "What's stored on your device",
+        "paragraphs": [
+          "Your browser stores your sign-in token, your name, email address and role, and your language and theme choices. Signing out removes the sign-in details.",
+          "Uploaded images and reports aren't kept in your browser's storage.",
+          "The MedCare AI app doesn't set cookies and doesn't include analytics or advertising scripts."
+        ]
+      },
+      "tools": {
+        "heading": "Health tools",
+        "paragraphs": [
+          "The symptom guide, the depression screening and the vital signs check run entirely in your browser. Your answers aren't sent to MedCare AI or anyone else, and they're gone when you leave the page."
+        ]
+      },
+      "keeping": {
+        "heading": "Keeping and deleting your data",
+        "paragraphs": [
+          "How long accounts and reports are kept: <todo>To be confirmed: the retention period</todo>. Where the data is stored: <todo>To be confirmed: where the database is hosted</todo>.",
+          "You can't yet delete your account or reports yourself. To ask for a copy of your data or for its deletion, email <todo>To be confirmed: a contact email address</todo>."
+        ]
+      }
+    }
+  },
+  "terms": {
+    "title": "Terms of use",
+    "intro": "By using MedCare AI you agree to these terms.",
+    "sections": {
+      "service": {
+        "heading": "The service",
+        "paragraphs": [
+          "MedCare AI gives informational reports, written by Google's Gemini AI, about medical images you upload. It also offers health tools and first aid guidance.",
+          "It isn't a medical service. It doesn't diagnose, treat or prescribe, and it doesn't replace a doctor."
+        ]
+      },
+      "advice": {
+        "heading": "Not medical advice",
+        "paragraphs": [
+          "AI reports can be wrong or incomplete. Don't make decisions about your health from a report alone: have a doctor review it first.",
+          "In an emergency, call 1122 (Rescue) or 115 (Edhi ambulance) straight away."
+        ]
+      },
+      "doctors": {
+        "heading": "Doctor accounts",
+        "paragraphs": [
+          "Only register as a doctor if you are a registered medical practitioner. PMDC numbers aren't checked automatically yet.",
+          "Doctors can see every patient's reports, names and email addresses. Use them only to review reports, and keep them confidential."
+        ]
+      },
+      "use": {
+        "heading": "Using MedCare AI",
+        "paragraphs": [
+          "Only upload images you have the right to share, such as your own, or someone else's with their permission.",
+          "Don't try to reach other people's accounts or reports, or to disrupt the service."
+        ]
+      },
+      "availability": {
+        "heading": "Availability",
+        "paragraphs": [
+          "MedCare AI may change or be unavailable at any time. An analysis can fail or take a few minutes."
+        ]
+      },
+      "legal": {
+        "heading": "Liability and governing law",
+        "paragraphs": [
+          "<todo>To be confirmed after legal review: liability, governing law and how these terms change</todo>"
+        ]
+      },
+      "contact": {
+        "heading": "Contact",
+        "paragraphs": [
+          "<todo>To be confirmed: a contact email address</todo>"
+        ]
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react';
-import { createBrowserRouter, Navigate, Outlet, type RouteObject } from 'react-router';
+import { Navigate, Outlet, type RouteObject } from 'react-router';
 import { useAuth } from '@/features/auth/authContext';
 import { homeFor } from '@/features/auth/redirects';
 import { RequireRole } from '@/features/auth/RequireRole';
@@ -27,6 +27,8 @@ const shellLayout = (role: Role) => async () => {
 };
 
 const publicLayout = () => import('@/components/layout/PublicLayout').then((m) => ({ Component: m.PublicLayout }));
+const legalPage = (name: 'AboutPage' | 'PrivacyPage' | 'TermsPage') => () =>
+  import('@/features/legal/LegalPages').then((m) => ({ Component: m[name] }));
 
 const devRoutes: RouteObject[] = import.meta.env.DEV
   ? [
@@ -51,24 +53,28 @@ export const routes: RouteObject[] = [
     hydrateFallbackElement: <div aria-busy="true" className="min-h-dvh" />,
     children: [
       {
-        index: true,
-        lazy: async () => {
-          const { default: Landing } = await import('../pages/LegacyLanding');
-          function LandingRoute() {
-            const { user } = useAuth();
-            return user ? <Navigate to={homeFor(user.role)} replace /> : <Landing />;
-          }
-          return { Component: LandingRoute };
-        },
-      },
-      {
         lazy: publicLayout,
         children: [
+          {
+            index: true,
+            lazy: async () => {
+              const { default: Landing } = await import('@/features/landing/LandingPage');
+              function LandingRoute() {
+                const { user } = useAuth();
+                return user ? <Navigate to={homeFor(user.role)} replace /> : <Landing />;
+              }
+              return { Component: LandingRoute };
+            },
+          },
           { path: 'login', lazy: page(() => import('@/features/auth/LoginPage')) },
           { path: 'register', lazy: page(() => import('@/features/auth/RegisterPage')) },
           // Public on purpose: first aid must never sit behind sign-in.
           { path: 'emergency', lazy: page(() => import('@/features/emergency/EmergencyListPage')) },
           { path: 'emergency/:slug', lazy: page(() => import('@/features/emergency/EmergencyDetailPage')) },
+          { path: 'about', lazy: legalPage('AboutPage') },
+          { path: 'privacy', lazy: legalPage('PrivacyPage') },
+          { path: 'terms', lazy: legalPage('TermsPage') },
+          { path: '*', Component: NotFoundPage },
         ],
       },
       {
@@ -114,9 +120,6 @@ export const routes: RouteObject[] = [
         ],
       },
       ...devRoutes,
-      { path: '*', element: <NotFoundPage /> },
     ],
   },
 ];
-
-export const router = createBrowserRouter(routes);

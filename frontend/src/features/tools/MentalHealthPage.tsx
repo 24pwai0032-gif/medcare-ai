@@ -112,7 +112,7 @@ export default function MentalHealthPage() {
               {/* Floated so the legend sits inside the card instead of on its border. */}
               <legend id={legendId} className="float-start w-full">
                 <span className="block text-sm text-muted-foreground">{t('tools:phq9.questionLabel', { number: index + 1 })}</span>
-                <span lang="en" dir="ltr" className="mb-2 block font-medium">
+                <span lang="en" dir="ltr" className="mb-2 block text-base font-medium">
                   {item}
                 </span>
               </legend>

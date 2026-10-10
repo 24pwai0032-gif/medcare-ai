@@ -17,18 +17,24 @@ function Screen({ title, description, action }: { title: string; description: st
   );
 }
 
+/** Unknown URLs. Rendered inside the public layout, so the header, emergency strip and footer stay. */
 export function NotFoundPage() {
   const { t } = useTranslation();
+  useDocumentTitle(t('notFound.title'));
   return (
-    <Screen
-      title={t('notFound.title')}
-      description={t('notFound.description')}
-      action={
+    <div className="mx-auto flex max-w-xl flex-col items-center gap-4 px-4 py-16 text-center">
+      <LogoMark className="size-12" />
+      <h1 className="text-2xl font-semibold">{t('notFound.title')}</h1>
+      <p className="text-muted-foreground">{t('notFound.description')}</p>
+      <div className="flex flex-wrap justify-center gap-3">
         <Button asChild>
           <Link to="/">{t('actions.goHome')}</Link>
         </Button>
-      }
-    />
+        <Button asChild variant="outline">
+          <Link to="/emergency">{t('emergencyStrip.guide')}</Link>
+        </Button>
+      </div>
+    </div>
   );
 }
 
