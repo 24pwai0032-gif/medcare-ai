@@ -9,7 +9,8 @@ export default defineConfig({
   // `vite preview` is a single Node process; with many browsers at once it can refuse a
   // connection for a chunk. A retry absorbs that, and Playwright still reports the test as flaky.
   retries: 1,
-  workers: process.env.CI ? 2 : 4,
+  // More parallel Chrome instances ran this machine out of GPU memory.
+  workers: 2,
   expect: { timeout: 10_000 },
   reporter: process.env.CI ? 'github' : 'list',
   use: {

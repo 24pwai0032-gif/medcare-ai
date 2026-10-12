@@ -12,7 +12,8 @@ import type {
   User,
 } from './types';
 
-const DEFAULT_TIMEOUT_MS = 30_000;
+/** Long enough for a sleeping free-tier backend (Render) to wake up, which can take about a minute. */
+const DEFAULT_TIMEOUT_MS = 75_000;
 /** The backend can retry Gemini three times at 60 s each, on top of a Cloud Run cold start. */
 export const ANALYZE_TIMEOUT_MS = 180_000;
 

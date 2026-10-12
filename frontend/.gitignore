@@ -4,6 +4,9 @@
 # builds
 /dist
 /dist-e2e
+
+# vercel link
+.vercel
 /build
 *.tsbuildinfo
 

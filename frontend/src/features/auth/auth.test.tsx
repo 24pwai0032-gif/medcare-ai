@@ -1,7 +1,9 @@
-import { screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { useLocation } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import i18n from '@/i18n';
 import { renderRoutes, signInAs } from '@/test/render';
+import { SlowServerNote } from './AuthCard';
 import { destinationAfterLogin, homeFor, safeNext } from './redirects';
 import { RequireRole } from './RequireRole';
 
@@ -58,5 +60,26 @@ describe('RequireRole', () => {
     signInAs('doctor');
     renderRoutes(routes, '/doctor');
     expect(await screen.findByText('doctor area')).toBeInTheDocument();
+  });
+});
+
+describe('SlowServerNote', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('explains the wait only after a few seconds', async () => {
+    // Load the strings first: fake timers can't move a real file load along.
+    await i18n.loadNamespaces('auth');
+    vi.useFakeTimers();
+    render(<SlowServerNote />);
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(2000);
+    });
+    expect(screen.queryByText(/waking up/)).not.toBeInTheDocument();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(5000);
+    });
+    expect(screen.getByRole('status')).toHaveTextContent('The server is waking up after a quiet period.');
   });
 });

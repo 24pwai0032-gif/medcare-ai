@@ -1,4 +1,5 @@
 import { Activity, Brain, ChevronDown, Siren, Stethoscope, UserPlus } from 'lucide-react';
+import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { Disclaimer } from '@/components/Disclaimer';
@@ -7,6 +8,7 @@ import { ANALYZER_MODULES, MODULE_IDS } from '@/features/analyzer/modules';
 import { useFormatters } from '@/lib/format';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { cn } from '@/lib/utils';
+import { warmUpBackend } from '@/services/api';
 
 /**
  * Only facts that can be checked against the code. The old page's statistics, testimonials,
@@ -196,6 +198,10 @@ function Faq() {
 export default function LandingPage() {
   const { t } = useTranslation('landing');
   useDocumentTitle(t('title'));
+  // Most visitors sign in next; wake a sleeping backend now so they don't wait for it.
+  useEffect(() => {
+    warmUpBackend();
+  }, []);
   return (
     <>
       <Hero />

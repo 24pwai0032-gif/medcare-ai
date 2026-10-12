@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { RadioCard, RadioGroup } from '@/components/ui/radio-group';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { useAuth } from './authContext';
-import { AuthCard, ServerError, useFieldError } from './AuthCard';
+import { AuthCard, ServerError, SlowServerNote, useFieldError } from './AuthCard';
 import { destinationAfterLogin } from './redirects';
 import { registerSchema, type RegisterValues } from './schemas';
 
@@ -93,6 +93,7 @@ export default function RegisterPage() {
           {formState.isSubmitting ? <Spinner className="size-4" /> : null}
           {formState.isSubmitting ? t('register.submitting') : t('register.submit')}
         </Button>
+        {formState.isSubmitting ? <SlowServerNote /> : null}
       </form>
       <p className="text-sm text-muted-foreground">
         {t('register.haveAccount')}{' '}

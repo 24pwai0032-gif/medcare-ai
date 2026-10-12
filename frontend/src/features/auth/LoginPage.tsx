@@ -10,7 +10,7 @@ import { Alert, Spinner } from '@/components/ui/feedback';
 import { Input } from '@/components/ui/input';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { useAuth } from './authContext';
-import { AuthCard, ServerError, useFieldError } from './AuthCard';
+import { AuthCard, ServerError, SlowServerNote, useFieldError } from './AuthCard';
 import { destinationAfterLogin } from './redirects';
 import { loginSchema, type LoginValues } from './schemas';
 
@@ -61,6 +61,7 @@ export default function LoginPage() {
           {formState.isSubmitting ? <Spinner className="size-4" /> : null}
           {formState.isSubmitting ? t('login.submitting') : t('login.submit')}
         </Button>
+        {formState.isSubmitting ? <SlowServerNote /> : null}
       </form>
       <p className="text-sm text-muted-foreground">
         {t('login.noAccount')}{' '}
