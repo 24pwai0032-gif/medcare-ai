@@ -10,95 +10,131 @@
  */
 :root {
   color-scheme: light;
-  --background: #f7f9fa;
-  --foreground: #0f172a;
+  --background: #f5f6ff;
+  --foreground: #12133a;
   --surface: #ffffff;
-  --surface-foreground: #0f172a;
-  --muted: #eef2f4;
-  --muted-foreground: #475569;
-  --border: #e2e8f0;
-  --input: #7b8794;
-  --ring: #0f766e;
-  --primary: #0f766e;
-  --primary-hover: #115e59;
+  --surface-foreground: #12133a;
+  --muted: #eef0fb;
+  --muted-foreground: #4a4f72;
+  --border: #e3e5f7;
+  --input: #7c81ab;
+  --ring: #4f46e5;
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
   --primary-foreground: #ffffff;
-  --secondary: #e6f2f1;
-  --secondary-foreground: #0b4a45;
-  --accent: #eef2f4;
-  --accent-foreground: #0f172a;
-  --destructive: #b91c1c;
+  --secondary: #eef0ff;
+  --secondary-foreground: #3730a3;
+  --accent: #eef0fb;
+  --accent-foreground: #12133a;
+  --destructive: #be123c;
   --destructive-foreground: #ffffff;
-  --info: #f0f7f6;
-  --info-border: #b9dcd7;
-  --info-foreground: #0b4a45;
-  --warning: #fffbeb;
-  --warning-border: #f3d48a;
-  --warning-foreground: #92400e;
-  --emergency: #b91c1c;
+  --info: #eef9fc;
+  --info-border: #b7e3ee;
+  --info-foreground: #0b4f63;
+  --warning: #fff8e6;
+  --warning-border: #f3d28a;
+  --warning-foreground: #8a4b00;
+  --emergency: #be123c;
   --emergency-foreground: #ffffff;
-  --sev-normal: #ecfdf5;
-  --sev-normal-foreground: #065f46;
-  --sev-mild: #fefce8;
-  --sev-mild-foreground: #854d0e;
-  --sev-moderate: #fff7ed;
-  --sev-moderate-foreground: #9a3412;
-  --sev-severe: #fef2f2;
-  --sev-severe-foreground: #991b1b;
-  --sev-critical: #991b1b;
+  --sev-normal: #e7f8ef;
+  --sev-normal-foreground: #046c4e;
+  --sev-mild: #fff6db;
+  --sev-mild-foreground: #8a5300;
+  --sev-moderate: #ffebd9;
+  --sev-moderate-foreground: #9a3a06;
+  --sev-severe: #ffe4e8;
+  --sev-severe-foreground: #b4123b;
+  --sev-critical: #b4123b;
   --sev-critical-foreground: #ffffff;
-  --status-pending: #fffbeb;
-  --status-pending-foreground: #92400e;
-  --status-approved: #ecfdf5;
-  --status-approved-foreground: #065f46;
-  --status-flagged: #fef2f2;
-  --status-flagged-foreground: #991b1b;
-  --radius: 0.5rem;
+  --status-pending: #eef0ff;
+  --status-pending-foreground: #3730a3;
+  --status-approved: #e7f8ef;
+  --status-approved-foreground: #046c4e;
+  --status-flagged: #ffe4e8;
+  --status-flagged-foreground: #b4123b;
+  /* One colour per module, for icon chips. */
+  --tone-indigo: #eef0ff;
+  --tone-indigo-foreground: #4338ca;
+  --tone-violet: #f4eeff;
+  --tone-violet-foreground: #6d28d9;
+  --tone-rose: #ffeff3;
+  --tone-rose-foreground: #be123c;
+  --tone-emerald: #e8fbf3;
+  --tone-emerald-foreground: #047857;
+  --tone-amber: #fff5e5;
+  --tone-amber-foreground: #b45309;
+  --tone-cyan: #e6f6fa;
+  --tone-cyan-foreground: #0e7490;
+  /* The logo's gradient. White text passes AA at every stop. */
+  --brand-gradient: linear-gradient(135deg, #4338ca 0%, #4f46e5 50%, #0e7490 100%);
+  --brand-gradient-deep: linear-gradient(135deg, #312e81 0%, #4338ca 55%, #0e7490 100%);
+  --glow-a: rgb(79 70 229 / 0.18);
+  --glow-b: rgb(8 145 178 / 0.18);
+  --shadow-card: 0 1px 2px rgb(18 19 58 / 0.04), 0 8px 24px -12px rgb(18 19 58 / 0.12);
+  --shadow-raised: 0 30px 70px -20px rgb(67 56 202 / 0.35), 0 2px 6px rgb(18 19 58 / 0.06);
+  --radius: 0.75rem;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --background: #0b1215;
-  --foreground: #e8eef0;
-  --surface: #121b1f;
-  --surface-foreground: #e8eef0;
-  --muted: #1a262b;
-  --muted-foreground: #9aa8b1;
-  --border: #22303a;
-  --input: #5f6e78;
-  --ring: #5eead4;
-  --primary: #2dd4bf;
-  --primary-hover: #5eead4;
-  --primary-foreground: #042f2e;
-  --secondary: #0f2a2a;
-  --secondary-foreground: #a7f3e9;
-  --accent: #1a262b;
-  --accent-foreground: #e8eef0;
-  --destructive: #f87171;
-  --destructive-foreground: #1f0a0a;
-  --info: #0f2224;
-  --info-border: #1f4a47;
-  --info-foreground: #a7f3e9;
-  --warning: #2b1d05;
-  --warning-border: #6b4e12;
+  --background: #0b0c24;
+  --foreground: #eef0ff;
+  --surface: #15173b;
+  --surface-foreground: #eef0ff;
+  --muted: #1d2050;
+  --muted-foreground: #aeb3de;
+  --border: #272b5e;
+  --input: #6b70a8;
+  --ring: #a5b4fc;
+  --primary: #818cf8;
+  --primary-hover: #a5b4fc;
+  --primary-foreground: #0b0c24;
+  --secondary: #23286b;
+  --secondary-foreground: #c7d2fe;
+  --accent: #1d2050;
+  --accent-foreground: #eef0ff;
+  --destructive: #fb7185;
+  --destructive-foreground: #2a0f1d;
+  --info: #0e2a36;
+  --info-border: #1d4c5c;
+  --info-foreground: #a5f3fc;
+  --warning: #2e2509;
+  --warning-border: #6b5414;
   --warning-foreground: #fcd34d;
-  --emergency: #f87171;
-  --emergency-foreground: #1f0a0a;
-  --sev-normal: #06281f;
+  --emergency: #fb7185;
+  --emergency-foreground: #2a0f1d;
+  --sev-normal: #0e3527;
   --sev-normal-foreground: #6ee7b7;
-  --sev-mild: #2a2207;
-  --sev-mild-foreground: #fde047;
-  --sev-moderate: #2e1708;
+  --sev-mild: #2e2509;
+  --sev-mild-foreground: #fcd34d;
+  --sev-moderate: #3a220c;
   --sev-moderate-foreground: #fdba74;
-  --sev-severe: #330f10;
-  --sev-severe-foreground: #fca5a5;
-  --sev-critical: #f87171;
-  --sev-critical-foreground: #1f0a0a;
-  --status-pending: #2b1d05;
-  --status-pending-foreground: #fcd34d;
-  --status-approved: #06281f;
+  --sev-severe: #3a1525;
+  --sev-severe-foreground: #fda4af;
+  --sev-critical: #fb7185;
+  --sev-critical-foreground: #2a0f1d;
+  --status-pending: #23286b;
+  --status-pending-foreground: #c7d2fe;
+  --status-approved: #0e3527;
   --status-approved-foreground: #6ee7b7;
-  --status-flagged: #330f10;
-  --status-flagged-foreground: #fca5a5;
+  --status-flagged: #3a1525;
+  --status-flagged-foreground: #fda4af;
+  --tone-indigo: #23286b;
+  --tone-indigo-foreground: #a5b4fc;
+  --tone-violet: #2a1f5c;
+  --tone-violet-foreground: #c4b5fd;
+  --tone-rose: #3a1528;
+  --tone-rose-foreground: #fda4af;
+  --tone-emerald: #0f3a2e;
+  --tone-emerald-foreground: #6ee7b7;
+  --tone-amber: #3a2a0e;
+  --tone-amber-foreground: #fcd34d;
+  --tone-cyan: #0e3240;
+  --tone-cyan-foreground: #67e8f9;
+  --glow-a: rgb(129 140 248 / 0.2);
+  --glow-b: rgb(34 211 238 / 0.14);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-raised: 0 30px 70px -20px rgb(0 0 0 / 0.6);
 }
 
 @theme inline {
@@ -144,6 +180,20 @@
   --color-status-approved-foreground: var(--status-approved-foreground);
   --color-status-flagged: var(--status-flagged);
   --color-status-flagged-foreground: var(--status-flagged-foreground);
+  --color-tone-indigo: var(--tone-indigo);
+  --color-tone-indigo-foreground: var(--tone-indigo-foreground);
+  --color-tone-violet: var(--tone-violet);
+  --color-tone-violet-foreground: var(--tone-violet-foreground);
+  --color-tone-rose: var(--tone-rose);
+  --color-tone-rose-foreground: var(--tone-rose-foreground);
+  --color-tone-emerald: var(--tone-emerald);
+  --color-tone-emerald-foreground: var(--tone-emerald-foreground);
+  --color-tone-amber: var(--tone-amber);
+  --color-tone-amber-foreground: var(--tone-amber-foreground);
+  --color-tone-cyan: var(--tone-cyan);
+  --color-tone-cyan-foreground: var(--tone-cyan-foreground);
+  --shadow-card: var(--shadow-card);
+  --shadow-raised: var(--shadow-raised);
 
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-urdu: "Noto Nastaliq Urdu", "Inter Variable", "Jameel Noori Nastaleeq", "Urdu Typesetting", serif;
@@ -238,6 +288,33 @@
   }
 }
 
+/* The logo's indigo-to-cyan gradient, for primary actions and highlight bands. */
+@utility bg-brand {
+  background-image: var(--brand-gradient);
+}
+
+@utility bg-brand-deep {
+  background-image: var(--brand-gradient-deep);
+}
+
+/* Gradient text for a highlighted phrase in a heading. */
+@utility text-brand {
+  background-image: linear-gradient(90deg, #4338ca, #0e7490);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  [data-theme="dark"] & {
+    background-image: linear-gradient(90deg, #a5b4fc, #67e8f9);
+  }
+
+  /* Nastaliq letters rise above the text box, where a clipped gradient would cut them off. */
+  &:lang(ur) {
+    background-image: none;
+    color: var(--primary);
+  }
+}
+
 /* An Urdu passage inside the English UI (e.g. the Urdu report tab). */
 @utility urdu-block {
   font-size: 1.125rem;
@@ -260,7 +337,7 @@
 
 .pdf-render-host h2 {
   margin: 0 0 6px;
-  color: #0f766e;
+  color: #4338ca;
   font-size: 20px;
   font-weight: 400;
 }

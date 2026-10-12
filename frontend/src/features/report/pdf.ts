@@ -19,13 +19,13 @@ export interface PdfContent {
 }
 
 type Rgb = [number, number, number];
-const INK: Rgb = [15, 23, 42];
-const MUTED: Rgb = [71, 85, 105];
-const PRIMARY: Rgb = [15, 118, 110];
-const LINE: Rgb = [226, 232, 240];
-const INFO_BG: Rgb = [240, 247, 246];
-const INFO_BORDER: Rgb = [185, 220, 215];
-const INFO_INK: Rgb = [11, 74, 69];
+const INK: Rgb = [18, 19, 58];
+const MUTED: Rgb = [74, 79, 114];
+const PRIMARY: Rgb = [67, 56, 202];
+const LINE: Rgb = [227, 229, 247];
+const INFO_BG: Rgb = [238, 240, 255];
+const INFO_BORDER: Rgb = [201, 204, 240];
+const INFO_INK: Rgb = [55, 48, 163];
 
 const PAGE_W = 210;
 const PAGE_H = 297;
@@ -143,7 +143,7 @@ class Writer {
       this.ensure(height);
       this.doc.setDrawColor(...LINE);
       if (bold) {
-        this.doc.setFillColor(238, 242, 244);
+        this.doc.setFillColor(238, 240, 251);
         this.doc.rect(MARGIN, this.y, CONTENT_W, height, 'F');
       }
       wrapped.forEach((lines, c) => {

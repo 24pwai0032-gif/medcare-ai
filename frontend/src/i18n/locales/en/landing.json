@@ -1,7 +1,7 @@
 {
   "title": "Informational AI reports in English and Urdu",
   "hero": {
-    "title": "Understand your scans and medical reports, in English and Urdu",
+    "title": "Understand your scans and medical reports, in <hl>English and Urdu</hl>",
     "body": "Upload an X-ray, ECG, blood test or prescription. MedCare AI uses Google's Gemini AI to write an informational report with an Urdu summary, and doctors on MedCare AI can review it.",
     "emergency": "In an emergency, the first aid guide works without an account.",
     "emergencyLink": "Open the first aid guide"
@@ -73,5 +73,21 @@
   "cta": {
     "heading": "Ready to upload a scan?",
     "body": "Create a patient account, or sign in if you already have one."
+  },
+  "preview": {
+    "alt": "Example of an AI report page, showing its severity, review status and findings",
+    "label": "Example",
+    "title": "X-ray report",
+    "tabEnglish": "English report",
+    "tabUrdu": "Urdu summary",
+    "findings": "Findings",
+    "lines": [
+      "Lungs: clear lung fields.",
+      "Heart: normal size.",
+      "Bones: no acute fracture seen."
+    ],
+    "pdf": "Download PDF",
+    "reviewTitle": "Doctor review",
+    "reviewBody": "Approve or flag, with notes"
   }
 }

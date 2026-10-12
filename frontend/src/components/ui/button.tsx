@@ -5,11 +5,12 @@ import { cn } from '@/lib/utils';
 
 // shadcn/ui button, with 44 px default touch targets.
 export const buttonVariants = cva(
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-md text-sm font-semibold whitespace-nowrap transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-colors select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
+        // The logo gradient; white text passes AA at every stop, in both themes.
+        default: 'bg-brand text-white shadow-[0_8px_20px_-8px_rgb(79_70_229/0.6)] hover:brightness-110',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/70',
         outline: 'border border-input bg-surface text-foreground hover:bg-accent',
         ghost: 'text-foreground hover:bg-accent',

@@ -81,9 +81,14 @@ export function PublicLayout() {
               <Link to={homeFor(user.role)}>{t('actions.openDashboard')}</Link>
             </Button>
           ) : (
-            <Button asChild variant="outline" size="sm" className="ms-1 h-11">
-              <Link to="/login">{t('actions.signIn')}</Link>
-            </Button>
+            <>
+              <Button asChild variant="outline" size="sm" className="ms-1 h-11">
+                <Link to="/login">{t('actions.signIn')}</Link>
+              </Button>
+              <Button asChild size="sm" className="ms-1 hidden h-11 sm:inline-flex">
+                <Link to="/register">{t('actions.getStarted')}</Link>
+              </Button>
+            </>
           )}
         </div>
       </header>

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import type { Tone } from '@/components/IconChip';
 import { Bone, FileText, HeartPulse, Pill, ScanLine, ScanFace, TestTube, type LucideIcon } from 'lucide-react';
 import { parseServerDate } from '@/lib/format';
 import { normalizeSeverity, type SeverityLevel } from '@/lib/severity';
@@ -15,6 +16,16 @@ export const SCAN_ICONS: Record<ScanKind, LucideIcon> = {
   prescription: Pill,
   skin: ScanFace,
   unknown: FileText,
+};
+
+export const SCAN_TONES: Record<ScanKind, Tone> = {
+  xray: 'indigo',
+  bone: 'violet',
+  ecg: 'rose',
+  blood: 'emerald',
+  prescription: 'amber',
+  skin: 'cyan',
+  unknown: 'indigo',
 };
 
 const time = (scan: Scan) => parseServerDate(scan.created_at)?.getTime() ?? 0;

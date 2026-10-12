@@ -1,4 +1,4 @@
-import { CircleAlert, Info, Siren } from 'lucide-react';
+import { CircleAlert, Info, Siren, Stethoscope } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EmergencyCallButtons } from '@/components/Disclaimer';
@@ -50,7 +50,7 @@ export default function SymptomGuidePage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t('symptoms.title')} description={t('symptoms.description')} />
+      <PageHeader title={t('symptoms.title')} description={t('symptoms.description')} icon={{ icon: Stethoscope, tone: 'cyan' }} />
 
       {shown ? (
         <section aria-labelledby="symptom-results" className="space-y-4">

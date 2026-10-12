@@ -1,9 +1,10 @@
-import { Info, Phone } from 'lucide-react';
+import { Phone, ShieldCheck } from 'lucide-react';
 import { Trans, useTranslation } from 'react-i18next';
+import { IconChip } from '@/components/IconChip';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-const telLink = 'font-bold underline underline-offset-2 hover:no-underline';
+const telLink = 'font-bold text-primary underline underline-offset-2 hover:no-underline';
 
 /** The required notice on every AI result, in the PDF and on the landing page. */
 export function Disclaimer({ className }: { className?: string }) {
@@ -11,13 +12,13 @@ export function Disclaimer({ className }: { className?: string }) {
   return (
     <aside
       aria-label={t('disclaimer.label')}
-      className={cn('flex gap-3 rounded-lg border border-info-border bg-info p-4 text-sm text-info-foreground', className)}
+      className={cn('flex gap-4 rounded-2xl border bg-surface p-4 text-sm shadow-card', className)}
     >
-      <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+      <IconChip icon={ShieldCheck} tone="cyan" size="sm" />
       <div className="space-y-1">
         <p className="font-semibold">{t('disclaimer.notDiagnosis')}</p>
-        <p>{t('disclaimer.doctorReview')}</p>
-        <p>
+        <p className="text-muted-foreground">{t('disclaimer.doctorReview')}</p>
+        <p className="text-muted-foreground">
           <Trans
             t={t}
             i18nKey="disclaimer.emergency"

@@ -1,4 +1,4 @@
-import { CircleAlert, Info, ShieldCheck } from 'lucide-react';
+import { Activity, CircleAlert, Info, ShieldCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EmergencyCallButtons } from '@/components/Disclaimer';
@@ -59,7 +59,7 @@ export default function VitalSignsPage() {
     const overall = overallStatus(results.map((r) => r.status));
     return (
       <div className="space-y-6">
-        <PageHeader title={t('vitals.title')} />
+        <PageHeader title={t('vitals.title')} icon={{ icon: Activity, tone: 'emerald' }} />
         <section aria-labelledby="vital-results" className="space-y-4">
           <h2 id="vital-results" ref={resultsRef} tabIndex={-1} className="text-xl font-semibold outline-none">
             {t('vitals.resultsHeading')}
@@ -108,7 +108,7 @@ export default function VitalSignsPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t('vitals.title')} description={t('vitals.description')} />
+      <PageHeader title={t('vitals.title')} description={t('vitals.description')} icon={{ icon: Activity, tone: 'emerald' }} />
       <p className="flex items-start gap-2 text-sm text-muted-foreground">
         <ShieldCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
         {t('vitals.privacy')}

@@ -4,11 +4,14 @@ import i18n from '@/i18n';
 import { renderRoutes, signInAs } from '@/test/render';
 import { routes } from './routes';
 
+/** A route's chunks are compiled on first use in the test runner, which can take longer than the default second. */
+const firstLoad = { timeout: 5000 };
+
 describe('landing page', () => {
   it('states what the app does, with the disclaimer, sign-up and first aid links', async () => {
     renderRoutes(routes, '/');
     expect(
-      await screen.findByRole('heading', { level: 1, name: 'Understand your scans and medical reports, in English and Urdu' }),
+      await screen.findByRole('heading', { level: 1, name: 'Understand your scans and medical reports, in English and Urdu' }, firstLoad),
     ).toBeInTheDocument();
     const disclaimer = screen.getByRole('complementary', { name: 'Medical disclaimer' });
     expect(disclaimer).toHaveTextContent('AI output is informational, not a diagnosis.');
@@ -20,7 +23,7 @@ describe('landing page', () => {
 
   it('makes none of the unconfirmed claims of the old page', async () => {
     renderRoutes(routes, '/');
-    await screen.findByRole('heading', { level: 1 });
+    await screen.findByRole('heading', { level: 1 }, firstLoad);
     const text = document.body.textContent ?? '';
     for (const claim of [/10,000/, /accura/i, /\bfree\b/i, /LLaVA/i, /Nature Medicine/i, /first medical AI/i, /certified/i, /★/, /as seen in/i]) {
       expect(text).not.toMatch(claim);
@@ -29,7 +32,7 @@ describe('landing page', () => {
 
   it('answers questions in native disclosure widgets and links to the privacy notice', async () => {
     renderRoutes(routes, '/');
-    await screen.findByRole('heading', { level: 2, name: 'Questions' });
+    await screen.findByRole('heading', { level: 2, name: 'Questions' }, firstLoad);
     expect(document.querySelectorAll('details')).toHaveLength(6);
     expect(screen.getByRole('link', { name: 'privacy notice' })).toHaveAttribute('href', '/privacy');
     const footer = screen.getByRole('navigation', { name: 'Footer' });
@@ -51,7 +54,7 @@ describe('landing page', () => {
 describe('legal drafts', () => {
   it('discloses where images go and who can see reports, with the missing details highlighted', async () => {
     renderRoutes(routes, '/privacy');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Privacy notice' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Privacy notice' }, firstLoad)).toBeInTheDocument();
     expect(screen.getByRole('note')).toHaveTextContent('Draft for review');
     expect(screen.getByText(/Your image is sent to Google's Gemini API/)).toBeInTheDocument();
     expect(screen.getByText(/Every doctor account on MedCare AI can see every patient's saved reports/)).toBeInTheDocument();
@@ -64,14 +67,14 @@ describe('legal drafts', () => {
 
   it('renders About and Terms, and the Urdu privacy notice', async () => {
     const about = renderRoutes(routes, '/about');
-    expect(await screen.findByRole('heading', { level: 1, name: 'About MedCare AI' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'About MedCare AI' }, firstLoad)).toBeInTheDocument();
     about.unmount();
     const terms = renderRoutes(routes, '/terms');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Terms of use' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Terms of use' }, firstLoad)).toBeInTheDocument();
     terms.unmount();
     await i18n.changeLanguage('ur');
     renderRoutes(routes, '/privacy');
-    expect(await screen.findByRole('heading', { level: 1, name: 'رازداری کا نوٹس' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'رازداری کا نوٹس' }, firstLoad)).toBeInTheDocument();
     expect(document.documentElement).toHaveAttribute('dir', 'rtl');
   });
 });
@@ -79,7 +82,7 @@ describe('legal drafts', () => {
 describe('unknown URLs', () => {
   it('show a 404 inside the public layout, keeping the emergency numbers', async () => {
     renderRoutes(routes, '/no-such-page');
-    expect(await screen.findByRole('heading', { level: 1, name: 'Page not found' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Page not found' }, firstLoad)).toBeInTheDocument();
     expect(screen.getAllByRole('link', { name: 'Call 1122' })[0]).toHaveAttribute('href', 'tel:1122');
     expect(screen.getByRole('link', { name: 'Go to the home page' })).toHaveAttribute('href', '/');
   });

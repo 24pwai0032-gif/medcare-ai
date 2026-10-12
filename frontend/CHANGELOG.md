@@ -1,5 +1,58 @@
 # Changelog
 
+## 0.3.0: Pulse redesign and deployment (13 October 2026)
+
+No medical content changed in this release. Severity is still shown with an icon and a word as well as a colour.
+
+### New look: Pulse
+
+You chose this direction from three options on a design canvas. It builds on the logo's indigo-to-cyan gradient.
+
+- **Colours:**
+  - **Light theme:** indigo ink on a pale indigo background.
+  - **Dark theme:** deep navy.
+  - **Contrast:** all 35 text-and-background pairs pass WCAG AA in each theme, and white text passes on every stop of the gradient.
+- **Module colours:** each module keeps one colour everywhere it appears:
+  - X-ray: indigo
+  - Bone X-ray: violet
+  - ECG: rose
+  - Blood test: emerald
+  - Prescription: amber
+  - Symptom guide: cyan
+  - Depression screening: violet
+  - Vital signs: emerald
+- **Components:**
+  - primary buttons use the logo gradient;
+  - cards are rounder, with soft shadows;
+  - severity and review badges are pills;
+  - headings are bolder.
+- **Landing page:**
+  - **Hero:** soft colour glows, and an illustration of the report screen. The illustration is labelled "Example", and screen readers hear it as one described image.
+  - **Tools band:** a deep-indigo band for the tools that don't use AI.
+- **Dashboard:** a gradient welcome banner, and colour chips on every tile.
+- **Page headers and lists:** the analyzer and tool pages show the module's chip in their header. Scan lists and the first aid list use the chips too.
+- **Urdu:** highlighted Urdu words use solid indigo instead of gradient text, so the tops of tall Nastaliq letters are never clipped.
+- **PDF and browser:** the PDF and the browser theme colour move from teal to indigo.
+
+### Deployment
+
+- **Backend:**
+  - **Blueprint:** `render.yaml` (at the repository root) deploys it on Render, using Docker in Singapore on the free plan.
+  - **Secrets:** `DATABASE_URL` (Neon Postgres) and `GEMINI_API_KEY` are entered in Render. `SECRET_KEY` is generated there.
+  - **Database driver:** SQLAlchemy 2.1 changed the default PostgreSQL driver, so `DATABASE_URL` must start with `postgresql+psycopg2://`.
+- **Sleeping backend:** Render's free service sleeps after 15 idle minutes and can take about a minute to wake. The frontend therefore:
+  - wakes the backend when the landing, sign-in or register page opens;
+  - allows API calls up to 75 seconds;
+  - after 6 seconds of a slow sign-in, explains that the server is waking up.
+- **Fallback backend address:** when `VITE_API_URL` isn't set, the frontend now uses the Render backend instead of the old Cloud Run one.
+
+### Performance
+
+- **Icons:** they load as one file instead of one tiny file each, which removes about a dozen requests from the landing page.
+- **Fonts:** Inter is preloaded, so headings don't repaint when it arrives. The Urdu font never loads on English pages.
+- **Lighthouse:** mobile emulation on `/` scored 94–95 for performance in three of four local runs, and 100 for accessibility, best practices and SEO. The local preview speaks HTTP/1.1, so this is pessimistic.
+- **Landing page JavaScript:** 152 KB gzipped, or 132 KB with brotli as Vercel serves it.
+
 ## 0.2.0: frontend rebuild (10 October 2026)
 
 The frontend in `frontend/` was rebuilt on the `frontend-rebuild` branch, one commit per phase. The backend, its API paths and its payloads were not changed.

@@ -2,7 +2,7 @@ import { Activity, BadgeCheck, Brain, ClipboardList, Clock, Flag, Siren, Stethos
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { EmergencyCallButtons } from '@/components/Disclaimer';
-import { PageHeader } from '@/components/PageHeader';
+import { IconChip, type Tone } from '@/components/IconChip';
 import { ErrorState } from '@/components/states';
 import { ANALYZER_MODULES, MODULE_IDS } from '@/features/analyzer/modules';
 import { useAuth } from '@/features/auth/authContext';
@@ -10,14 +10,14 @@ import { ScanList, ScanListSkeleton } from '@/features/scans/ScanList';
 import { useMyScans } from '@/features/scans/scans';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 
-const TOOLS: Array<{ to: string; key: 'diagnosis' | 'mentalHealth' | 'vitals'; icon: LucideIcon }> = [
-  { to: '/app/diagnosis', key: 'diagnosis', icon: Stethoscope },
-  { to: '/app/mental-health', key: 'mentalHealth', icon: Brain },
-  { to: '/app/vitals', key: 'vitals', icon: Activity },
+const TOOLS: Array<{ to: string; key: 'diagnosis' | 'mentalHealth' | 'vitals'; icon: LucideIcon; tone: Tone }> = [
+  { to: '/app/diagnosis', key: 'diagnosis', icon: Stethoscope, tone: 'cyan' },
+  { to: '/app/mental-health', key: 'mentalHealth', icon: Brain, tone: 'violet' },
+  { to: '/app/vitals', key: 'vitals', icon: Activity, tone: 'emerald' },
 ];
 
 const tileClass =
-  'flex h-full items-start gap-3 rounded-lg border bg-surface p-4 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
+  'flex h-full items-start gap-3 rounded-2xl border bg-surface p-4 shadow-card transition-colors hover:border-primary/40 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
 
 export default function PatientDashboard() {
   const { t } = useTranslation(['patient', 'common']);
@@ -36,7 +36,16 @@ export default function PatientDashboard() {
 
   return (
     <div className="space-y-10">
-      <PageHeader title={t('patient:dashboard.greeting', { name: firstName })} description={t('patient:dashboard.subtitle')} />
+      <section className="relative overflow-hidden rounded-3xl bg-brand-deep p-6 text-white shadow-raised sm:p-8">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -end-16 -top-24 size-72 rounded-full bg-[radial-gradient(circle,rgb(103_232_249/0.35),transparent_70%)]"
+        />
+        <div className="relative space-y-1">
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t('patient:dashboard.greeting', { name: firstName })}</h1>
+          <p className="max-w-prose">{t('patient:dashboard.subtitle')}</p>
+        </div>
+      </section>
 
       {scans.isSuccess ? (
         <section aria-labelledby="stats-heading">
@@ -45,7 +54,7 @@ export default function PatientDashboard() {
           </h2>
           <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat.key} className="rounded-lg border bg-surface p-4">
+              <div key={stat.key} className="rounded-2xl border bg-surface p-4 shadow-card">
                 <dt className="flex items-center gap-2 text-sm text-muted-foreground">
                   <stat.icon className="size-4" aria-hidden="true" />
                   {t(`patient:dashboard.stats.${stat.key}`)}
@@ -58,16 +67,16 @@ export default function PatientDashboard() {
       ) : null}
 
       <section aria-labelledby="analyze-heading" className="space-y-3">
-        <h2 id="analyze-heading" className="text-lg font-semibold">
+        <h2 id="analyze-heading" className="text-xl font-extrabold tracking-tight">
           {t('patient:dashboard.analyzeHeading')}
         </h2>
         <ul role="list" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {MODULE_IDS.map((id) => {
-            const Icon = ANALYZER_MODULES[id].icon;
+            const module = ANALYZER_MODULES[id];
             return (
               <li key={id}>
                 <Link to={`/app/analyze/${id}`} className={tileClass}>
-                  <Icon className="mt-0.5 size-6 shrink-0 text-primary" aria-hidden="true" />
+                  <IconChip icon={module.icon} tone={module.tone} />
                   <span>
                     <span className="block font-semibold">{t(`common:modules.${id}`)}</span>
                     <span className="block text-sm text-muted-foreground">{t(`patient:modules.${id}`)}</span>
@@ -80,14 +89,14 @@ export default function PatientDashboard() {
       </section>
 
       <section aria-labelledby="tools-heading" className="space-y-3">
-        <h2 id="tools-heading" className="text-lg font-semibold">
+        <h2 id="tools-heading" className="text-xl font-extrabold tracking-tight">
           {t('patient:dashboard.toolsHeading')}
         </h2>
         <ul role="list" className="grid gap-3 sm:grid-cols-3">
           {TOOLS.map((tool) => (
             <li key={tool.key}>
               <Link to={tool.to} className={tileClass}>
-                <tool.icon className="mt-0.5 size-6 shrink-0 text-primary" aria-hidden="true" />
+                <IconChip icon={tool.icon} tone={tool.tone} />
                 <span>
                   <span className="block font-semibold">{t(`common:modules.${tool.key}`)}</span>
                   <span className="block text-sm text-muted-foreground">{t(`patient:modules.${tool.key}`)}</span>
@@ -98,7 +107,7 @@ export default function PatientDashboard() {
         </ul>
       </section>
 
-      <section aria-labelledby="emergency-heading" className="space-y-3 rounded-lg border border-sev-severe-foreground/30 bg-sev-severe p-4 text-sev-severe-foreground">
+      <section aria-labelledby="emergency-heading" className="space-y-3 rounded-3xl border border-sev-severe-foreground/25 bg-sev-severe p-5 text-sev-severe-foreground">
         <h2 id="emergency-heading" className="flex items-center gap-2 text-lg font-semibold">
           <Siren className="size-5" aria-hidden="true" />
           {t('patient:dashboard.emergencyHeading')}
@@ -112,7 +121,7 @@ export default function PatientDashboard() {
 
       <section aria-labelledby="recent-heading" className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 id="recent-heading" className="text-lg font-semibold">
+          <h2 id="recent-heading" className="text-xl font-extrabold tracking-tight">
             {t('patient:dashboard.recentHeading')}
           </h2>
           {all.length ? (

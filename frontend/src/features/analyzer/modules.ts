@@ -1,4 +1,5 @@
 import { Bone, HeartPulse, Pill, ScanLine, TestTube, type LucideIcon } from 'lucide-react';
+import type { Tone } from '@/components/IconChip';
 import type { SubtypeId } from '@/features/report/reportData';
 import type { AnalyzeEndpoint } from '@/services/types';
 
@@ -17,6 +18,8 @@ export interface AnalyzerModule {
   id: ModuleId;
   endpoint: AnalyzeEndpoint;
   icon: LucideIcon;
+  /** Its colour on tiles, cards and page headers. */
+  tone: Tone;
   subtypes?: Subtype[];
 }
 
@@ -29,6 +32,7 @@ export const ANALYZER_MODULES: Record<ModuleId, AnalyzerModule> = {
     id: 'xray',
     endpoint: 'xray',
     icon: ScanLine,
+    tone: 'indigo',
     // There is no MRI or CT endpoint: those use the X-ray instructions, and the UI says so.
     subtypes: [
       { id: 'chest', endpoint: 'xray' },
@@ -37,10 +41,10 @@ export const ANALYZER_MODULES: Record<ModuleId, AnalyzerModule> = {
       { id: 'bone', endpoint: 'bone' },
     ],
   },
-  bone: { id: 'bone', endpoint: 'bone', icon: Bone },
-  ecg: { id: 'ecg', endpoint: 'ecg', icon: HeartPulse },
-  blood: { id: 'blood', endpoint: 'blood-test', icon: TestTube },
-  prescription: { id: 'prescription', endpoint: 'prescription', icon: Pill },
+  bone: { id: 'bone', endpoint: 'bone', icon: Bone, tone: 'violet' },
+  ecg: { id: 'ecg', endpoint: 'ecg', icon: HeartPulse, tone: 'rose' },
+  blood: { id: 'blood', endpoint: 'blood-test', icon: TestTube, tone: 'emerald' },
+  prescription: { id: 'prescription', endpoint: 'prescription', icon: Pill, tone: 'amber' },
 };
 
 export const MODULE_IDS = Object.keys(ANALYZER_MODULES) as ModuleId[];

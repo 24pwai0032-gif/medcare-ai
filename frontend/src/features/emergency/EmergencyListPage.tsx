@@ -2,6 +2,7 @@ import { Siren } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { EmergencyCallButtons } from '@/components/Disclaimer';
+import { IconChip } from '@/components/IconChip';
 import { PageHeader } from '@/components/PageHeader';
 import { useDocumentTitle } from '@/lib/useDocumentTitle';
 import { EMERGENCIES } from './emergencies';
@@ -13,7 +14,7 @@ export default function EmergencyListPage() {
   return (
     <div className="mx-auto max-w-4xl space-y-8 px-4 py-8 sm:px-6">
       <PageHeader title={t('title')} description={t('description')} className="mb-0" />
-      <section className="space-y-3 rounded-lg border border-sev-severe-foreground/40 bg-sev-severe p-4 text-sev-severe-foreground">
+      <section className="space-y-3 rounded-3xl border border-sev-severe-foreground/25 bg-sev-severe p-5 text-sev-severe-foreground">
         <p className="flex items-center gap-2 text-lg font-semibold">
           <Siren className="size-5" aria-hidden="true" />
           {t('callFirst')}
@@ -29,9 +30,9 @@ export default function EmergencyListPage() {
             <li key={emergency.id}>
               <Link
                 to={`/emergency/${emergency.slug}`}
-                className="flex h-full min-h-24 flex-col items-center justify-center gap-2 rounded-lg border bg-surface p-4 text-center font-semibold hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                className="flex h-full min-h-28 flex-col items-center justify-center gap-3 rounded-2xl border bg-surface p-4 text-center font-bold shadow-card transition-colors hover:border-sev-severe-foreground/40 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
-                <emergency.icon className="size-8 text-destructive" aria-hidden="true" />
+                <IconChip icon={emergency.icon} tone="rose" size="lg" />
                 {t(`items.${emergency.id}.title`)}
               </Link>
             </li>

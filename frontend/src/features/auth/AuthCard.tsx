@@ -1,6 +1,7 @@
 import { CircleAlert } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LogoMark } from '@/components/Logo';
 import { Alert } from '@/components/ui/feedback';
 import { warmUpBackend } from '@/services/api';
 import { errorKey } from '@/services/errors';
@@ -13,9 +14,10 @@ export function AuthCard({ title, description, children }: { title: string; desc
   }, []);
   return (
     <div className="mx-auto w-full max-w-md px-4 py-10 sm:py-14">
-      <div className="space-y-6 rounded-xl border bg-surface p-6 sm:p-8">
-        <header className="space-y-1">
-          <h1 className="text-2xl font-semibold">{title}</h1>
+      <div className="space-y-6 rounded-3xl border bg-surface p-6 shadow-raised sm:p-8">
+        <header className="space-y-2">
+          <LogoMark className="size-11" />
+          <h1 className="text-2xl font-extrabold tracking-tight">{title}</h1>
           <p className="text-muted-foreground">{description}</p>
         </header>
         {children}

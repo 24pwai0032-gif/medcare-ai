@@ -30,7 +30,7 @@ export function SeverityBadge({ level, label, srPrefix, className }: SeverityBad
 
   if (!level) {
     return (
-      <span className={cn('inline-flex items-center gap-1.5 rounded-md border bg-muted px-2.5 py-1 text-sm font-medium text-muted-foreground', className)}>
+      <span className={cn('inline-flex items-center gap-1.5 rounded-full border bg-muted px-3 py-1 text-sm font-medium text-muted-foreground', className)}>
         <span className="sr-only">{prefix}: </span>
         {label ?? t('severity.unknown')}
       </span>
@@ -39,7 +39,7 @@ export function SeverityBadge({ level, label, srPrefix, className }: SeverityBad
 
   const { icon: Icon, className: tone } = STYLES[level];
   return (
-    <span className={cn('inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-sm font-semibold', tone, className)}>
+    <span className={cn('inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-semibold', tone, className)}>
       <Icon className="size-4 shrink-0" aria-hidden="true" />
       <span className="sr-only">{prefix}: </span>
       {label ?? t(`severity.${level}`)}

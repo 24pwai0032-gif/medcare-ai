@@ -40,6 +40,7 @@ export function UploadStep(props: UploadStepProps) {
         title={t(`analyzer:modules.${module.id}.title`)}
         description={t(`analyzer:modules.${module.id}.description`)}
         back={{ to: '/app', label: t('common:actions.back') }}
+        icon={{ icon: module.icon, tone: module.tone }}
       />
 
       {notice}

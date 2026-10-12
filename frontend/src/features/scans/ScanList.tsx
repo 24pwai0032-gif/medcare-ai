@@ -1,12 +1,13 @@
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
+import { IconChip } from '@/components/IconChip';
 import { SeverityBadge } from '@/components/SeverityBadge';
 import { StatusBadge } from '@/components/StatusBadge';
 import { Skeleton } from '@/components/ui/feedback';
 import { useFormatters } from '@/lib/format';
 import type { Scan } from '@/services/types';
-import { displaySeverity, SCAN_ICONS, scanKind } from './scans';
+import { displaySeverity, SCAN_ICONS, SCAN_TONES, scanKind } from './scans';
 
 interface ScanListProps {
   scans: Scan[];
@@ -22,17 +23,14 @@ export function ScanList({ scans, hrefFor, showPatient = false }: ScanListProps)
     <ul role="list" className="space-y-3">
       {scans.map((scan) => {
         const kind = scanKind(scan.scan_type);
-        const Icon = SCAN_ICONS[kind];
         return (
           <li key={scan.id}>
             {/* Phones: icon, title and chevron on one line, badges below. From sm: all on one line. */}
             <Link
               to={hrefFor(scan)}
-              className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-3 rounded-lg border bg-surface p-4 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]"
+              className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-4 gap-y-3 rounded-2xl border bg-surface p-4 shadow-card transition-colors hover:border-primary/40 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring sm:grid-cols-[auto_minmax(0,1fr)_auto_auto]"
             >
-              <span className="row-start-1 grid size-11 shrink-0 place-items-center rounded-md bg-secondary text-secondary-foreground">
-                <Icon className="size-5" aria-hidden="true" />
-              </span>
+              <IconChip icon={SCAN_ICONS[kind]} tone={SCAN_TONES[kind]} className="row-start-1" />
               <span className="row-start-1 min-w-0">
                 <span className="block font-semibold">{t(`reportTitles.${kind}`)}</span>
                 <span className="block text-sm text-muted-foreground">

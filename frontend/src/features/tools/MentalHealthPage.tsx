@@ -1,4 +1,4 @@
-import { CircleAlert, Info, ShieldCheck } from 'lucide-react';
+import { Brain, CircleAlert, Info, ShieldCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PageHeader } from '@/components/PageHeader';
@@ -46,7 +46,7 @@ export default function MentalHealthPage() {
   if (showResults) {
     return (
       <div className="space-y-6">
-        <PageHeader title={t('tools:phq9.title')} />
+        <PageHeader title={t('tools:phq9.title')} icon={{ icon: Brain, tone: 'violet' }} />
         <section aria-labelledby="phq-results" className="space-y-4">
           <h2 id="phq-results" ref={resultsRef} tabIndex={-1} className="text-xl font-semibold outline-none">
             {t('tools:phq9.resultsHeading')}
@@ -90,7 +90,7 @@ export default function MentalHealthPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t('tools:phq9.title')} description={t('tools:phq9.description')} />
+      <PageHeader title={t('tools:phq9.title')} description={t('tools:phq9.description')} icon={{ icon: Brain, tone: 'violet' }} />
       <p className="flex items-start gap-2 text-sm text-muted-foreground">
         <ShieldCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
         {t('tools:phq9.privacy')}
