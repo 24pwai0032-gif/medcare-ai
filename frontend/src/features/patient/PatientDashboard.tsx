@@ -16,8 +16,11 @@ const TOOLS: Array<{ to: string; key: 'diagnosis' | 'mentalHealth' | 'vitals'; i
   { to: '/app/vitals', key: 'vitals', icon: Activity, tone: 'emerald' },
 ];
 
-const tileClass =
-  'flex h-full items-start gap-3 rounded-2xl border bg-surface p-4 shadow-card transition-colors hover:border-primary/40 hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
+const tileBase =
+  'h-full rounded-2xl border bg-surface p-4 shadow-card transition-[border-color,background-color,box-shadow,transform] hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
+const tileClass = `flex items-start gap-3 ${tileBase}`;
+/** Analyzer tiles stack vertically so all five fit one row on wide screens. */
+const moduleTileClass = `flex flex-col gap-3 ${tileBase}`;
 
 export default function PatientDashboard() {
   const { t } = useTranslation(['patient', 'common']);
@@ -27,11 +30,11 @@ export default function PatientDashboard() {
   useDocumentTitle(t('common:nav.home'));
 
   const all = scans.data ?? [];
-  const stats: Array<{ key: 'total' | 'pending' | 'approved' | 'rejected'; value: number; icon: LucideIcon }> = [
-    { key: 'total', value: all.length, icon: ClipboardList },
-    { key: 'pending', value: all.filter((s) => s.status === 'pending').length, icon: Clock },
-    { key: 'approved', value: all.filter((s) => s.status === 'approved').length, icon: BadgeCheck },
-    { key: 'rejected', value: all.filter((s) => s.status === 'rejected').length, icon: Flag },
+  const stats: Array<{ key: 'total' | 'pending' | 'approved' | 'rejected'; value: number; icon: LucideIcon; tone: Tone }> = [
+    { key: 'total', value: all.length, icon: ClipboardList, tone: 'indigo' },
+    { key: 'pending', value: all.filter((s) => s.status === 'pending').length, icon: Clock, tone: 'amber' },
+    { key: 'approved', value: all.filter((s) => s.status === 'approved').length, icon: BadgeCheck, tone: 'emerald' },
+    { key: 'rejected', value: all.filter((s) => s.status === 'rejected').length, icon: Flag, tone: 'rose' },
   ];
 
   return (
@@ -54,12 +57,16 @@ export default function PatientDashboard() {
           </h2>
           <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat.key} className="rounded-2xl border bg-surface p-4 shadow-card">
-                <dt className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <stat.icon className="size-4" aria-hidden="true" />
+              // The number sits above its label whatever the label's length; dt stays first for screen readers.
+              <div
+                key={stat.key}
+                className="relative flex min-h-20 flex-col-reverse justify-center rounded-2xl border bg-surface py-3 ps-[4.25rem] pe-4 shadow-card"
+              >
+                <dt className="text-sm leading-snug text-muted-foreground">
+                  <IconChip icon={stat.icon} tone={stat.tone} className="absolute start-4 top-1/2 -translate-y-1/2" />
                   {t(`patient:dashboard.stats.${stat.key}`)}
                 </dt>
-                <dd className="mt-1 text-2xl font-semibold tabular-nums">{stat.value}</dd>
+                <dd className="text-2xl leading-tight font-extrabold tabular-nums">{stat.value}</dd>
               </div>
             ))}
           </dl>
@@ -70,12 +77,12 @@ export default function PatientDashboard() {
         <h2 id="analyze-heading" className="text-xl font-extrabold tracking-tight">
           {t('patient:dashboard.analyzeHeading')}
         </h2>
-        <ul role="list" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul role="list" className="grid grid-cols-2 gap-3 lg:grid-cols-5 [&>li:last-child]:col-span-2 lg:[&>li:last-child]:col-span-1">
           {MODULE_IDS.map((id) => {
             const module = ANALYZER_MODULES[id];
             return (
               <li key={id}>
-                <Link to={`/app/analyze/${id}`} className={tileClass}>
+                <Link to={`/app/analyze/${id}`} className={moduleTileClass}>
                   <IconChip icon={module.icon} tone={module.tone} />
                   <span>
                     <span className="block font-semibold">{t(`common:modules.${id}`)}</span>
@@ -133,7 +140,7 @@ export default function PatientDashboard() {
         {scans.isPending ? <ScanListSkeleton /> : null}
         {scans.isError ? <ErrorState error={scans.error} onRetry={() => void scans.refetch()} /> : null}
         {scans.isSuccess && !all.length ? (
-          <p className="rounded-lg border border-dashed bg-surface p-4 text-muted-foreground">{t('patient:history.emptyBody')}</p>
+          <p className="rounded-2xl border border-dashed border-border-strong bg-surface p-5 text-muted-foreground">{t('patient:history.emptyBody')}</p>
         ) : null}
         {all.length ? <ScanList scans={all.slice(0, 5)} hrefFor={(scan) => `/app/scans/${scan.id}`} /> : null}
       </section>

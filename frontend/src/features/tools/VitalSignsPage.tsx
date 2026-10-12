@@ -66,7 +66,7 @@ export default function VitalSignsPage() {
           </h2>
           <div
             role={overall === 'critical' ? 'alert' : 'status'}
-            className="space-y-3 rounded-lg border bg-surface p-4"
+            className="space-y-3 rounded-2xl border bg-surface p-5 shadow-card"
           >
             <SeverityBadge level={STATUS_LEVEL[overall]} label={t(`vitals.status.${overall}`)} />
             <p className="font-medium">{t(`vitals.summary.${overall}`)}</p>
@@ -77,7 +77,7 @@ export default function VitalSignsPage() {
               const range = VITALS.find((v) => v.id === reading.id)!;
               const unit = isolateLtr(t(`vitals.units.${reading.id}`));
               return (
-                <li key={reading.id} className="space-y-2 rounded-lg border bg-surface p-4">
+                <li key={reading.id} className="space-y-2 rounded-2xl border bg-surface p-5 shadow-card">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="font-semibold">{t(`vitals.fields.${reading.id}`)}</span>
                     <SeverityBadge level={STATUS_LEVEL[reading.status]} label={t(`vitals.status.${reading.status}`)} />

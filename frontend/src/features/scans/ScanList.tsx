@@ -64,7 +64,7 @@ export function ScanListSkeleton({ rows = 3 }: { rows?: number }) {
   return (
     <div role="status" aria-label={t('loading')} className="space-y-3">
       {Array.from({ length: rows }, (_, i) => (
-        <div key={i} className="flex items-center gap-4 rounded-lg border bg-surface p-4">
+        <div key={i} className="flex items-center gap-4 rounded-2xl border bg-surface p-4">
           <Skeleton className="size-11" />
           <div className="flex-1 space-y-2">
             <Skeleton className="h-4 w-2/5" />

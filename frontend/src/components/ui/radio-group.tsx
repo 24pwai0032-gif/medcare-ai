@@ -24,7 +24,7 @@ export function RadioCard({
     <label
       htmlFor={id}
       className={cn(
-        'flex min-h-11 cursor-pointer items-center gap-3 rounded-md border bg-surface px-3 py-2.5 hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-secondary',
+        'flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border bg-surface px-4 py-3 shadow-soft transition-colors hover:border-primary/40 hover:bg-accent has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-secondary has-[[data-state=checked]]:ring-1 has-[[data-state=checked]]:ring-primary/30',
         className,
       )}
     >

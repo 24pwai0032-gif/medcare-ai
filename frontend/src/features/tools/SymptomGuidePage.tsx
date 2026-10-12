@@ -58,7 +58,7 @@ export default function SymptomGuidePage() {
             {t('symptoms.resultsHeading')}
           </h2>
           {urgent ? (
-            <div role="alert" className="space-y-3 rounded-lg border border-sev-severe-foreground/40 bg-sev-severe p-4 text-sev-severe-foreground">
+            <div role="alert" className="space-y-3 rounded-2xl border border-sev-severe-foreground/25 bg-sev-severe p-5 text-sev-severe-foreground">
               <p className="flex items-center gap-2 font-semibold">
                 <Siren className="size-5" aria-hidden="true" />
                 {t('symptoms.urgent')}
@@ -70,7 +70,7 @@ export default function SymptomGuidePage() {
             {results.map((symptom) => {
               const conditions = t(`symptoms.items.${symptom.id}.conditions`, { returnObjects: true }) as string[];
               return (
-                <li key={symptom.id} className="space-y-3 rounded-lg border bg-surface p-5">
+                <li key={symptom.id} className="space-y-3 rounded-2xl border bg-surface p-6 shadow-card">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h3 className="text-lg font-semibold">{t(`symptoms.items.${symptom.id}.label`)}</h3>
                     <SeverityBadge level={symptom.severity} />
@@ -103,7 +103,7 @@ export default function SymptomGuidePage() {
               {SYMPTOMS.map((symptom) => (
                 <label
                   key={symptom.id}
-                  className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border bg-surface px-3 py-2 hover:bg-accent has-[:checked]:border-primary has-[:checked]:bg-secondary has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ring"
+                  className="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border bg-surface px-4 py-2.5 shadow-soft transition-colors hover:border-primary/40 hover:bg-accent has-[:checked]:border-primary has-[:checked]:bg-secondary has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ring"
                 >
                   <input
                     type="checkbox"

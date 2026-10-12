@@ -20,7 +20,7 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn('flex flex-col items-center gap-3 rounded-lg border border-dashed bg-surface px-6 py-10 text-center', className)}>
+    <div className={cn('flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border-strong bg-surface px-6 py-12 text-center', className)}>
       <Icon className="size-10 text-muted-foreground" aria-hidden="true" />
       <h2 className="text-lg font-semibold">{title}</h2>
       {description ? <p className="max-w-prose text-sm text-muted-foreground">{description}</p> : null}
@@ -45,7 +45,7 @@ export function ErrorState({
   return (
     <div
       role="alert"
-      className={cn('flex flex-col items-center gap-3 rounded-lg border border-sev-severe-foreground/30 bg-surface px-6 py-10 text-center', className)}
+      className={cn('flex flex-col items-center gap-3 rounded-2xl border border-sev-severe-foreground/30 bg-surface px-6 py-12 text-center', className)}
     >
       <TriangleAlert className="size-10 text-destructive" aria-hidden="true" />
       <h2 className="text-lg font-semibold">{title ?? t('errors.title')}</h2>

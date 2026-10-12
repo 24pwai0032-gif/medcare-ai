@@ -34,6 +34,26 @@ You chose this direction from three options on a design canvas. It builds on the
 - **Urdu:** highlighted Urdu words use solid indigo instead of gradient text, so the tops of tall Nastaliq letters are never clipped.
 - **PDF and browser:** the PDF and the browser theme colour move from teal to indigo.
 
+### Design polish
+
+- **Buttons:**
+  - **Primary:** a clean indigo with a light top edge, a thin inner highlight and a tinted shadow. They lift slightly on hover and press down on click. The diagonal logo gradient stays on large surfaces such as banners, where its cyan end doesn't muddy small buttons.
+  - **Outline and secondary:** light borders that turn indigo on hover.
+  - **Touch targets:** every size keeps 44 px. A larger `xl` size is used for page-level calls to action.
+- **Corners:** one ordered scale of 8, 10, 12, 16, 20 and 24 px. Before, `xl` (18 px) was larger than `2xl` (16 px).
+  - Buttons, inputs and chips use 16 px.
+  - Cards use 20 px.
+  - Banners and dialogs use 24 px.
+- **Inputs and selects:** 48 px tall, with a lighter border that still meets 3:1 contrast and an indigo focus glow.
+- **Tabs:** a segmented pill control.
+- **Cards and containers:** alerts, dialogs, menus, empty states, radio cards and every feature card now share the same radius and soft shadow.
+- **Public pages:**
+  - **Emergency strip:** "Call 1122" and "Call 115" are compact pill buttons, and the strip fits one line on phones.
+  - **Hero:** the emergency hint is an aligned callout instead of a loose icon and line, and both buttons are full width on phones.
+  - **Footer:** the logo and disclaimer sit beside the links, with the copyright on its own row.
+- **Dashboard:** all five analyzers fit one row on wide screens, and the stat numbers line up even when a label wraps.
+- **Upload:** the drop zone has a soft indigo outline and an icon chip.
+
 ### Deployment
 
 - **Backend:**

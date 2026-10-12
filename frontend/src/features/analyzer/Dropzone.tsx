@@ -1,6 +1,7 @@
 import { Camera, ImageUp } from 'lucide-react';
 import { useRef, useState, type DragEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconChip } from '@/components/IconChip';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ACCEPTED_TYPES } from './modules';
@@ -43,11 +44,11 @@ export function Dropzone({ onFile, describedBy }: DropzoneProps) {
       }}
       onDrop={onDrop}
       className={cn(
-        'flex flex-col items-center gap-4 rounded-lg border-2 border-dashed border-input bg-surface px-4 py-8 text-center transition-colors',
+        'flex flex-col items-center gap-4 rounded-2xl border-2 border-dashed border-primary/30 bg-surface px-4 py-10 text-center transition-colors hover:border-primary/60 hover:bg-secondary/40',
         dragging && 'border-primary bg-secondary',
       )}
     >
-      <ImageUp className="size-10 text-muted-foreground" aria-hidden="true" />
+      <IconChip icon={ImageUp} tone="indigo" size="lg" className="size-14 rounded-2xl [&_svg]:size-7" />
       <p className="font-medium" aria-live="polite">
         {dragging ? t('upload.dropActive') : t('upload.drop')}
       </p>

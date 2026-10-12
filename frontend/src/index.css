@@ -17,13 +17,15 @@
   --muted: #eef0fb;
   --muted-foreground: #4a4f72;
   --border: #e3e5f7;
-  --input: #7c81ab;
+  --input: #8b90bd;
+  --border-strong: #d4d7f0;
   --ring: #4f46e5;
   --primary: #4f46e5;
   --primary-hover: #4338ca;
   --primary-foreground: #ffffff;
   --secondary: #eef0ff;
   --secondary-foreground: #3730a3;
+  --secondary-hover: #e2e5ff;
   --accent: #eef0fb;
   --accent-foreground: #12133a;
   --destructive: #be123c;
@@ -70,9 +72,14 @@
   --brand-gradient-deep: linear-gradient(135deg, #312e81 0%, #4338ca 55%, #0e7490 100%);
   --glow-a: rgb(79 70 229 / 0.18);
   --glow-b: rgb(8 145 178 / 0.18);
-  --shadow-card: 0 1px 2px rgb(18 19 58 / 0.04), 0 8px 24px -12px rgb(18 19 58 / 0.12);
+  --shadow-card: 0 1px 2px rgb(18 19 58 / 0.04), 0 6px 16px -8px rgb(18 19 58 / 0.1);
+  /* Primary buttons: one indigo with a light top edge, so they read as pressable, not flat. */
+  --button-gradient: linear-gradient(180deg, #5b54ef 0%, #4f46e5 45%, #4338ca 100%);
+  --shadow-button: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 1px 2px rgb(30 27 100 / 0.25), 0 6px 14px -6px rgb(79 70 229 / 0.55);
+  --shadow-button-hover: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 2px 4px rgb(30 27 100 / 0.25), 0 12px 24px -10px rgb(79 70 229 / 0.65);
+  --shadow-soft: 0 1px 2px rgb(18 19 58 / 0.05);
   --shadow-raised: 0 30px 70px -20px rgb(67 56 202 / 0.35), 0 2px 6px rgb(18 19 58 / 0.06);
-  --radius: 0.75rem;
+  --radius: 0.625rem;
 }
 
 [data-theme="dark"] {
@@ -85,12 +92,14 @@
   --muted-foreground: #aeb3de;
   --border: #272b5e;
   --input: #6b70a8;
+  --border-strong: #343a78;
   --ring: #a5b4fc;
   --primary: #818cf8;
   --primary-hover: #a5b4fc;
   --primary-foreground: #0b0c24;
   --secondary: #23286b;
   --secondary-foreground: #c7d2fe;
+  --secondary-hover: #2c3280;
   --accent: #1d2050;
   --accent-foreground: #eef0ff;
   --destructive: #fb7185;
@@ -134,6 +143,9 @@
   --glow-a: rgb(129 140 248 / 0.2);
   --glow-b: rgb(34 211 238 / 0.14);
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-button: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 18px -8px rgb(99 102 241 / 0.6);
+  --shadow-button-hover: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 2px 4px rgb(0 0 0 / 0.4), 0 12px 24px -10px rgb(99 102 241 / 0.7);
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-raised: 0 30px 70px -20px rgb(0 0 0 / 0.6);
 }
 
@@ -146,12 +158,14 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
+  --color-border-strong: var(--border-strong);
   --color-ring: var(--ring);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-hover: var(--secondary-hover);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
@@ -194,6 +208,9 @@
   --color-tone-cyan-foreground: var(--tone-cyan-foreground);
   --shadow-card: var(--shadow-card);
   --shadow-raised: var(--shadow-raised);
+  --shadow-button: var(--shadow-button);
+  --shadow-button-hover: var(--shadow-button-hover);
+  --shadow-soft: var(--shadow-soft);
 
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-urdu: "Noto Nastaliq Urdu", "Inter Variable", "Jameel Noori Nastaleeq", "Urdu Typesetting", serif;
@@ -204,6 +221,8 @@
   --radius-md: var(--radius);
   --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 10px);
+  --radius-3xl: calc(var(--radius) + 14px);
 }
 
 @layer base {
@@ -288,7 +307,12 @@
   }
 }
 
-/* The logo's indigo-to-cyan gradient, for primary actions and highlight bands. */
+/* The primary button fill (see --button-gradient). */
+@utility bg-button {
+  background-image: var(--button-gradient);
+}
+
+/* The logo's indigo-to-cyan gradient, for highlight bands and banners. */
 @utility bg-brand {
   background-image: var(--brand-gradient);
 }

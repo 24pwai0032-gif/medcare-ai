@@ -51,7 +51,7 @@ export function ReviewForm({ scanId }: { scanId: number }) {
   const errorKey = formState.errors.notes?.message as 'notesRequired' | 'notesLong' | undefined;
 
   return (
-    <section aria-labelledby={headingId} className="space-y-4 rounded-lg border bg-surface p-5">
+    <section aria-labelledby={headingId} className="space-y-4 rounded-2xl border bg-surface p-6 shadow-card">
       <div className="space-y-1">
         <h2 id={headingId} className="text-lg font-semibold">
           {t('review.heading')}

@@ -1,7 +1,7 @@
 import { Label } from '@/components/ui/label';
 
 const selectClass =
-  'h-11 w-full rounded-md border border-input bg-surface px-3 text-base text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring';
+  'h-12 w-full cursor-pointer rounded-xl border border-input bg-surface px-3.5 text-base text-foreground shadow-soft transition-[border-color,box-shadow] hover:border-primary/60 focus-visible:border-primary focus-visible:ring-4 focus-visible:ring-ring/20 focus-visible:outline-none';
 
 interface FilterSelectProps {
   id: string;

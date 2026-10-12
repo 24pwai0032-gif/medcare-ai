@@ -54,10 +54,10 @@ export function AnalyzingStep({ state, moduleId, file, onCancel }: { state: Busy
       </h1>
 
       {preview ? (
-        <img src={preview} alt={t('previewAlt')} className="mx-auto max-h-56 rounded-md border object-contain" />
+        <img src={preview} alt={t('previewAlt')} className="mx-auto max-h-56 rounded-xl border object-contain" />
       ) : null}
 
-      <div className="space-y-4 rounded-lg border bg-surface p-5">
+      <div className="space-y-4 rounded-2xl border bg-surface p-6 shadow-card">
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-sm font-medium">
             {analyzing ? <CircleCheck className="size-4 text-primary" aria-hidden="true" /> : <Spinner className="size-4" />}

@@ -33,7 +33,7 @@ export default function EmergencyDetailPage() {
         <emergency.icon className="size-8 shrink-0 text-destructive" aria-hidden="true" />
         {t(`items.${emergency.id}.title`)}
       </h1>
-      <section className="space-y-3 rounded-lg border border-sev-severe-foreground/40 bg-sev-severe p-4 text-sev-severe-foreground">
+      <section className="space-y-3 rounded-2xl border border-sev-severe-foreground/25 bg-sev-severe p-5 text-sev-severe-foreground">
         <p className="font-semibold">{t('callFirst')}</p>
         <EmergencyCallButtons />
       </section>
@@ -53,7 +53,7 @@ export default function EmergencyDetailPage() {
         </h2>
         <ol role="list" className="space-y-3">
           {steps.map((step, index) => (
-            <li key={step} className="flex items-start gap-3 rounded-lg border bg-surface p-4">
+            <li key={step} className="flex items-start gap-3 rounded-2xl border bg-surface p-5 shadow-card">
               <span className="grid size-8 shrink-0 place-items-center rounded-full bg-destructive font-bold text-destructive-foreground tabular-nums" aria-hidden="true">
                 {index + 1}
               </span>

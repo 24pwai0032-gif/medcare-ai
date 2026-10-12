@@ -70,7 +70,7 @@ export function UploadStep(props: UploadStepProps) {
         {file && preview ? (
           <Card>
             <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <img src={preview} alt={t('analyzer:upload.previewAlt')} className="max-h-64 w-full rounded-md border object-contain sm:w-56" />
+              <img src={preview} alt={t('analyzer:upload.previewAlt')} className="max-h-64 w-full rounded-xl border object-contain sm:w-56" />
               <div className="min-w-0 flex-1 space-y-3">
                 <p className="text-sm break-all" dir="auto">
                   {t('analyzer:upload.fileInfo', { name: file.name, size: fmt.fileSize(file.size) })}
@@ -104,7 +104,7 @@ export function UploadStep(props: UploadStepProps) {
         </div>
       </section>
 
-      <section aria-labelledby="tips-heading" className="rounded-lg border bg-surface p-4">
+      <section aria-labelledby="tips-heading" className="rounded-2xl border bg-surface p-5 shadow-card">
         <h2 id="tips-heading" className="mb-2 flex items-center gap-2 text-base font-semibold">
           <Lightbulb className="size-5 text-primary" aria-hidden="true" />
           {t('analyzer:upload.tipsHeading')}

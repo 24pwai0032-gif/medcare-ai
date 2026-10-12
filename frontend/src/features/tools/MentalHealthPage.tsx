@@ -52,7 +52,7 @@ export default function MentalHealthPage() {
             {t('tools:phq9.resultsHeading')}
           </h2>
           {result.crisis ? <CrisisPanel /> : null}
-          <div className="space-y-3 rounded-lg border bg-surface p-5">
+          <div className="space-y-3 rounded-2xl border bg-surface p-6 shadow-card">
             <div className="flex flex-wrap items-center gap-3">
               <SeverityBadge level={BAND_LEVEL[result.band]} label={t(`tools:phq9.bands.${result.band}.label`)} srPrefix={t('tools:phq9.band')} />
               <span className="font-semibold tabular-nums">{t('tools:phq9.score', { score: result.total })}</span>
@@ -108,7 +108,7 @@ export default function MentalHealthPage() {
         {items.map((item, index) => {
           const legendId = `phq-q${index}-legend`;
           return (
-            <fieldset key={index} className="space-y-3 rounded-lg border bg-surface p-4">
+            <fieldset key={index} className="space-y-3 rounded-2xl border bg-surface p-5 shadow-card">
               {/* Floated so the legend sits inside the card instead of on its border. */}
               <legend id={legendId} className="float-start w-full">
                 <span className="block text-sm text-muted-foreground">{t('tools:phq9.questionLabel', { number: index + 1 })}</span>

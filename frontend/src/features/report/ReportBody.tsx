@@ -37,7 +37,7 @@ function BlockView({ block }: { block: Block }) {
     );
   }
   return (
-    <div className="overflow-x-auto rounded-md border">
+    <div className="overflow-x-auto rounded-xl border">
       <table className="w-full min-w-max border-collapse text-sm">
         <thead className="bg-muted">
           <tr>

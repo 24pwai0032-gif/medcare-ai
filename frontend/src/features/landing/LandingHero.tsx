@@ -10,14 +10,14 @@ export const container = 'mx-auto w-full max-w-6xl px-4 sm:px-6';
 export function SignUpButtons() {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-wrap gap-3">
-      <Button asChild size="lg" className="h-13 rounded-xl px-6 text-base">
+    <div className="grid gap-3 sm:flex sm:flex-wrap">
+      <Button asChild size="xl">
         <Link to="/register">
           <UserPlus aria-hidden="true" />
           {t('actions.getStarted')}
         </Link>
       </Button>
-      <Button asChild size="lg" variant="outline" className="h-13 rounded-xl px-6 text-base">
+      <Button asChild size="xl" variant="outline">
         <Link to="/login">{t('actions.signIn')}</Link>
       </Button>
     </div>
@@ -71,9 +71,9 @@ function ReportPreview() {
             {t('common:status.pending')}
           </span>
         </div>
-        <div className="flex gap-5 border-b text-sm">
-          <span className="border-b-2 border-primary pb-2 font-bold">{t('landing:preview.tabEnglish')}</span>
-          <span className="pb-2 font-semibold text-muted-foreground">{t('landing:preview.tabUrdu')}</span>
+        <div className="inline-flex gap-1 rounded-xl bg-muted p-1 text-sm">
+          <span className="rounded-lg bg-surface px-3 py-1.5 font-bold shadow-card">{t('landing:preview.tabEnglish')}</span>
+          <span className="px-3 py-1.5 font-semibold text-muted-foreground">{t('landing:preview.tabUrdu')}</span>
         </div>
         <div className="space-y-1.5">
           <p className="text-xs font-bold tracking-wider text-primary uppercase">{t('landing:preview.findings')}</p>
@@ -83,7 +83,7 @@ function ReportPreview() {
             </p>
           ))}
         </div>
-        <span className="inline-flex min-h-10 items-center gap-2 rounded-lg border px-3.5 text-sm font-semibold">
+        <span className="inline-flex min-h-10 items-center gap-2 rounded-xl border px-3.5 text-sm font-semibold">
           <FileDown className="size-4" aria-hidden="true" />
           {t('landing:preview.pdf')}
         </span>
@@ -127,16 +127,17 @@ export function Hero() {
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground">{t('landing:hero.body')}</p>
           <SignUpButtons />
-          <p className="flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
-            <Siren className="size-4 shrink-0 text-destructive" aria-hidden="true" />
-            <span>{t('landing:hero.emergency')}</span>
-            <Link
-              to="/emergency"
-              className="inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-2 hover:no-underline"
-            >
-              {t('landing:hero.emergencyLink')}
-            </Link>
-          </p>
+          <div className="flex max-w-xl items-center gap-3 rounded-2xl border border-sev-severe-foreground/15 bg-sev-severe/60 p-3 text-sm text-sev-severe-foreground">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-surface shadow-soft">
+              <Siren className="size-5" aria-hidden="true" />
+            </span>
+            <p>
+              {t('landing:hero.emergency')}{' '}
+              <Link to="/emergency" className="font-bold underline underline-offset-2 hover:no-underline">
+                {t('landing:hero.emergencyLink')}
+              </Link>
+            </p>
+          </div>
         </div>
         <ReportPreview />
       </div>

@@ -21,7 +21,7 @@ export function HelplineList() {
   return (
     <ul role="list" className="grid gap-3 sm:grid-cols-3">
       {HELPLINES.map((line) => (
-        <li key={line.id} className="rounded-md border border-current/30 bg-surface p-3 text-foreground">
+        <li key={line.id} className="rounded-xl border border-current/25 bg-surface p-4 text-foreground">
           <p className="font-semibold">{t(`helplines.${line.id}.name`)}</p>
           <p className="text-sm text-muted-foreground">{t(`helplines.${line.id}.hours`)}</p>
           <a
@@ -46,7 +46,7 @@ export function CrisisPanel() {
     <section
       role="alert"
       aria-labelledby={headingId}
-      className="space-y-3 rounded-lg border-2 border-sev-severe-foreground/60 bg-sev-severe p-4 text-sev-severe-foreground"
+      className="space-y-3 rounded-2xl border-2 border-sev-severe-foreground/50 bg-sev-severe p-4 text-sev-severe-foreground"
     >
       <h3 id={headingId} className="flex items-start gap-2 text-lg font-semibold">
         <LifeBuoy className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
