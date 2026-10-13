@@ -1,0 +1,113 @@
+{
+  "modules": {
+    "xray": {
+      "title": "X-ray and scan analysis",
+      "description": "Upload a clear photo of a chest X-ray or another scan. The AI describes what it sees and drafts a report. The AI can miss things or be wrong.",
+      "reading": "The AI is reading your X-ray…",
+      "tips": [
+        "Photograph the film against a bright, even light, such as a window or a white screen.",
+        "Fill the frame with the scan and hold the phone parallel to it.",
+        "Avoid glare, shadows and reflections.",
+        "Check that the image is sharp before you upload it."
+      ]
+    },
+    "bone": {
+      "title": "Bone X-ray analysis",
+      "description": "Upload an X-ray of a bone or joint. The AI describes what it sees, such as a possible fracture, and drafts a report. The AI can miss things or be wrong.",
+      "reading": "The AI is reading your bone X-ray…",
+      "tips": [
+        "Photograph the film against a bright, even light.",
+        "Include the whole bone or joint in the picture.",
+        "Avoid glare, shadows and reflections."
+      ]
+    },
+    "ecg": {
+      "title": "ECG analysis",
+      "description": "Upload a photo or scan of an ECG printout. The AI describes the rhythm and waves it can read and drafts a report. The AI can miss things or be wrong.",
+      "reading": "The AI is reading your ECG…",
+      "tips": [
+        "Lay the printout flat and photograph it straight on.",
+        "Include every lead and the grid; don't crop the edges.",
+        "Use even light with no shadows across the paper."
+      ]
+    },
+    "blood": {
+      "title": "Blood test report",
+      "description": "Upload a photo of your lab report. The AI reads the values and points out the ones outside the reference range. It can misread values, so check them against the original report.",
+      "reading": "The AI is reading your lab report…",
+      "tips": [
+        "Photograph one page at a time.",
+        "Make sure every value and its reference range is readable.",
+        "Avoid folds and shadows across the table."
+      ]
+    },
+    "prescription": {
+      "title": "Prescription reader",
+      "description": "Upload a photo of a printed or handwritten prescription. The AI tries to read the medicines and doses. Handwriting is often misread, so always confirm with your doctor or pharmacist.",
+      "reading": "The AI is reading your prescription…",
+      "tips": [
+        "Photograph the whole prescription in good light.",
+        "Hold the phone steady so the handwriting is sharp.",
+        "Keep your fingers and other papers out of the picture."
+      ]
+    }
+  },
+  "subtypes": {
+    "label": "Type of scan",
+    "chest": {
+      "label": "Chest X-ray",
+      "description": "Read with the chest X-ray instructions."
+    },
+    "mri": {
+      "label": "MRI",
+      "description": "Read with the general X-ray instructions, so the report may not suit an MRI well."
+    },
+    "ct": {
+      "label": "CT scan",
+      "description": "Read with the general X-ray instructions, so the report may not suit a CT scan well."
+    },
+    "bone": {
+      "label": "Bone X-ray",
+      "description": "Read with the bone X-ray instructions."
+    }
+  },
+  "upload": {
+    "heading": "Upload an image",
+    "drop": "Drag and drop an image here, or choose one.",
+    "dropActive": "Drop the image to add it",
+    "choose": "Choose an image",
+    "camera": "Take a photo",
+    "requirements": "JPEG, PNG or WebP, up to 10 MB.",
+    "privacy": "To create the report, your image is sent to Google's Gemini AI service. It isn't stored in your browser.",
+    "change": "Choose a different image",
+    "remove": "Remove image",
+    "previewAlt": "Preview of the selected image",
+    "fileInfo": "{{name}} · {{size}}",
+    "tipsHeading": "For a readable image",
+    "analyze": "Analyze image",
+    "errors": {
+      "type": "This file type isn't supported. Choose a JPEG, PNG or WebP image.",
+      "size": "This image is {{size}}. Choose an image under 10 MB.",
+      "empty": "This file is empty. Choose another image."
+    },
+    "cancelledDuringUpload": "Upload cancelled. The image wasn't analyzed.",
+    "cancelledAfterUpload": "You stopped waiting. The analysis may still finish and appear in your scan history."
+  },
+  "analyzing": {
+    "heading": "Analyzing your image",
+    "uploading": "Uploading… {{percent}}",
+    "uploadLabel": "Upload progress",
+    "uploaded": "Upload complete",
+    "writing": "The AI is writing the report…",
+    "slow": "Still working. This can take up to 2 minutes when the service has been idle.",
+    "coldStart": "The first analysis after a quiet period can take up to 2 minutes. Keep this page open.",
+    "elapsed": "Time elapsed: {{time}}",
+    "cancel": "Cancel",
+    "previewAlt": "The image being analyzed"
+  },
+  "failed": {
+    "heading": "The analysis didn't finish",
+    "timeoutNote": "The analysis may still finish on the server. Check your scan history in a few minutes before you try again."
+  },
+  "notFound": "This type of analysis doesn't exist."
+}

@@ -1,0 +1,52 @@
+{
+  "dashboard": {
+    "greeting": "Hello, {{name}}",
+    "subtitle": "Upload a scan for an AI report, or open one of your reports.",
+    "statsLabel": "Your reports",
+    "stats": {
+      "total": "Reports",
+      "pending": "Waiting for review",
+      "approved": "Approved",
+      "rejected": "Flagged"
+    },
+    "analyzeHeading": "Analyze a new image",
+    "toolsHeading": "Health tools",
+    "recentHeading": "Recent reports",
+    "viewAll": "View all reports",
+    "emergencyHeading": "In an emergency",
+    "emergencyBody": "Call for help first, then use the first aid guide.",
+    "firstAidGuide": "Open the first aid guide"
+  },
+  "modules": {
+    "xray": "Chest X-rays and other scans",
+    "bone": "Bones and joints",
+    "ecg": "ECG printouts",
+    "blood": "Lab reports",
+    "prescription": "Printed or handwritten prescriptions",
+    "diagnosis": "Information on 10 common symptoms. Not AI and not a diagnosis.",
+    "mentalHealth": "The PHQ-9 questionnaire for symptoms of depression.",
+    "vitals": "Compare your readings with usual ranges. Nothing is saved."
+  },
+  "history": {
+    "title": "My scans",
+    "description": "Every AI report on your account, newest first.",
+    "filters": "Filter reports",
+    "filterStatus": "Review status",
+    "filterType": "Scan type",
+    "all": "All",
+    "allTypes": "All types",
+    "count_one": "{{count}} report",
+    "count_other": "{{count}} reports",
+    "empty": "No reports yet",
+    "emptyBody": "Upload an X-ray, ECG, lab report or prescription to get your first AI report.",
+    "noMatches": "No reports match these filters.",
+    "clearFilters": "Clear filters",
+    "start": "Analyze an image",
+    "loadError": "Your reports couldn't be loaded."
+  },
+  "detail": {
+    "back": "Back to my scans",
+    "notFound": "Report not found",
+    "notFoundBody": "This report doesn't exist or belongs to another account."
+  }
+}

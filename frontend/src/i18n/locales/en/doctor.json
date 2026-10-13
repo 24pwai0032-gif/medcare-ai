@@ -1,0 +1,52 @@
+{
+  "queue": {
+    "title": "Review queue",
+    "description": "AI reports waiting for a doctor's review.",
+    "count_one": "{{count}} report waiting",
+    "count_other": "{{count}} reports waiting",
+    "sort": "Sort",
+    "oldest": "Oldest first",
+    "newest": "Newest first",
+    "severity": "Highest severity first",
+    "empty": "No reports are waiting for review",
+    "emptyBody": "New AI reports appear here when patients upload scans.",
+    "loadError": "The review queue couldn't be loaded."
+  },
+  "all": {
+    "title": "All scans",
+    "description": "Every AI report on MedCare AI, newest first.",
+    "filters": "Filter scans",
+    "status": "Review status",
+    "type": "Scan type",
+    "search": "Patient name or email",
+    "all": "All",
+    "allTypes": "All types",
+    "count_one": "{{count}} scan",
+    "count_other": "{{count}} scans",
+    "noMatches": "No scans match these filters.",
+    "clear": "Clear filters",
+    "empty": "No scans yet",
+    "loadError": "Scans couldn't be loaded."
+  },
+  "review": {
+    "back": "Back to the review queue",
+    "backAll": "Back to all scans",
+    "heading": "Your review",
+    "intro": "The patient sees your decision and your notes.",
+    "notes": "Notes for the patient",
+    "notesHint": "Required when you flag a report. Write in English or Urdu.",
+    "notesRequired": "Add notes so the patient knows what to do next.",
+    "notesLong": "Keep notes under 2,000 characters.",
+    "approve": "Approve report",
+    "flag": "Flag for attention",
+    "confirmApproveTitle": "Approve this report?",
+    "confirmFlagTitle": "Flag this report?",
+    "confirmDescription": "The patient will see this decision and your notes.",
+    "approved": "Report approved.",
+    "flagged": "Report flagged.",
+    "failed": "The review couldn't be saved. Try again.",
+    "alreadyReviewed": "This report has already been reviewed.",
+    "notFound": "Scan not found",
+    "notFoundBody": "This scan doesn't exist or was removed."
+  }
+}

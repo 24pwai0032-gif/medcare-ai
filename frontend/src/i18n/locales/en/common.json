@@ -1,0 +1,145 @@
+{
+  "brand": "MedCare AI",
+  "skipToContent": "Skip to main content",
+  "loading": "Loading…",
+  "actions": {
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "close": "Close",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "getStarted": "Create an account",
+    "goHome": "Go to the home page",
+    "reload": "Reload the page",
+    "openDashboard": "Open your dashboard"
+  },
+  "language": {
+    "switchTo": "Change language",
+    "en": "English",
+    "ur": "اردو"
+  },
+  "theme": {
+    "toDark": "Switch to dark theme",
+    "toLight": "Switch to light theme"
+  },
+  "nav": {
+    "main": "Main",
+    "home": "Home",
+    "scans": "My scans",
+    "analyze": "Analyze",
+    "tools": "Health tools",
+    "emergency": "Emergency",
+    "queue": "Review queue",
+    "allScans": "All scans",
+    "about": "About",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "footer": "Footer"
+  },
+  "roles": {
+    "patient": "Patient",
+    "doctor": "Doctor"
+  },
+  "modules": {
+    "xray": "X-ray and scans",
+    "bone": "Bone X-ray",
+    "ecg": "ECG",
+    "blood": "Blood test",
+    "prescription": "Prescription",
+    "skin": "Skin",
+    "diagnosis": "Symptom guide",
+    "mentalHealth": "Depression screening",
+    "vitals": "Vital signs"
+  },
+  "severity": {
+    "label": "Severity",
+    "normal": "Normal",
+    "mild": "Mild",
+    "moderate": "Moderate",
+    "severe": "Severe",
+    "critical": "Critical",
+    "unknown": "Not stated"
+  },
+  "status": {
+    "label": "Doctor review",
+    "pending": "Review pending",
+    "approved": "Approved",
+    "rejected": "Flagged"
+  },
+  "disclaimer": {
+    "label": "Medical disclaimer",
+    "notDiagnosis": "AI output is informational, not a diagnosis.",
+    "doctorReview": "A doctor must review it before you act on it.",
+    "emergency": "In an emergency, call <rescue>1122</rescue> or <edhi>115</edhi>."
+  },
+  "emergencyNumbers": {
+    "callRescue": "Call 1122",
+    "callEdhi": "Call 115",
+    "rescueService": "Rescue service",
+    "edhiService": "Edhi ambulance"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "network": "We couldn't get a response from the server. It may be starting up or having a problem, so wait a moment and try again. If it keeps happening, check your internet connection.",
+    "timeout": "The server took too long to respond. Try again in a moment.",
+    "aborted": "The request was cancelled.",
+    "invalidCredentials": "The email or password is incorrect.",
+    "emailTaken": "An account with this email already exists. Sign in instead.",
+    "pmdcRequired": "Doctors must enter a PMDC number.",
+    "invalidInput": "Some details aren't valid. Check the form and try again.",
+    "sessionExpired": "Your session has ended. Sign in again.",
+    "forbidden": "You don't have access to this page.",
+    "notFound": "We couldn't find what you were looking for.",
+    "rateLimited": "Too many requests. Wait a minute and try again.",
+    "server": "Something went wrong on the server. Try again later.",
+    "invalidFile": "This file can't be analyzed. Upload a JPEG, PNG or WebP image.",
+    "emptyFile": "This file is empty. Choose another image.",
+    "fileTooLarge": "The image is too large. Choose an image under 10 MB.",
+    "aiUnavailable": "The AI service is busy or unavailable. Try again in a few minutes.",
+    "unknown": "Something went wrong. Try again."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you were looking for doesn't exist or has moved."
+  },
+  "routeError": {
+    "title": "Something went wrong",
+    "description": "This page couldn't load. Reload the page to try again."
+  },
+  "account": {
+    "menu": "Account menu",
+    "signedInAs": "Signed in as {{name}}"
+  },
+  "footer": {
+    "copyright": "© {{year}} MedCare AI",
+    "notMedicalAdvice": "MedCare AI gives informational AI reports. It is not a substitute for a doctor."
+  },
+  "emergencyStrip": {
+    "question": "Medical emergency?",
+    "guide": "First aid guide"
+  },
+  "toasts": {
+    "region": "Notifications",
+    "close": "Close notification"
+  },
+  "reportTitles": {
+    "xray": "X-ray report",
+    "bone": "Bone X-ray report",
+    "ecg": "ECG report",
+    "blood": "Blood test report",
+    "prescription": "Prescription report",
+    "skin": "Skin report",
+    "unknown": "AI report"
+  },
+  "scanTypes": {
+    "xray": "X-ray",
+    "bone": "Bone X-ray",
+    "ecg": "ECG",
+    "blood": "Blood test",
+    "prescription": "Prescription",
+    "skin": "Skin",
+    "unknown": "Scan"
+  }
+}

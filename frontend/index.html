@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script>
+      // Apply the saved theme and language before the first paint (no flash of the wrong theme or direction).
+      (function () {
+        var root = document.documentElement;
+        try {
+          var theme = localStorage.getItem('medcare_theme');
+          var dark = theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          root.setAttribute('data-theme', dark ? 'dark' : 'light');
+          if (localStorage.getItem('medcare_lang') === 'ur') {
+            root.lang = 'ur';
+            root.dir = 'rtl';
+          }
+        } catch (e) {
+          root.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#4f46e5" />
+    <meta
+      name="description"
+      content="Informational AI reports on X-rays, ECGs, blood tests and prescriptions, in English and Urdu, with a first aid guide. Not a diagnosis."
+    />
+    <meta property="og:title" content="MedCare AI" />
+    <meta
+      property="og:description"
+      content="Informational AI reports on medical images, in English and Urdu. Not a diagnosis. In an emergency, call 1122 or 115."
+    />
+    <title>MedCare AI</title>
+  </head>
+  <body>
+    <noscript>
+      <p>MedCare AI needs JavaScript. In an emergency, call 1122 (Rescue) or 115 (Edhi ambulance).</p>
+      <p lang="ur" dir="rtl">MedCare AI کے لیے JavaScript ضروری ہے۔ ایمرجنسی میں 1122 (ریسکیو) یا 115 (ایدھی ایمبولینس) پر کال کریں۔</p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

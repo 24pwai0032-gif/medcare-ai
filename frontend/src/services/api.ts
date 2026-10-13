@@ -1,194 +1,184 @@
-// src/services/api.ts
+import { API_BASE_URL } from '@/config';
+import { ApiError, errorCodeFor, type ApiContext } from './errors';
+import { sessionStore } from './session';
+import type {
+  AnalyzeEndpoint,
+  AnalyzeResponse,
+  AuthResponse,
+  LoginBody,
+  RegisterBody,
+  ReviewResponse,
+  Scan,
+  User,
+} from './types';
 
-// ── Types ────────────────────────────────
+/** Long enough for a sleeping free-tier backend (Render) to wake up, which can take about a minute. */
+const DEFAULT_TIMEOUT_MS = 75_000;
+/** The backend can retry Gemini three times at 60 s each, on top of a Cloud Run cold start. */
+export const ANALYZE_TIMEOUT_MS = 180_000;
 
-export interface User {
-  id: number;
-  full_name: string;
-  email: string;
-  role: 'patient' | 'doctor';
-  created_at: string;
+let unauthorizedHandler: (() => void) | null = null;
+
+/** AuthProvider registers this; any 401 on an authenticated call ends the session. */
+export function setUnauthorizedHandler(handler: (() => void) | null) {
+  unauthorizedHandler = handler;
 }
 
-export interface Scan {
-  id: number;
-  user_id: number;
-  scan_type: string;
-  filename: string;
-  report: string;
-  severity: string;
-  confidence: number;
-  time_seconds: number;
-  status: 'pending' | 'approved' | 'rejected';
-  doctor_notes?: string;
-  patient_name?: string;
-  patient_email?: string;
-  created_at: string;
+interface RequestOptions {
+  method?: 'GET' | 'POST' | 'PUT';
+  body?: unknown;
+  auth?: boolean;
+  context?: ApiContext;
+  timeoutMs?: number;
+  signal?: AbortSignal;
 }
 
-export interface LoginData {
-  email: string;
-  password: string;
+async function readDetail(res: Response): Promise<unknown> {
+  try {
+    const data: unknown = await res.json();
+    return data && typeof data === 'object' && 'detail' in data ? (data as { detail: unknown }).detail : data;
+  } catch {
+    return undefined;
+  }
 }
 
-export interface RegisterData {
-  full_name: string;
-  email: string;
-  password: string;
-  role: 'patient' | 'doctor';
-  pmdc?: string;
+function fail(context: ApiContext, status: number, detail: unknown, authenticated: boolean): never {
+  if (status === 401 && authenticated && context !== 'login') unauthorizedHandler?.();
+  throw new ApiError(errorCodeFor(context, status, detail), status, detail);
 }
 
-export interface ScanResult {
-  report: string;
-  urdu_report?: string;
-  severity: string;
-  confidence: number;
-  time: number;
-}
-
-// GCP Backend URL
-const BASE_URL = process.env.REACT_APP_API_URL || 'https://medcare-backend-338080619950.us-central1.run.app/api/v1';
-
-// Fetch with timeout
-const fetchWithTimeout = async (url: string, options: RequestInit, timeoutMs = 10000) => {
+export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const { method = 'GET', body, auth = true, context = 'default', timeoutMs = DEFAULT_TIMEOUT_MS, signal } = options;
   const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
+  let timedOut = false;
+  const timer = setTimeout(() => {
+    timedOut = true;
+    controller.abort();
+  }, timeoutMs);
+  const forwardAbort = () => controller.abort();
+  signal?.addEventListener('abort', forwardAbort, { once: true });
+
+  const headers: Record<string, string> = { Accept: 'application/json' };
+  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  const token = auth ? sessionStore.getToken() : null;
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  let res: Response;
   try {
-    const res = await fetch(url, { ...options, signal: controller.signal });
-    return res;
-  } catch (err: any) {
-    if (err.name === 'AbortError') throw new Error('Request timed out. Is the server running?');
-    throw err;
+    res = await fetch(`${API_BASE_URL}${path}`, {
+      method,
+      headers,
+      body: body === undefined ? undefined : JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (timedOut) throw new ApiError('timeout');
+    if (signal?.aborted) throw new ApiError('aborted');
+    throw new ApiError('network', 0, error);
   } finally {
-    clearTimeout(id);
+    clearTimeout(timer);
+    signal?.removeEventListener('abort', forwardAbort);
   }
-};
 
-// ── Token Management ──────────────────────
-
-export const saveToken  = (token: string) => localStorage.setItem('medcare_token', token);
-export const getToken   = ()              => localStorage.getItem('medcare_token') || '';
-export const removeToken= ()              => localStorage.removeItem('medcare_token');
-export const saveUser   = (user: any)     => localStorage.setItem('medcare_user', JSON.stringify(user));
-export const getUser    = ()              => { try { const u = localStorage.getItem('medcare_user'); return u ? JSON.parse(u) : null; } catch { return null; } };
-export const removeUser = ()              => localStorage.removeItem('medcare_user');
-export const isLoggedIn = ()              => !!getToken();
-export const logout     = ()              => { removeToken(); removeUser(); };
-
-// ── Auth helper ───────────────────────────
-
-const authHeaders = () => ({
-  'Authorization': `Bearer ${getToken()}`,
-  'Content-Type': 'application/json',
-});
-
-// ── Auth API ──────────────────────────────
-
-export const registerUser = async (data: RegisterData) => {
+  if (!res.ok) fail(context, res.status, await readDetail(res), auth);
+  if (res.status === 204) return undefined as T;
   try {
-    const res = await fetchWithTimeout(`${BASE_URL}/users/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (res.status === 400) { const e = await res.json(); throw new Error(e.detail || 'Registration failed!'); }
-    if (!res.ok) throw new Error('Registration failed!');
-    return res.json();
-  } catch (err: any) {
-    if (err.name === 'AbortError') throw new Error('Request timed out.');
-    throw err;
+    return (await res.json()) as T;
+  } catch (error) {
+    throw new ApiError('server', res.status, error);
   }
+}
+
+/** GET /users/scans may return an array or `{ scans: [...] }`. */
+export function normalizeScans(data: unknown): Scan[] {
+  const list = Array.isArray(data)
+    ? data
+    : data && typeof data === 'object' && Array.isArray((data as { scans?: unknown }).scans)
+      ? (data as { scans: unknown[] }).scans
+      : [];
+  return list.filter((s): s is Scan => !!s && typeof s === 'object' && typeof (s as Scan).id === 'number');
+}
+
+export const api = {
+  login: (body: LoginBody) =>
+    request<AuthResponse>('/users/login', { method: 'POST', body, auth: false, context: 'login' }),
+  register: (body: RegisterBody) =>
+    request<AuthResponse>('/users/register', { method: 'POST', body, auth: false, context: 'register' }),
+  me: () => request<User>('/users/me'),
+  myScans: async () => normalizeScans(await request<unknown>('/users/scans')),
+  pendingScans: async () => normalizeScans(await request<unknown>('/users/doctor/pending-scans')),
+  allScans: async () => normalizeScans(await request<unknown>('/users/doctor/all-scans')),
+  approveScan: (id: number, doctorNotes: string) =>
+    request<ReviewResponse>(`/users/doctor/approve-scan/${id}`, { method: 'PUT', body: { doctor_notes: doctorNotes } }),
+  rejectScan: (id: number, doctorNotes: string) =>
+    request<ReviewResponse>(`/users/doctor/reject-scan/${id}`, { method: 'PUT', body: { doctor_notes: doctorNotes } }),
 };
 
-export const loginUser = async (data: LoginData) => {
-  try {
-    const res = await fetchWithTimeout(`${BASE_URL}/users/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    if (res.status === 401) throw new Error('Galat email ya password!');
-    if (res.status === 404) throw new Error('Account nahi mila!');
-    if (!res.ok) throw new Error('Login failed. Dobara try karo!');
-    return res.json();
-  } catch (err: any) {
-    if (err.name === 'AbortError') throw new Error('Server respond nahi kar raha!');
-    throw err;
-  }
-};
+export interface UploadOptions {
+  /** 0..1 while the file is being sent. */
+  onUploadProgress?: (fraction: number) => void;
+  /** The file has fully reached the server; the AI is now working. */
+  onUploaded?: () => void;
+  signal?: AbortSignal;
+  timeoutMs?: number;
+}
 
-export const getProfile = async () => {
-  const res = await fetch(`${BASE_URL}/users/me`, {
-    headers: { 'Authorization': `Bearer ${getToken()}` },
+/** Multipart upload through XHR, because fetch can't report upload progress. */
+export function uploadForAnalysis(endpoint: AnalyzeEndpoint, file: File, options: UploadOptions = {}) {
+  const { onUploadProgress, onUploaded, signal, timeoutMs = ANALYZE_TIMEOUT_MS } = options;
+  return new Promise<AnalyzeResponse>((resolve, reject) => {
+    if (signal?.aborted) {
+      reject(new ApiError('aborted'));
+      return;
+    }
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${API_BASE_URL}/analyze/${endpoint}`);
+    xhr.timeout = timeoutMs;
+    xhr.setRequestHeader('Accept', 'application/json');
+    const token = sessionStore.getToken();
+    if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable && event.total > 0) onUploadProgress?.(event.loaded / event.total);
+    };
+    xhr.upload.onload = () => {
+      onUploadProgress?.(1);
+      onUploaded?.();
+    };
+    xhr.onload = () => {
+      let data: unknown;
+      try {
+        data = xhr.responseText ? JSON.parse(xhr.responseText) : undefined;
+      } catch {
+        data = undefined;
+      }
+      if (xhr.status >= 200 && xhr.status < 300 && data && typeof data === 'object') {
+        resolve(data as AnalyzeResponse);
+        return;
+      }
+      const detail = data && typeof data === 'object' && 'detail' in data ? (data as { detail: unknown }).detail : data;
+      if (xhr.status === 401) unauthorizedHandler?.();
+      reject(new ApiError(errorCodeFor('analyze', xhr.status, detail), xhr.status, detail));
+    };
+    xhr.onerror = () => reject(new ApiError('network'));
+    xhr.ontimeout = () => reject(new ApiError('timeout'));
+    xhr.onabort = () => reject(new ApiError('aborted'));
+    signal?.addEventListener('abort', () => xhr.abort(), { once: true });
+
+    const form = new FormData();
+    form.append('file', file, file.name);
+    xhr.send(form);
   });
-  if (!res.ok) throw new Error('Failed to get profile');
-  return res.json();
-};
+}
 
-// ── Scan API ──────────────────────────────
+let warmUpSent = false;
 
-export const analyzeScan = async (scanType: string, file: File) => {
-  const formData = new FormData();
-  formData.append('file', file);
-  const res = await fetchWithTimeout(
-    `${BASE_URL}/analyze/${scanType}`,
-    { method: 'POST', headers: { 'Authorization': `Bearer ${getToken()}` }, body: formData },
-    120000
-  );
-  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Analysis failed'); }
-  return res.json();
-};
-
-// ✅ Patient scan history
-export const getMyScans = async () => {
-  const res = await fetch(`${BASE_URL}/users/scans`, {
-    headers: { 'Authorization': `Bearer ${getToken()}` },
+/** Wakes a sleeping Cloud Run instance. GET / is cheap; /health calls Gemini, so it isn't used. */
+export function warmUpBackend() {
+  if (warmUpSent) return;
+  warmUpSent = true;
+  const origin = new URL(API_BASE_URL).origin;
+  fetch(`${origin}/`, { cache: 'no-store' }).catch(() => {
+    warmUpSent = false;
   });
-  if (!res.ok) throw new Error('Failed to get scans');
-  const data = await res.json();
-  return Array.isArray(data) ? data : data.scans || [];
-};
-
-// ── Doctor API ────────────────────────────
-
-export const getPendingScans = async () => {
-  const res = await fetch(`${BASE_URL}/users/doctor/pending-scans`, {
-    headers: { 'Authorization': `Bearer ${getToken()}` },
-  });
-  if (!res.ok) throw new Error('Failed to fetch pending scans');
-  const data = await res.json();
-  return Array.isArray(data) ? data : [];
-};
-
-// Returns ALL scans (pending + approved + rejected) for doctor view
-export const getAllScansDoctor = async () => {
-  const res = await fetch(`${BASE_URL}/users/doctor/all-scans`, {
-    headers: { 'Authorization': `Bearer ${getToken()}` },
-  });
-  if (!res.ok) throw new Error('Failed to fetch scans');
-  const data = await res.json();
-  return Array.isArray(data) ? data : [];
-};
-
-// ✅ FIXED: notes JSON body mein — query param nahi
-export const approveScan = async (scanId: number, notes: string = '') => {
-  const res = await fetch(`${BASE_URL}/users/doctor/approve-scan/${scanId}`, {
-    method: 'PUT',
-    headers: authHeaders(),
-    body: JSON.stringify({ doctor_notes: notes }),
-  });
-  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Approve nahi ho saka!'); }
-  return res.json();
-};
-
-// ✅ FIXED: notes JSON body mein
-export const rejectScan = async (scanId: number, notes: string = '') => {
-  const res = await fetch(`${BASE_URL}/users/doctor/reject-scan/${scanId}`, {
-    method: 'PUT',
-    headers: authHeaders(),
-    body: JSON.stringify({ doctor_notes: notes }),
-  });
-  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || 'Flag nahi ho saka!'); }
-  return res.json();
-};
+}

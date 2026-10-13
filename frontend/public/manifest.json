@@ -1,6 +1,6 @@
 {
-  "short_name": "Medcare AI",
-  "name": "Medcare AI",
+  "short_name": "MedCare AI",
+  "name": "MedCare AI",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#4f46e5",
   "background_color": "#ffffff"
 }

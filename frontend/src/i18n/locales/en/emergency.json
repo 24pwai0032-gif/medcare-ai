@@ -1,0 +1,85 @@
+{
+  "title": "Emergency first aid",
+  "description": "Step-by-step first aid for six common emergencies. You don't need an account.",
+  "callFirst": "Call emergency services first, then give first aid.",
+  "chooseHeading": "Choose the emergency",
+  "symptomsHeading": "Signs and symptoms",
+  "stepsHeading": "Step-by-step first aid",
+  "disclaimer": "This guide is for basic first aid. It can't replace professional medical help.",
+  "allEmergencies": "All emergencies",
+  "notFound": "This first aid guide doesn't exist.",
+  "items": {
+    "heartAttack": {
+      "title": "Heart attack",
+      "symptoms": ["Chest pain or pressure", "Pain in arm, jaw, or back", "Shortness of breath", "Cold sweats, nausea"],
+      "steps": [
+        "Call emergency services (1122/115) IMMEDIATELY",
+        "Have the person sit or lie down comfortably",
+        "If prescribed, give 1 aspirin (chewed, not swallowed whole)",
+        "Loosen tight clothing",
+        "If person becomes unconscious, begin CPR",
+        "Do NOT leave the person alone"
+      ]
+    },
+    "choking": {
+      "title": "Choking",
+      "symptoms": ["Cannot speak, cry, or breathe", "Clutching throat (universal sign)", "Coughing weakly or not at all", "Skin turning blue"],
+      "steps": [
+        "Ask \"Are you choking?\" — if they cannot respond, act!",
+        "Stand behind the person, wrap arms around waist",
+        "Make a fist with one hand, place above navel",
+        "Perform quick upward thrusts (Heimlich maneuver)",
+        "Repeat until object is expelled or person becomes unconscious",
+        "If unconscious, call emergency and start CPR"
+      ]
+    },
+    "burns": {
+      "title": "Burns",
+      "symptoms": ["Red, swollen, painful skin", "Blisters forming", "White or charred skin (severe)", "Intense pain or numbness"],
+      "steps": [
+        "Remove from heat source immediately",
+        "Cool the burn under running water for 10-20 minutes",
+        "Do NOT use ice, butter, or toothpaste",
+        "Cover loosely with clean, non-stick bandage",
+        "Take over-the-counter pain relief if needed",
+        "Seek medical help for burns larger than palm size"
+      ]
+    },
+    "bleeding": {
+      "title": "Severe bleeding",
+      "symptoms": ["Blood soaking through bandages", "Blood spurting from wound", "Large pool of blood", "Person becoming pale/weak"],
+      "steps": [
+        "Apply firm, direct pressure with clean cloth",
+        "Keep pressing — do NOT lift to check",
+        "Elevate the injured area above heart level",
+        "Call emergency services if bleeding doesn't stop in 10 min",
+        "If blood soaks through, add more cloth on top",
+        "Keep the person calm and lying down"
+      ]
+    },
+    "fracture": {
+      "title": "Fracture",
+      "symptoms": ["Intense pain at injury site", "Swelling and bruising", "Visible deformity", "Unable to move the area"],
+      "steps": [
+        "Do NOT move the injured area",
+        "Immobilize the limb with a splint",
+        "Apply ice pack wrapped in cloth (15 min on, 15 off)",
+        "Control swelling by elevation",
+        "Call emergency or go to nearest hospital",
+        "Do NOT try to realign the bone"
+      ]
+    },
+    "seizure": {
+      "title": "Seizure",
+      "symptoms": ["Uncontrollable shaking/jerking", "Falls to the ground", "Loss of consciousness", "Stiffening of body"],
+      "steps": [
+        "Clear the area of dangerous objects",
+        "Do NOT hold the person down or restrain them",
+        "Place them on their side (recovery position)",
+        "Do NOT put anything in their mouth",
+        "Time the seizure — call 1122 if it lasts >5 minutes",
+        "Stay with them until fully conscious"
+      ]
+    }
+  }
+}

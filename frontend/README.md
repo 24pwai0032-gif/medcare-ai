@@ -1,46 +1,54 @@
-# Getting Started with Create React App
+# MedCare AI frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React 19, TypeScript and Vite single-page app for MedCare AI, in English and Urdu (right to left). It talks to the FastAPI backend in `../backend`; the backend's endpoints and payloads are unchanged. [CHANGELOG.md](CHANGELOG.md) lists what the rebuild changed and removed, and every medical-content change for review.
 
-## Available Scripts
+| Landing page | Urdu, dark theme | Report with doctor's notes |
+|---|---|---|
+| ![Landing page in English](docs/screenshots/landing-en.png) | ![Landing page in Urdu on a phone](docs/screenshots/landing-ur-mobile.png) | ![Report detail](docs/screenshots/report-en.png) |
 
-In the project directory, you can run:
+| Doctor review | First aid in Urdu |
+|---|---|
+| ![Doctor review page](docs/screenshots/doctor-review.png) | ![First aid steps in Urdu on a phone](docs/screenshots/first-aid-ur-mobile.png) |
 
-### `npm start`
+Screenshots use made-up sample data.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Setup
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+npm install
+cp .env.example .env   # set VITE_API_URL if you are not using the production backend
+npm run dev            # http://localhost:5173
+```
 
-### `npm test`
+`VITE_API_URL` is the backend base URL including `/api/v1`. When it is not set, the app falls back to the production Cloud Run URL in `src/config.ts`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Scripts
 
-### `npm run build`
+| Script | What it does |
+|---|---|
+| `npm run dev` | Dev server with hot reload; `/design` shows the design system (dev only) |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Serve `dist/` on http://localhost:4173 |
+| `npm run typecheck` | TypeScript in strict mode, for the app, the configs and the e2e tests |
+| `npm run lint` | ESLint, including a rule that rejects hard-coded UI text |
+| `npm test` | Unit and component tests (Vitest and Testing Library) |
+| `npm run test:e2e` | Playwright tests against a mocked API: patient and doctor journeys, navigation, and axe plus overflow checks on every route |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The e2e tests build the app into `dist-e2e/` with `VITE_API_URL` pointing at a made-up origin that `e2e/mock-api.ts` answers, so they never reach the real backend or Gemini. They use the installed Google Chrome (`channel: 'chrome'`).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How the code is organised
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Folder | Contents |
+|---|---|
+| `src/app` | Routes (`routes.tsx`, lazy loaded per page), providers, error and 404 pages |
+| `src/components` | Shared components; `ui/` holds the shadcn-style primitives built on Radix |
+| `src/features` | One folder per area: `auth`, `analyzer`, `report`, `scans`, `patient`, `doctor`, `tools`, `emergency`, `landing`, `legal` |
+| `src/services` | The typed API client (`api.ts`), error mapping and the session store |
+| `src/i18n` | i18next setup and the `en` / `ur` JSON files; a test checks that both languages have the same keys, list items and placeholders |
+| `e2e` | Playwright tests and the mocked API |
 
-### `npm run eject`
+Every string shown to users lives in `src/i18n/locales`. Colours are CSS variables in `src/index.css`, with light and dark values that meet WCAG AA.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Deploying on Vercel
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+`vercel.json` sets the Vite framework preset, the `dist` output folder and a rewrite so every route serves `index.html`. In the Vercel project settings, rename the environment variable `REACT_APP_API_URL` to `VITE_API_URL`.
