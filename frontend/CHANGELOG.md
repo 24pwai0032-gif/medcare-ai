@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1: Link previews (15 October 2026)
+
+- **Link previews:** shared links to www.medcareai.app now get a preview card, on Upwork, WhatsApp, LinkedIn and X. `index.html` has the full Open Graph tags (type, site name, URL, a 1200 × 630 image with its size and alt text) and a large Twitter card. Crawlers don't run JavaScript, so the tags sit in the static HTML with absolute URLs.
+- **Preview image:** `public/og-image.jpg` (78 KB) shows the logo, the headline "Understand your scans and medical reports", English and اردو, the site address and "Information, not a diagnosis".
+
 ## 0.3.0: Pulse redesign and deployment (13 October 2026)
 
 No medical content changed in this release. Severity is still shown with an icon and a word as well as a colour.
